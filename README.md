@@ -10,6 +10,25 @@
 
 **Stage:** -1
 
+## Problem statement
+
+Ecmascript has not directly standardized anything related to static typing. This has 
+created space for wide adoption of third party tools that enable static type checking 
+with no actuall restrictions/pressure on how to do it. This has lead to bad practices 
+like:
+
+mixing implementation with intend
+
+which inevitably leads the third party tools to act like supersets and 
+not like complements, which means having to compile:
+
+. The ecosystem is largely blind and unaware to the disdantages 
+this has.
+
+## The solution
+
+
+
 ## The gist.
 
 A type system agnostic, minimal native comment contract, for 
