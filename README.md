@@ -13,7 +13,7 @@
 ## The gist.
 
 A type system agnostic, minimal native comment contract, for 
-external tools to enable static type checking in `.js` files, is a pragmatic, 
+external tools to enable static type checking in JavaScript files, is a pragmatic, 
 battle tested, minimal risk, minimal work, starting step for standardizing 
 static type checking in EcmaScript, in a way that adheres to the best coding 
 practices. In the long run, this will divert the ecosystem from bad practices. 
@@ -212,7 +212,7 @@ from JavaScript, which is:
     export const add : IAdd = (a,b) => a+b;
     ```
 
-then why are we not using a comment syntax in `.js` that does both? For example
+then why are we not using a comment syntax in JavaScript that does both? For example
 (something that is already supported by TypeScript):
 
 ```js
