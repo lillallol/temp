@@ -12,18 +12,16 @@
 
 ## Problem statement
 
-Ecmascript has not directly standardized anything related to static typing. This has 
-created space for wide adoption of third party tools that enable static type checking 
-with no actuall restrictions/pressure on how to do it. This has lead to bad practices 
-like:
-
-mixing implementation with intend
-
-which inevitably leads the third party tools to act like supersets and 
-not like complements, which means having to compile:
-
-. The ecosystem is largely blind and unaware to the disdantages 
-this has.
+Ecmascript has not standardized anything related to static typing. This has 
+created space for wide adoption of third party tools that enable static type 
+checking with no actuall restrictions on how to do it. Now the pandora's box
+is open: supersets that mix implementation with intend and compile to JavaScript,
+despite the many disadvantages
+[\[1\]](#separation-of-intend-and-implementation)
+[\[2\]](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)
+, are the norm, and instead of trying to convert them to complements, people 
+try to irreversably reserve syntax from EcmaScript for the sole purpose of future 
+proofing them.
 
 ## The solution
 
@@ -45,6 +43,8 @@ export const add = (a,b) => a+b;
 
 achieves that. The following sections explain the intuition and the reasons 
 behind the proposal.
+
+***
 
 > TypeScript is used as a starting point, although it is my understanding that 
 any statically typed superset of JavaScript can be used without loss of 
