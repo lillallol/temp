@@ -212,16 +212,26 @@ from JavaScript, which is:
     export const add : IAdd = (a,b) => a+b;
     ```
 
-then why are we not using a comment syntax in JavaScript that does both? For example
-(something that is already supported by TypeScript):
+then why are we not using a comment syntax in JavaScript that enables that? For 
+example (something that is already supported by TypeScript):
 
 ```js
 /**@type {import("./index").IAdd}*/
 export const add = (a,b) => a+b;
 ```
 
+or (something that is already supported by Flow):
+
+> Flow people you will surelly need to correct me since I have never written Flow
+
+```js
+/*:: import type {IAdd} from "index";*/
+export const add /*: IAdd*/ = (a,b) => a+b;
+```
+
 <details>
-<summary>This is more ergonomic.</summary>
+<summary>Having static type checking without the need to compile is more ergonomic 
+than having to compile.</summary>
 
 1. `.ts` files that contain implementations become redundant
 1. less work for TypeScript maintainers
