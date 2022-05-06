@@ -6,7 +6,7 @@
 
 **Author(s)**: 
 
-* @lillallol
+* @lillallol (secretarial support)
 
 **Stage:** -1
 
