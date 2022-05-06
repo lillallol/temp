@@ -516,6 +516,11 @@ const myVariable = myValues;
 Typescript maintainers can help on clarifying whether this is a matter of 
 support.
 </details>
+ 
+ * TODO Function overloading
+ * TODO Adding properties to functions
+ * TODO typing classes
+ * TODO typing classes with extend
 
 ## A list of projects that implement the proposal.
 
@@ -524,7 +529,13 @@ support.
 1. [@lillallol/dic](TODO) - dependency injection library (work in progress)
 1. [declarative-tree](TODO) - converts trees to string and vice versa, useful for writing declarative tree tests (work in progress)
 1. [scrap-it](TODO) - scraps dom element to outlined pdf (work in progress)
+1. [fn-to-cli](TODO) - creates cli based on typescript types (work in progress)
 1. [m-mutable](TODO) - client side model library (work in progress)
+ 
+ * TODO discontinue ts-doc-gen-md and explain the reason on its README.md by linking to the proposal
+ * TODO discontinue md-in-place and explain the reason
+ * TODO discontinue @lillallol/outline-pdf-cjs
+ * TODO discontinue @lillallol/outline-pdf-data-structure
 
 I would gladly add in the list, your projects that implement the proposal. Just 
 post them in the #1 issue of this repository.
