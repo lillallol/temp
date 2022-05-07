@@ -14,22 +14,23 @@
 
 Ecmascript has not standardized anything related to static typing. This has 
 created space for wide adoption of third party tools that enable static type 
-checking with no actuall restrictions on how to do it. Now the pandora's box
+checking **with no actuall restrictions/pressure on how to do it**. Now the pandora's box
 is open: supersets that mix implementation with intend and compile to JavaScript
 are considered the norm, despite being an objectively inferior way to enable
-static type checking when compared to complements of JavaScript that do not need
+static typing when compared to complements of JavaScript that do not need
 to compile due to separation of intend and implementation\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
 To make matters worse, instead of trying to reduce the supersets to complements,
-there are attempts\[[3](https://github.com/tc39/proposal-type-annotations)\] to 
-irreversably reserve syntax from Ecmascript for the supersets.
+there are attempts to irreversably reserve syntax from Ecmascript for the supersets\[[3](https://github.com/tc39/proposal-type-annotations)\].
 
-## The solution
+## Proposal
 
-A type system agnostic, minimal native comment contract, for 
+A type system agnostic, minimal, ergonomic, native comment contract, for 
 external tools to enable static type checking in JavaScript files, is a pragmatic, 
 battle tested, minimal risk, minimal work, starting step for standardizing 
 static type checking in EcmaScript, in a way that adheres to separation of intend
-and implementation. In the long run, this will divert the ecosystem from bad practices. 
+and implementation. This will pressure statically typed super sets of JavaScript 
+to conform, and in the long run, be reduced to complements of JavaScript. 
+
 To make a long story short, something as simple as this:
 
 ```js
@@ -37,16 +38,19 @@ To make a long story short, something as simple as this:
 export const add = (a,b) => a+b;
 ```
 
-achieves that. The following sections explain the intuition and the reasons 
-behind the proposal.
+achieves that. 
+
+The following sections apply separation of intend and implementation
+to a superset and explain how that converts it to a complement, and the many benefits
+that arise and can not exist for supersets.
 
 ***
+
+## Separation of intend and implementation.
 
 > TypeScript is used as a starting point, although it is my understanding that 
 any statically typed superset of JavaScript can be used without loss of 
 generalization.
-
-## Separation of intend and implementation.
 
 Unfortunately the very design of TypeScript, promotes the violation of this good
  practice. For example you can mix intend with implementation like this:
@@ -228,21 +232,27 @@ from JavaScript, which is:
     ```
 
 then why are we not using a comment syntax in JavaScript that enables that? For 
-example (something that is already supported by TypeScript):
+example something that is already supported by:
 
-```js
+<details>
+<summary>TypeScript</summary>
+ 
+ ```js
 /**@type {import("./index").IAdd}*/
 export const add = (a,b) => a+b;
 ```
+</details>
 
-or (something that is already supported by Flow):
+<details>
+<summary>Flow</summary>
 
-> Flow people you will surelly need to correct me since I have never written Flow
+> Disclaimer: I do not know Flow
 
 ```js
 /*:: import type {IAdd} from "index";*/
 export const add /*: IAdd*/ = (a,b) => a+b;
 ```
+ </details>
 
 <details>
 <summary>Having static type checking without the need to compile is more ergonomic 
