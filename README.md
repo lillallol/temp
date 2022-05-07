@@ -644,8 +644,7 @@ The context proposal does not collide with other tc39 proposals, given that they
 do not "reserve syntax" in native comments.
 
 <details>
-<summary><a href="https://github.com/tc39/proposal-type-annotations">Proposal 
-for type annotations.</a></summary>
+<summary>Proposal for type annotations[<a href="https://github.com/tc39/proposal-type-annotations">4</a>].</summary>
 
 The very first two paragraphs of the proposal for type annotations describe its 
 aim:
@@ -674,8 +673,7 @@ Hence the proposal for type annotations is redundant.
 
 ## The scope of tc39 includes static typing.
 
-According to [ecma-international](https://www.ecma-international.org/technical-committees/tc39/)
-the scope of tc39 is:
+According to ecma-international the scope of tc39 is \[[5](https://www.ecma-international.org/technical-committees/tc39/)\]:
 
 >Scope:
 >
