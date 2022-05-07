@@ -15,25 +15,21 @@
 Ecmascript has not standardized anything related to static typing. This has 
 created space for wide adoption of third party tools that enable static type 
 checking with no actuall restrictions on how to do it. Now the pandora's box
-is open: supersets that mix implementation with intend and compile to JavaScript,
-despite the many disadvantages
-[\[1\]](#separation-of-intend-and-implementation)
-[\[2\]](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)
-, are the norm, and instead of trying to convert them to complements, people 
-try to irreversably reserve syntax from EcmaScript for the sole purpose of future 
-proofing them.
+is open: supersets that mix implementation with intend and compile to JavaScript
+are considered the norm, despite being an objectively inferior way to enable
+static type checking when compared to complements of JavaScript that do not need
+to compile due to separation of intend and implementation\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
+To make matters worse, instead of trying to reduce the supersets to complements,
+there are attempts\[[3](https://github.com/tc39/proposal-type-annotations)\] to 
+irreversably reserve syntax from Ecmascript for the supersets.
 
 ## The solution
-
-
-
-## The gist.
 
 A type system agnostic, minimal native comment contract, for 
 external tools to enable static type checking in JavaScript files, is a pragmatic, 
 battle tested, minimal risk, minimal work, starting step for standardizing 
-static type checking in EcmaScript, in a way that adheres to the best coding 
-practices. In the long run, this will divert the ecosystem from bad practices. 
+static type checking in EcmaScript, in a way that adheres to separation of intend
+and implementation. In the long run, this will divert the ecosystem from bad practices. 
 To make a long story short, something as simple as this:
 
 ```js
