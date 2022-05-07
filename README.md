@@ -673,7 +673,7 @@ Hence the proposal for type annotations is redundant.
 
 ## The scope of tc39 includes static typing.
 
-According to ecma-international the scope of tc39 is \[[5](https://www.ecma-international.org/technical-committees/tc39/)\]:
+According to ecma-international the scope of tc39 is\[[5](https://www.ecma-international.org/technical-committees/tc39/)\]:
 
 >Scope:
 >
