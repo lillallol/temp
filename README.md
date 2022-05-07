@@ -46,8 +46,8 @@ superset and explain how this inevitably leads to this proposal.
 any statically typed superset of JavaScript can be used without loss of 
 generalization.
 
-Unfortunately the very design of TypeScript, promotes the violation of this good
- practice. For example you can mix intend with implementation like this:
+Unfortunately the very design of TypeScript, promotes the mix if intend with 
+implementation, e.g.:
 
 * `./add.ts`
 
@@ -55,7 +55,7 @@ Unfortunately the very design of TypeScript, promotes the violation of this good
     const add = (a:number,b:number):number => a+b;
     ```
 
-but you can separate intend and implementation like this:
+Separation of intend and implementation e.g.:
 
 * `./publicApi.ts`
 
@@ -70,9 +70,11 @@ but you can separate intend and implementation like this:
     const add : IAdd = (a,b) => a+b;
     ```
 
+is not enforced.
+
 <details>
-<summary>The advantages you get by sticking to the best practice are a lot.
-</summary>
+<summary>The advantages you get by sticking to sepration of intend and 
+implementation are a lot.</summary>
 
 <details>
 <summary>1. Maintainable public api.</summary>
