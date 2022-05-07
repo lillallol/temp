@@ -23,7 +23,7 @@ To make matters worse, there are attempts to make the supersets native\[[3](http
 
 A type system agnostic, minimal, ergonomic, native comment contract, for 
 external tools to enable static type checking in JavaScript files, is a pragmatic, 
-battle tested\[[4](a-list-of-projects-that-implement-the-proposal)\], minimal risk, minimal work, starting step for standardizing 
+battle tested\[[4](#a-list-of-projects-that-implement-the-proposal)\], minimal risk, minimal work, starting step for standardizing 
 static type checking in EcmaScript, in a way that adheres to separation of intend
 and implementation. This will pressure statically typed super sets of JavaScript 
 to conform, and in the long run, be reduced to complements of JavaScript. 
