@@ -6,7 +6,7 @@
 
 **Author(s)**: 
 
-* @lillallol (secretarial support)
+* @lillallol
 
 **Stage:** -1
 
@@ -14,9 +14,9 @@
 
 tc39 has not standardized anything related to static typing. This has created 
 space for wide adoption of third party tools that enable static type checking 
-with no actuall restriction/pressure/guidance on how to do it. Now, supersets 
-that mix implementation with intend and compile to JavaScript are considered 
-the norm, despite not being the optimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
+with no actuall standard on how to do it. Now, supersets that mix implementation 
+with intend and compile to JavaScript are considered the norm, despite being 
+suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
 
 ## Proposal
 
@@ -250,9 +250,9 @@ export const add /*: IAdd*/ = (a,b) => a+b;
 ```
  </details>
 
+Comment to enable static type checking means no need to compile.
 <details>
-<summary>Having static type checking without the need to compile is more ergonomic 
-than having to compile.</summary>
+<summary>There are so many benefits to that.</summary>
 
 1. `.ts` files that contain implementations become redundant
 1. less work for TypeScript maintainers
