@@ -76,7 +76,7 @@ is not enforced and hence many advantages are lost.
 <summary>The advantages.</summary>
 
 <details>
-<summary>1. Maintainable public api.</summary>
+<summary>Maintainable public api.</summary>
 
 Since the types are separated from their implementations, it makes sense to 
 gather all of the public api types in a single file. This makes it easy to 
@@ -84,7 +84,7 @@ maintain the public api since it is not scattered in multiple files.
 </details>
 
 <details>
-<summary>2. Less need for <code>.d.ts</code> generators.</summary>
+<summary>Less need for <code>.d.ts</code> generators.</summary>
 
 The single file that contains the public api can in fact be a manually 
 created `index.d.ts` file, and hence reduce the need for `.d.ts` file 
@@ -94,7 +94,7 @@ it.
 </details>
 
 <details>
-<summary>3. Less need for documentation generations libraries.</summary>
+<summary>Less need for documentation generations libraries.</summary>
 
 `index.d.ts` can act as documentation. The documentation section of the 
 `README.md` of a project can just link to `index.d.ts`. This makes documentation
@@ -130,7 +130,7 @@ the JSDoc description of `index.d.ts`.
 </details>
 
 <details>
-<summary>4. Flexibility on making the public api readable.</summary>
+<summary>Flexibility on making the public api readable.</summary>
 
 You can put the most important types in the top of `index.d.ts`, and the least 
 important in the bottom. You can define types and IDE collapsible regions for 
@@ -139,7 +139,7 @@ maintainer but also the library consumer.
 </details>
 
 <details>
-<summary>5. Reduced need to bundle declaration files.</summary>
+<summary>Reduced need to bundle declaration files.</summary>
 
 Many times, I find myself trying to bundle a library to an esm `index.js`
 file with its associated `index.d.ts` file. From the previous points it can be 
@@ -148,7 +148,7 @@ seen that there will be a reduced need for `.d.ts` bundlers. Just make sure that
 </details>
 
 <details>
-<summary>6. TypeScript reserves the least possible syntax from JavaScript.
+<summary>TypeScript reserves the least possible syntax from JavaScript.
 </summary>
 
 You just need these two things:
@@ -170,7 +170,7 @@ actually the gateway to the next section.
 </details>
 
 <details>
-<summary>7. Loose coupling of JavaScript code with the type system.</summary>
+<summary>Loose coupling of JavaScript code with the type system.</summary>
 
 Not only the public api, but also the private api can be contained in a single 
 file. That means that all the types can be contained in two files. This, 
@@ -179,7 +179,7 @@ combined with the fact of minimum syntax reservation makes the migration
 </details>
 
 <details>
-<summary>8. TypeScript maintainers have less work to do.</summary>
+<summary>TypeScript maintainers have less work to do.</summary>
 
 A direct result of reserving the least possible syntax. They no longer need to
 enable features that mix implementation and indent:
@@ -191,21 +191,32 @@ export const add = (a:number,b:number):number => a+b;
 </details>
 
 <details>
-<summary>9. The probability for TypeScript to have syntax collisions with 
+<summary>The probability for TypeScript to have syntax collisions with 
 future JavaScript syntax, gets minimized.</summary>
 
 A direct result of reserving the least possible syntax.
 </details>
 
 <details>
-<summary>10. Code that looks familiar to the JavaScript developers.</summary>
+<summary>Code that looks familiar to the JavaScript developers.</summary>
 
 A direct result of reserving the least possible syntax.
 </details>
 
+</details>
+
+<details>
+<summary>Common misconeptions.</summary>
+
+<details>
+<summary>Frequent context switching.</summary>
+
+You can just hover over the type and the IDE will show its definition.
+</details>
 There is a common misconception that adding the type in a separate file from its 
-implementation, will lead to frequent context switching. This is not valid. You 
-can just hover over the type and the IDE will show its definition.
+implementation, will lead to frequent context switching. This is not valid. 
+    
+
 </details>
 
 ## The inevitable result of minimal syntax reservation: the no compile method.
@@ -251,35 +262,38 @@ export const add /*: IAdd*/ = (a,b) => a+b;
 
 Not having to compile has so many advantages.
 <details>
-<summary>The advantagest.</summary>
+<summary>The advantages.</summary>
 
-1. `.ts` files that contain implementations become redundant
-1. less work for TypeScript maintainers
-1. no `.ts` to `.js` compilation needed
-1. no need to wait the compiler
-1. no need to develop faster compilers
-1. no need for `tsc` to be a compiler
-1. one less configuration for the build pipeline
-1. no need to deal with the fragmented ecosystem of compiling `.ts` to `.js`
-1. no need to depend on extra packages for your code to get executed
-1. no need to learn new APIs
-1. less security issues due to depending on less code
-1. one less source map
-1. no need to develop source map generators
-1. code can be pasted in the console and it will execute
-1. no IoC (Inversion of Control), code executes as it has be written (at least 
+* `.ts` files that contain implementations become redundant
+* less work for TypeScript maintainers
+* no `.ts` to `.js` compilation needed
+* no need to wait the compiler
+* no need to develop faster compilers
+* no need for `tsc` to be a compiler
+* one less configuration for the build pipeline
+* no need to deal with the fragmented ecosystem of compiling `.ts` to `.js`
+* no need to depend on extra packages for your code to get executed
+* no need to learn new APIs
+* less security issues due to depending on less code
+* one less source map
+* no need to develop source map generators
+* code can be pasted in the console and it will execute
+* no IoC (Inversion of Control), code executes as it has be written (at least 
 during the development stage)
-1. syntax from TypeScript will never collide with JavaScript syntax
-1. easier adoption of TypeScript in projects that do no use it
-1. the code gets even more familiar looking to the JavaScript developer
-1. adherence to KISS (Keep It Super Simple)
-1. adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
+* syntax from TypeScript will never collide with JavaScript syntax
+* easier adoption of TypeScript in projects that do no use it
+* the code gets even more familiar looking to the JavaScript developer
+* adherence to KISS (Keep It Super Simple)
+* adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
 concerned with transpilation anymore)
-1. adherence to [TypeScript design goal](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals) 
-of avoiding expression level syntax
+    
+</details>
 
 <details>
-<summary>22. less verbose code</summary>
+<summary>Common misconceptions.</summary>
+
+<details>
+<summary>Types in comments produce verbose code.</summary>
 
 Consider the the following public api:
 
@@ -307,14 +321,47 @@ Lets compare verbosity between the no compile method and the compile method:
     export const add = (a,b) => a+b;
     ```
 
-* `add.js` (no compile method, a possible concise alternative):
+It is clear that the no compile method is the most concise.
+    
+In the end, the comparison is not fair. The compile method has a fixed syntax
+while I can choose whatever syntax I want to standardize for the no compile 
+method. For example you might have noticed that there are cases where the compile
+method is less verbose, e.g.:
+
+* `add.ts` (compile method):
+
+    ```ts
+    import type {IAdd} from "./index";
+    export const add1 : IAdd = (a,b) => a+b;
+    export const add2 : IAdd = (a,b) => a+b;
+    export const add3 : IAdd = (a,b) => a+b;
+    ```
+* `add.js` (no compile method as enabled by TypeScript):
 
     ```js
-    //:"./index".IAdd
-    export const add = (a,b) => a+b;
+    /**@type {import("./index").IAdd}*/
+    export const add1 = (a,b) => a+b;
+    /**@type {import("./index").IAdd}*/
+    export const add2 = (a,b) => a+b;
+    /**@type {import("./index").IAdd}*/
+    export const add3 = (a,b) => a+b;
     ```
 
-It is clear that the no compile method is the most concise.
+However there is nothing stopping me from standardizing the no compile method to
+be less verbose even for such cases, e.g.:
+   
+* `add.js` (no compile method as enabled by TypeScript):
+    
+    ```js
+    //::"./index".IAdd
+    
+    //:IAdd
+    export const add1 = (a,b) => a+b;
+    //:IAdd
+    export const add2 = (a,b) => a+b;
+    //:IAdd
+    export const add3 = (a,b) => a+b;
+    ```
 
 </details>
 
