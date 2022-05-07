@@ -40,8 +40,6 @@ is enough to achieve that.
 The following sections apply separation of intend and implementation to a 
 superset and explain how this inevitably leads to this proposal.
 
-***
-
 ## Separation of intend and implementation.
 
 > TypeScript is used as a starting point, although it is my understanding that 
