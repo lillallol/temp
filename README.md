@@ -1,4 +1,4 @@
-# Fixing the supersets.
+# Reducing the supersets to complements.
 
 **Champion(s)**: 
 
@@ -14,32 +14,31 @@
 
 tc39 has not standardized anything related to static typing. This has created 
 space for wide adoption of third party tools that enable static type checking 
-**with no actuall restriction/pressure/guidance on how to do it**. Now the 
-pandora's box is open: supersets that mix implementation with intend and compile 
-to JavaScript are considered the norm, despite not being the optimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
-To make matters worse, there are attempts to make the supersets native\[[3](https://github.com/tc39/proposal-type-annotations)\].
+with no actuall restriction/pressure/guidance on how to do it. Now, supersets 
+that mix implementation with intend and compile to JavaScript are considered 
+the norm, despite not being the optimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
 
 ## Proposal
 
 A type system agnostic, minimal, ergonomic, native comment contract, for 
 external tools to enable static type checking in JavaScript files, is a pragmatic, 
-battle tested\[[4](#a-list-of-projects-that-implement-the-proposal)\], minimal risk, minimal work, starting step for standardizing 
-static type checking in EcmaScript, in a way that adheres to separation of intend
-and implementation. This will pressure statically typed super sets of JavaScript 
-to conform, and in the long run, be reduced to complements of JavaScript. 
+battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\], minimal risk, 
+minimal work, starting step for standardizing static type checking in EcmaScript,
+in a way that adheres to separation of intend and implementation. This will pressure 
+statically typed super sets of JavaScript to conform, and in the long run, be 
+reduced to complements of JavaScript. 
 
-To make a long story short, something as simple as this:
+To make a long story short, standardizing something trivial like this:
 
 ```js
 //:"./index".IAdd
 export const add = (a,b) => a+b;
 ```
 
-achieves that. 
+is enough to achieve that. 
 
-The following sections apply separation of intend and implementation
-to a superset and explain how that converts it to a complement, and the many benefits
-that arise and can not exist for supersets.
+The following sections apply separation of intend and implementation to a 
+superset and explain how this inevitably leads to this proposal.
 
 ***
 
