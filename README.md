@@ -563,8 +563,8 @@ support.
 1. [@lillallol/outline-pdf](TODO) - add outline pdf (work in progress)
 1. [@lillallol/dic](TODO) - dependency injection library (work in progress)
 1. [declarative-tree](TODO) - converts trees to string and vice versa, useful for writing declarative tree tests (work in progress)
-1. [scrap-it](TODO) - scraps dom element to outlined pdf (work in progress)
 1. [fn-to-cli](TODO) - creates cli based on typescript types (work in progress)
+1. [scrap-it](TODO) - scraps dom element to outlined pdf (work in progress)
 1. [m-mutable](TODO) - client side model library (work in progress)
  
  * TODO discontinue ts-doc-gen-md and explain the reason on its README.md by linking to the proposal
