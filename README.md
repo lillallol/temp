@@ -677,19 +677,11 @@ Hence the proposal for type annotations is redundant.
 According to [ecma-international](https://www.ecma-international.org/technical-committees/tc39/)
 the scope of tc39 is:
 
-> ## Scope:
+>Scope:
+>
 >Standardization of the general purpose, cross platform, vendor-neutral 
 >programming language ECMAScript®. This includes the language syntax, semantics,
 >and libraries and complementary technologies that support the language. ...
 
 Static typing is a complementary technology that supports the EcmaScript 
 language. Hence the context proposal belongs to the scope of tc39.
-
-## Concluding remarks
-
-Super sets are a mistake. The mistake will be fixed only when the super sets get 
-reduced to complements. This can only happen by community demand. The demand can 
-only be created by educating people. In my experience, when a nobody like me, is
-telling to people that we have been doing it wrong all along, even when this is 
-done with objective criteria, is mostly not going to work. Hence, without 
-influential people/centers taking action, nothing will change.
