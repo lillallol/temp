@@ -55,7 +55,7 @@ implementation, e.g.:
     const add = (a:number,b:number):number => a+b;
     ```
 
-Separation of intend and implementation e.g.:
+Separation of intend and implementation, e.g.:
 
 * `./publicApi.ts`
 
@@ -70,11 +70,10 @@ Separation of intend and implementation e.g.:
     const add : IAdd = (a,b) => a+b;
     ```
 
-is not enforced.
+is not enforced and hence many advantages are lost.
 
 <details>
-<summary>The advantages you get by sticking to sepration of intend and 
-implementation are a lot.</summary>
+<summary>The advantages.</summary>
 
 <details>
 <summary>1. Maintainable public api.</summary>
@@ -250,9 +249,9 @@ export const add /*: IAdd*/ = (a,b) => a+b;
 ```
  </details>
 
-Comment to enable static type checking means no need to compile.
+Not having to compile has so many advantages.
 <details>
-<summary>There are so many benefits to that.</summary>
+<summary>The advantagest.</summary>
 
 1. `.ts` files that contain implementations become redundant
 1. less work for TypeScript maintainers
