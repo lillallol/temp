@@ -553,6 +553,9 @@ support.
 
 ## A list of projects that implement the proposal.
 
+This list can be expanded with your project. Just post them in the #1 issue 
+of this repository.
+ 
 1. [es-test](TODO) - testing library (work in progress)
 1. [@lillallol/outline-pdf](TODO) - add outline pdf (work in progress)
 1. [@lillallol/dic](TODO) - dependency injection library (work in progress)
@@ -565,25 +568,6 @@ support.
  * TODO discontinue md-in-place and explain the reason
  * TODO discontinue @lillallol/outline-pdf-cjs
  * TODO discontinue @lillallol/outline-pdf-data-structure
-
-I would gladly add in the list, your projects that implement the proposal. Just 
-post them in the #1 issue of this repository.
-
-<details>
-<summary>You can implement the proposal with native TypeScript.</summary>
-
-1. As far as I understand TypeScript is not working in `.js` files that have 
-`.d.ts` files with the same name. So avoid defining implementations in 
-`index.js`. This file should just re-export the implementation of the public API
-that has been defined somewhere else from `index.js`.
-1. Make sure that you take a look at the list of the projects that already 
-implement the proposal.
-1. Read and understand the context proposal.
-1. Via your IDE,search all the files, using the following regular expression:
-`@(type|param|returns|return)\s*\{\s*(?!i)`, to find all those places where your 
-projects does not satisfy the proposal.
-
-</details>
 
 ## Defining the comment contract.
 
