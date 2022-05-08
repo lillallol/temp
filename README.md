@@ -211,11 +211,53 @@ A direct result of reserving the least possible syntax.
 <details>
 <summary>Frequent context switching.</summary>
 
-You can just hover over the type and the IDE will show its definition.
-</details>
 There is a common misconception that adding the type in a separate file from its 
-implementation, will lead to frequent context switching. This is not valid. 
+implementation, will lead to frequent context switching, i.e. having to frequenty
+switch among files that separate types and implementation. This is not valid.
+You can just hover over the type that annotates the implementation and the IDE will
+show its definition. Also the IDE will lint error when the implementation
+deviates from its type.
+</details>
     
+<details>
+<summary>You have to write everything two times.</summary>
+    
+There is common misconception that separating intend from implementation will lead
+to having to write everything two times, e.g. you have to write the function once
+for implementation and once more for abstraction. This is not valid. I always find
+myself writing an empty implementation, and then copying that to define its 
+abstraction. For example, the following empty implementation:
+    
+```ts
+export const add = (a,b) => {}
+```
+    
+can be copied and converted to abstraction with minimal effort:
+
+* replace ` const` with ` type`
+* replace `=> {}` with `: number`
+* add `: number` number in the parameters
+* replace `add` with `IAdd`
+    
+Finally, lets not forget that there are many cases in which we accept writing extra
+code due to maintanability, e.g. strict mode of TypeScript.
+</details>
+
+<details>
+<summary>You will not know where the types are.</summary>
+    
+There is a common misconception that if you gather all the types in a few files
+then it will be difficult to find them. If you know where their implementation is,
+then you can use the go to definition feature of your IDE that will get you to 
+your type.
+</details>
+
+<details>
+<summary>The code will not be readable.</summary>
+    
+The code will be more readable since it will be closer to JavaScript code due to
+separation of intend and implementation leading to minimal syntax reservation.
+</details>
 
 </details>
 
@@ -260,16 +302,15 @@ export const add /*: IAdd*/ = (a,b) => a+b;
 ```
  </details>
 
-Not having to compile has so many advantages.
+Writing type annotations in comments has so many advantages.
 <details>
 <summary>The advantages.</summary>
 
-* `.ts` files that contain implementations become redundant
-* less work for TypeScript maintainers
 * no `.ts` to `.js` compilation needed
+* `.ts` files that contain implementations become redundant
+* no need for `tsc` to be a compiler
 * no need to wait the compiler
 * no need to develop faster compilers
-* no need for `tsc` to be a compiler
 * one less configuration for the build pipeline
 * no need to deal with the fragmented ecosystem of compiling `.ts` to `.js`
 * no need to depend on extra packages for your code to get executed
@@ -286,6 +327,7 @@ during the development stage)
 * adherence to KISS (Keep It Super Simple)
 * adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
 concerned with transpilation anymore)
+* less work for TypeScript maintainers
     
 </details>
 
@@ -350,7 +392,7 @@ method is less verbose, e.g.:
 However there is nothing stopping me from standardizing the no compile method to
 be less verbose even for such cases, e.g.:
    
-* `add.js` (no compile method as enabled by TypeScript):
+* `add.js` (no compile method concise alternative):
     
     ```js
     //::"./index".IAdd
@@ -365,6 +407,28 @@ be less verbose even for such cases, e.g.:
 
 </details>
 
+<details>
+<summary>Having to compile is better than using comments, because the majority of the
+community has choosen it.</summary>
+    
+And McDonald's make the best burger since the majority is eating there. This is a 
+logical fallacy called [argumentum add poppulum](https://en.wikipedia.org/wiki/Argumentum_ad_populum).
+If something is done by the majority is not a proof that it is the objectively 
+better solution. The question remains though:
+
+> Why the majority compiles when comments are objectively better?
+    
+TypeScript became open source in 2012[0](https://en.wikipedia.org/wiki/TypeScript#History).
+The no compile method for TypeScript, i.e. improting types from `.ts` files in `.js` files via
+JSDoc imports was enabled in TypeScript 2.9 [0](https://github.com/microsoft/TypeScript/issues/22160)[1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types) which as can be seen from npmjs was published
+in 2018 [2](https://www.npmjs.com/package/typescript/v/2.9.1). This is 6 years difference.
+
+> But JSDoc has been a thing since 1999 [3](https://en.wikipedia.org/wiki/JSDoc)
+    
+JSDoc (without TypeScript) is a tool for documentation and and not for static typing. It is
+way much more verbose and has less features than TypeScript.
+</details>
+    
 </details>
 
 ## The final form of the no compile method.
