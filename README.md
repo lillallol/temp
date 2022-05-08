@@ -678,6 +678,7 @@ support.
  * TODO Adding properties to functions
  * TODO typing classes
  * TODO typing classes with extend
+ * TODO dependency injection
 
 ## A list of projects that implement the proposal.
 
