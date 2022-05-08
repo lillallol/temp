@@ -72,7 +72,7 @@ Separation of intend and implementation, e.g.:
 
 is not enforced and hence many advantages are lost.
 
-<details>
+<details open>
 <summary><b>The advantages.</b></summary>
 
 <br>
