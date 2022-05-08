@@ -421,20 +421,20 @@ be less verbose even for such cases, e.g.:
 <summary>Having to compile is better than using comments, because the majority of the
 community has choosen it.</summary>
     
-And McDonald's make the best burgers since the majority is eating there. This is a 
+JavaScript is the best programming language because it is the most popular? This is a 
 logical fallacy called [argumentum add poppulum](https://en.wikipedia.org/wiki/Argumentum_ad_populum).
-The fact that something is done by the majority is not a proof that it is the 
-objectively better solution to a problem. The question remains though:
+The fact that something is widely adopted by the majority is not a proof that it is 
+the best solution to a problem. The question remains though:
 
 > Why the majority compiles when comments are objectively better?
     
-TypeScript became open source in 2012[0](https://en.wikipedia.org/wiki/TypeScript#History).
-The no compile method for TypeScript, i.e. improting types from `.ts` files in `.js` files via
-JSDoc imports was enabled in 2018\[[0](https://github.com/microsoft/TypeScript/issues/22160)\]\[[1](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]\[[2](https://www.npmjs.com/package/typescript/v/2.9.1)\].
-By that time everyone was compiling `.ts` to `.js`. To make matters even worse, the overwhelming
-majority of people are not aware that you can import types via JSDoc comments, and people, 
-regardless of their seniority level, have the misconception that the no compile method lacks 
-when compared to the compile method. It is not by chance that the no compile method is not a
+TypeScript became open source in 2012[i](https://en.wikipedia.org/wiki/TypeScript#History).
+The no compile method for TypeScript (i.e. improting types from `.ts` files in `.js` files via
+JSDoc imports) was enabled in 2018\[[ii](https://github.com/microsoft/TypeScript/issues/22160)\]\[[iii](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]\[[iv](https://www.npmjs.com/package/typescript/v/2.9.1)\].
+By that time everyone was compiling `.ts` to `.js`. To make matters even worse the overwhelming
+majority of developers, regardless of seniority level[v][], have the wrong assumption that the no 
+compile method is inferior to the compile method, while in fact the opposite is true. It is widelly accepted that the no compile method lacks when compared to 
+the compile method. It is not by chance that the no compile method is not a
 thing in the TypeScript documentation web site.
 
 > But JSDoc has been a thing since 1999 [3](https://en.wikipedia.org/wiki/JSDoc)
@@ -443,6 +443,8 @@ JSDoc (without TypeScript support) is a tool for documentation and and not for s
 It is way much more verbose and has less features than TypeScript, regarding static typing.
 </details>
 
+@TODO code in comments in not readable/ugly
+    
 ***
 
 </details>
