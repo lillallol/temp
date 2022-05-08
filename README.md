@@ -73,7 +73,9 @@ Separation of intend and implementation, e.g.:
 is not enforced and hence many advantages are lost.
 
 <details>
-<summary>The advantages.</summary>
+<summary><b>The advantages.</b></summary>
+
+<br>
 
 <details>
 <summary>Maintainable public api.</summary>
@@ -128,7 +130,7 @@ Notice that both the types and the JSDoc descriptions are both contained in
 `index.d.ts`, and when you import from `index.ts` you actually see the type and 
 the JSDoc description of `index.d.ts`.
 </details>
-
+    
 <details>
 <summary>Flexibility on making the public api readable.</summary>
 
@@ -203,10 +205,14 @@ A direct result of reserving the least possible syntax.
 A direct result of reserving the least possible syntax.
 </details>
 
+***    
+
 </details>
 
 <details>
-<summary>Common misconeptions.</summary>
+<summary><b>Common misconeptions.</b></summary>
+
+<br>
 
 <details>
 <summary>Frequent context switching.</summary>
@@ -259,6 +265,8 @@ The code will be more readable since it will be closer to JavaScript code due to
 separation of intend and implementation leading to minimal syntax reservation.
 </details>
 
+***
+
 </details>
 
 ## The inevitable result of minimal syntax reservation: the no compile method.
@@ -304,7 +312,7 @@ export const add /*: IAdd*/ = (a,b) => a+b;
 
 Writing type annotations in comments has so many advantages.
 <details>
-<summary>The advantages.</summary>
+<summary><b>The advantages.</b></summary>
 
 * no `.ts` to `.js` compilation needed
 * `.ts` files that contain implementations become redundant
@@ -329,10 +337,12 @@ during the development stage)
 concerned with transpilation anymore)
 * less work for TypeScript maintainers
     
+***
+
 </details>
 
 <details>
-<summary>Common misconceptions.</summary>
+<summary><b>Common misconceptions.</b></summary>
 
 <details>
 <summary>Types in comments produce verbose code.</summary>
@@ -432,7 +442,9 @@ thing in the TypeScript documentation web site.
 JSDoc (without TypeScript support) is a tool for documentation and and not for static typing.
 It is way much more verbose and has less features than TypeScript, regarding static typing.
 </details>
-    
+
+***
+
 </details>
 
 ## The final form of the no compile method.
