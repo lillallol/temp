@@ -126,7 +126,7 @@ Here is an example:
     export {add} from "./add";
     ```
 
-Notice that both the types and the JSDoc descriptions are both contained in 
+Notice that both the types and the JSDoc descriptions are contained in 
 `index.d.ts`, and when you import from `index.ts` you actually see the type and 
 the JSDoc description of `index.d.ts`.
 </details>
