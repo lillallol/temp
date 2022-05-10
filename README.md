@@ -26,22 +26,19 @@ is a pragmatic, battle tested\[[3](#a-list-of-projects-that-implement-the-propos
 minimal risk, minimal tc39 work, starting step for standardizing static type checking,
 in a way that adheres to separation of intend and implementation.
 
-To make a long story short, standardizing something trivial like this:
+To make a long story short, I propose standardizing something trivial, like this:
 
 ```js
 //:"./index".IAdd
 export const add = (a,b) => a+b;
 ```
-
-is what this proposal is all about. 
+The following sections apply separation of intend and implementation to a 
+superset and explain how this inevitably leads to this proposal.
 
 <!-- In the long run, this will pressure the supersets to conform. Future proposals, 
 regardless of whether they are related to static typing, can use syntax that 
 breaks the supersets, hence making the superset users migrate to their respective
 complements. -->
-
-The following sections apply separation of intend and implementation to a 
-superset and explain how this inevitably leads to this proposal.
 
 ## Separation of intend and implementation.
 
@@ -75,7 +72,7 @@ Separation of intend and implementation, e.g.:
 
 is not enforced and hence many advantages are lost.
 
-<details open>
+<details>
 <summary><b>The advantages.</b></summary>
 
 <br>
@@ -218,24 +215,36 @@ A direct result of reserving the least possible syntax.
 <br>
 
 <details>
-<summary>Frequent context switching.</summary>
+<summary>You can not see the type while writing the implementation.</summary>
 
-There is a common misconception that adding the type in a separate file from its 
-implementation, will lead to frequent context switching, i.e. having to frequenty
-switch among files that separate types and implementation. This is not valid.
 You can just hover over the type that annotates the implementation and the IDE will
 show its definition. Also the IDE will lint error when the implementation
 deviates from its type.
+
+</details>
+    
+<details>
+<summary>Frequent context switching.</summary>
+
+More specifically because the types are in separate files from their implementation, 
+that means you have to frequently switch among many files. This is not valid since, 
+the IDE will show the type of an implementation by hovering on its annotation. If 
+the type references other types, then we have frequent context switching, however 
+this does not occur due to separation of intend and implementation, nor it gets 
+excageratted by it. In fact when you
+separate intend with implementation you can split your private api in two files so 
+that at most two files are needed frequent context switchin is minimized.
+    
+@TODO add example
 </details>
     
 <details>
 <summary>You have to write everything two times.</summary>
     
-There is common misconception that separating intend from implementation will lead
-to having to write everything two times, e.g. you have to write the function once
-for implementation and once more for abstraction. This is not valid. I always find
-myself writing an empty implementation, and then copying that to define its 
-abstraction. For example, the following empty implementation:
+That is, you have to write the function once for implementation and once more for 
+abstraction. This is not valid. I always find myself writing an empty implementation,
+and then copying that to define its abstraction. For example, the following empty 
+implementation:
     
 ```ts
 export const add = (a,b) => {}
@@ -243,9 +252,9 @@ export const add = (a,b) => {}
     
 can be copied and converted to abstraction with minimal effort:
 
-* replace ` const` with ` type`
-* replace `=> {}` with `: number`
-* add `: number` number in the parameters
+* replace `const` with ` type`
+* replace `{}` with ` number`
+* add `: number` next to the parameters `a` and `b`
 * replace `add` with `IAdd`
     
 Finally, lets not forget that there are many cases in which we accept writing extra
@@ -255,17 +264,17 @@ code due to maintanability, e.g. strict mode of TypeScript.
 <details>
 <summary>You will not know where the types are.</summary>
     
-There is a common misconception that if you gather all the types in a few files
-then it will be difficult to find them. If you know where their implementation is,
-then you can use the go to definition feature of your IDE that will get you to 
-your type.
+If you know where the implementation of the type is, then you can use the go to
+type definition feature of your IDE.
 </details>
 
 <details>
 <summary>The code will not be readable.</summary>
     
 The code will be more readable since it will be closer to JavaScript code due to
-separation of intend and implementation leading to minimal syntax reservation.
+separation of intend and implementation leading to minimal syntax reservation. If
+you want to see the type of something, then you can just hover over it and the IDE
+will shows its type.
 </details>
 
 ***
@@ -347,6 +356,23 @@ concerned with transpilation anymore)
 <details>
 <summary><b>Common misconceptions.</b></summary>
 
+<br>
+    
+<details>
+<summary>You can not use type parameters when writing types in comments.</summary>
+    
+Extra syntax reservation inside native comments can enable that:
+
+* `./privateApi.ts`
+
+```js
+export type IAdd = <T>(a : T,b : T) => T
+```
+    
+Even without that it still works:
+    
+</details>
+    
 <details>
 <summary>Types in comments produce verbose code.</summary>
 
