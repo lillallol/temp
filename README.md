@@ -14,19 +14,17 @@
 
 tc39 has not standardized anything related to static typing. This has created 
 space for wide adoption of third party tools that enable static type checking 
-with no actuall standard on how to do it. Now, supersets that mix implementation 
-with intend and compile to JavaScript are considered the norm, despite being 
-suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
+with no actuall standard on how to do it. Now, supersets (e.g. TypeScript) that 
+mix implementation with intend and compile to JavaScript are considered the 
+norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
 
 ## Proposal
 
-A type system agnostic, minimal, ergonomic, native comment contract, for 
-external tools to enable static type checking in JavaScript files, is a pragmatic, 
-battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\], minimal risk, 
-minimal work, starting step for standardizing static type checking in EcmaScript,
-in a way that adheres to separation of intend and implementation. This will pressure 
-statically typed super sets of JavaScript to conform, and in the long run, be 
-reduced to complements of JavaScript. 
+A type system agnostic, zero syntax reservation, ergonomic, native comment 
+contract, for external tools to enable static type checking in JavaScript files,
+is a pragmatic, battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\],
+minimal risk, minimal tc39 work, starting step for standardizing static type checking,
+in a way that adheres to separation of intend and implementation.
 
 To make a long story short, standardizing something trivial like this:
 
@@ -35,7 +33,12 @@ To make a long story short, standardizing something trivial like this:
 export const add = (a,b) => a+b;
 ```
 
-is enough to achieve that. 
+is what this proposal is all about. 
+
+<!-- In the long run, this will pressure the supersets to conform. Future proposals, 
+regardless of whether they are related to static typing, can use syntax that 
+breaks the supersets, hence making the superset users migrate to their respective
+complements. -->
 
 The following sections apply separation of intend and implementation to a 
 superset and explain how this inevitably leads to this proposal.
@@ -46,7 +49,7 @@ superset and explain how this inevitably leads to this proposal.
 any statically typed superset of JavaScript can be used without loss of 
 generalization.
 
-Unfortunately the very design of TypeScript, promotes the mix if intend with 
+Unfortunately the very design of TypeScript, promotes the mix of intend with 
 implementation, e.g.:
 
 * `./add.ts`
