@@ -211,6 +211,8 @@ A direct result of reserving the least possible syntax.
 
 <br>
 
+@TODO you will have a file for types for each `.js` file
+    
 <details>
 <summary>You can not see the type while writing the implementation.</summary>
 
