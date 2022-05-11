@@ -12,21 +12,23 @@
 
 ## Problem statement
 
-tc39 has not standardized anything related to static typing. This has created 
-space for wide adoption of third party tools that enable static type checking 
-with no actuall standard on how to do it. Now, supersets (e.g. TypeScript) that 
-mix implementation with intend and compile to JavaScript are considered the 
-norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
+There is no tc39 standardization on anything related with static typing. This 
+has resulted in wide adoption of third party tools that enable static type 
+checking with no actuall standard on how to do it. Now, supersets like 
+TypeScript, that mix implementation with intend and compile to JavaScript are
+considered the norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\]. To make things worse, there are proposals
+to make them native\[[3](https://github.com/tc39/proposal-type-annotations)\].
 
 ## Proposal
 
 A type system agnostic, zero syntax reservation, ergonomic, native comment 
 contract, for external tools to enable static type checking in JavaScript files,
-is a pragmatic, battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\],
-minimal risk, minimal tc39 work, starting step for standardizing static type checking,
-in a way that adheres to separation of intend and implementation.
+is a pragmatic, battle tested\[[4](#a-list-of-projects-that-implement-the-proposal)\],
+minimal risk, minimal tc39 work, superior to supersets\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\], starting step for standardizing enough 
+static typing to reduce the supersets to complements.
 
-To make a long story short, I propose standardizing something trivial, like this:
+To make a long story short, I propose standardizing something trivial, along the
+lines of this:
 
 ```js
 //:"./index".IAdd
@@ -34,11 +36,6 @@ export const add = (a,b) => a+b;
 ```
 The following sections apply separation of intend and implementation to a 
 superset and explain how this inevitably leads to this proposal.
-
-<!-- In the long run, this will pressure the supersets to conform. Future proposals, 
-regardless of whether they are related to static typing, can use syntax that 
-breaks the supersets, hence making the superset users migrate to their respective
-complements. -->
 
 ## Separation of intend and implementation.
 
