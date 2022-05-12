@@ -72,7 +72,7 @@ is not enforced and hence many advantages are lost.
 ### The advantages.
 
 <details>
-<summary>Εxpand/collapse</summary>
+<summary>expand/collapse</summary>
 
 <br>
 
@@ -208,10 +208,10 @@ A direct result of reserving the least possible syntax.
 
 </details>
 
-### Common misconeptions
+### Common misconceptions.
 
 <details>
-<summary>Expand/collapse.</summary>
+<summary>expand/collapse</summary>
 
 <br>
 
@@ -326,8 +326,11 @@ export const add /*: IAdd*/ = (a,b) => a+b;
  </details>
 
 Writing type annotations in comments has so many advantages.
+
+### Advantages
+
 <details>
-<summary><b>The advantages.</b></summary>
+<summary>expand/collapse</summary>
 
 * no `.ts` to `.js` compilation needed
 * `.ts` files that contain implementations become redundant
@@ -356,8 +359,10 @@ concerned with transpilation anymore)
 
 </details>
 
+### Common misconceptions.
+
 <details>
-<summary><b>Common misconceptions.</b></summary>
+<summary>expand/collapse</summary>
 
 <br>
 
