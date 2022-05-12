@@ -16,8 +16,9 @@ There is no tc39 standardization on anything related with static typing. This
 has resulted in wide adoption of third party tools that enable static type 
 checking with no actuall standard on how to do it. Now, supersets like 
 TypeScript, that mix implementation with intend and compile to JavaScript are
-considered the norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\]. To make things worse, there are proposals
-to make them native\[[3](https://github.com/tc39/proposal-type-annotations)\].
+considered the norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
+To add to that, there are proposals to reserve syntax to be used by
+supersets\[[3](https://github.com/tc39/proposal-type-annotations)\].
 
 ## Proposal
 
@@ -711,10 +712,14 @@ const myVariable = myValues;
 </details>
 
 <details>
-<summary><code>enum</code>.</summary>
+<summary>You will not be able to use <code>enum</code>.</summary>
 
-Typescript maintainers can help on clarifying whether this is a matter of 
-support.
+According to Typescript\[[i](https://www.typescriptlang.org/docs/handbook/enums.html)\]:
+    
+>Enums are one of the few features TypeScript has which is not a type-level
+>extension of JavaScript.
+    
+@TODO
 </details>
  
  * TODO Function overloading
