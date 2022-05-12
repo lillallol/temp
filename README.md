@@ -752,7 +752,7 @@ of this repository.
 <summary>A comment for type imports that will also define the type for variable 
 declarations.</summary>
 
-Example:
+Example for statement:
 
 ```js
 /**@type {import("./path/to/file").nameOfTheExportedType}*/
@@ -771,6 +771,10 @@ export const add = (a,b) => a+b;
 1. To be a type system agnostic comment, the path has to be without filename
 extension. For example the path: `./src/index.d.ts` has to be written as: 
 `./src/index`.
+    
+Example for expression:
+    
+@TODO
 
 </details>
 
