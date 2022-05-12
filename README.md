@@ -69,8 +69,10 @@ Separation of intend and implementation, e.g.:
 
 is not enforced and hence many advantages are lost.
 
+### The advantages.
+
 <details>
-<summary><b>The advantages.</b></summary>
+<summary>Εxpand/collapse</summary>
 
 <br>
 
@@ -206,8 +208,10 @@ A direct result of reserving the least possible syntax.
 
 </details>
 
+### Common misconeptions
+
 <details>
-<summary><b>Common misconeptions.</b></summary>
+<summary>Expand/collapse.</summary>
 
 <br>
 
