@@ -356,7 +356,9 @@ concerned with transpilation anymore)
 <summary><b>Common misconceptions.</b></summary>
 
 <br>
-    
+
+@TODO theres is loss in static type functionality 
+   
 <details>
 <summary>You can not use type parameters when writing types in comments.</summary>
     
