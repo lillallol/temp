@@ -17,7 +17,7 @@ has resulted in wide adoption of third party tools that enable static type
 checking with no actuall standard on how to do it. Now, supersets like 
 TypeScript, that mix implementation with intend and compile to JavaScript are
 considered the norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
-To add to that, there are proposals to reserve syntax to be used by
+To add to that, there are proposals to reserve syntax to be used by the
 supersets\[[3](https://github.com/tc39/proposal-type-annotations)\].
 
 ## Proposal
@@ -35,6 +35,7 @@ lines of this:
 //:"./index".IAdd
 export const add = (a,b) => a+b;
 ```
+
 The following sections apply separation of intend and implementation to a 
 superset and explain how this inevitably leads to this proposal.
 
