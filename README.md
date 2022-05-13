@@ -351,6 +351,7 @@ Writing type annotations in comments has so many advantages.
 during the development stage)
 * syntax from TypeScript will never collide with JavaScript syntax
 * easier adoption of TypeScript in projects that do no use it
+* easier adoption of TypeScript by beginners
 * the code gets even more familiar looking to the JavaScript developer
 * adherence to KISS (Keep It Super Simple)
 * adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
