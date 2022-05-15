@@ -1,852 +1,323 @@
-# Reducing the supersets to complements.
+## Types as Comments for Stage 1
 
-**Champion(s)**: 
+Presenter: Daniel Rosenwasser (DRR)
 
-* TBD (To Be Determined)
+- [proposal](https://github.com/giltayar/proposal-types-as-comments/)
+- [slides](https://1drv.ms/b/s!AltPy8G9ZDJdq28xR8VuAcaIyq3h?e=quwXQB)
 
-**Author(s)**: 
+DRR: Hi everyone. My name is DRR and with RPR and RCA today. We're presenting a proposal called types of comments for stage 1. So just before we jump into the specifics of the proposal. I want to talk a little bit about my background with typescript. I've been on the team for several years. And what is TypeScript Exactly? Well, just some History. JavaScript has grown in how widely it's used. This is TC39. So I'm sure many of you are not strangers to the fact that JavaScript is being used in pretty much every space that you can imagine these days, right? Front-end applications, back end applications, other devices, practically everything. But the thing about that is as JavaScript has been employed in more and more places we've seen, the sort of tasks people are using it for grow in complexity. As you try to build something more ambitious, it gets harder. We noticed this ourselves back in 2008/2009 or so, where we needed to start building out these richer more powerful web applications, but we just found that we were lacking the sort of tooling that we were used to for building other applications for something like JavaScript apps, right? So things like Office and whatnot. And the one of the biggest things instead of features that was missing was Modern constructs, right? Things like modules and classes, shorthand functions, variables that exist within the scope of the curly braces that you write them in and so that's ecmascript 2015, right? That came years later and that has made the language dramatically better for writing, modern code. But we were still missing some other things too. For example, we were making a lot of these typos and logic errors that I do. We could have been caught by running the code before shipping it off to production, and it's not actually just that static type checking that we're missing, right? This is, this is something that can help prevent errors before you run your code, but it was also the tooling, right? So we were used to using languages that had autocomplete, where you can like navigate, Out of the gate the code base at reusing. And our experience told us that that kind of tooling is best built when it's powered by types. The same sort of thing that provides the static type checking you want and so we set out to do something like that for JavaScript, right? What if we could bring the benefits of that to JavaScript? So the core idea is: what if you could tell some tools what the types are within your program. So you could say that my function takes something called a `Point` and that `Point` has an `x` and a `y` property and those `x` and `y` properties are both numbers, right? And once you have that information, a tool can give you things like error messages to tell you when you're doing something like accessing a property that isn't known to exist, but it can also provide things like autocomplete as well: so you can know that "Hey, this thing has an X". This is what we got to get the tape and you can know that those X&Y properties are used and correct ways too.
 
-* @lillallol
+So, that's the PowerPoint version of this, but I want to just quickly jump into an actual code example of this.
 
-**Stage:** -1
+DRR: So I'm going to open up a prompt. I'm going to write, I'm going run TypeScript in, I already am ready. Wow. Okay, I'm gonna run this in watch mode. And then what we can see is we have the output file. So this is the thing that I'm talking about typescript and it's taking some input JavaScript and it's providing creating some output JavaScript, right? Nothing's really different here. The new lines are removed. We don't preserve everything, but we try to make it somewhat readable.
 
-## Problem statement
+[live demo setup]
 
-There is no tc39 standardization on anything related with static typing. This 
-has resulted in wide adoption of third party tools that enable static type 
-checking with no actuall standard on how to do it. Now, supersets like 
-TypeScript, that mix implementation with intend and compile to JavaScript are
-considered the norm, despite being suboptimal solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\].
-To add to that, there are proposals to reserve syntax to be used by the
-supersets\[[3](https://github.com/tc39/proposal-type-annotations)\].
+DRR: Okay, so this is still a JavaScript input file, but what I can use with right now is a different file extension, called, .ts and this puts it in a different language mode. Where you're saying, I want to allow some extra type Syntax for my JavaScript as soon as I do that. I actually haven't changed anything, but I can catch some really basic mistakes, right? For example, here. I'm already getting some basic error message that says that receipt is declared here or recipient is declared here, but I couldn't find `<typo>` right? So maybe I need to correct this. Now notice even though I have errors. If I save this, I'm still getting output. So the core principle is that these type errors, don't block anything, errors are there just to provide guidance, but you can still run your code. You can still get output and run your code. But anyway, I'm going to use a quick fix here. Just to fix the spelling in the correct. One of the errors that TypeScript provides. Another error is right here. It's saying that strings not assignable to a DOM node in other words, right? And so what I've done is I've called this function and it has string apparently and I'm trying to put that in the DOM. What I probably meant to do was to create an element, and then I want to say that `innerText = greeting` and then I want to pass the element in right now. That's, that's unheard of the error messages. Those scary Red squigglies. What can remove the output here here. Now, I haven't actually changed the code at all. This is all just runnable JavaScript. But at this point I have, I'm still getting some amount of type checking because TypeScript is able to do some basic type inference and knows that even though we don't don't know the type of the here. It's going to produce a string. And so here the type of greeting is a string and then here the type of `el` is element And so we can do a certain amount of inference so that you don't don't have to annotate your types everywhere, right? So We could start adding type annotations to different positions. Sometimes it's optional you don't need to get better inference rather, but already, but just by adding something small, we can see that we've already made a mistake because we've accidentally used the wrong casing for the C in the toUpperCase method. I could use a quick fix here in my tooling or I could just write `toUpperCase`
 
-## Proposal
+Presents slide on popularity of TypeScript
 
-A type system agnostic, zero syntax reservation, ergonomic, native comment 
-contract, for external tools to enable static type checking in JavaScript files,
-is a pragmatic, battle tested\[[4](#a-list-of-projects-that-implement-the-proposal)\],
-minimal risk, minimal tc39 work, superior to supersets\[[1](#separation-of-intend-and-implementation)\]\[[2](#the-inevitable-result-of-minimal-syntax-reservation-the-no-compile-method)\], starting step for standardizing enough 
-static typing to reduce the supersets to complements.
+[continues presenting slides]
 
-To make a long story short, I propose standardizing something trivial, along the
-lines of this:
+DRR: So, jump back into this. Looking at the top four spots here, and that's actually been sustained in the year in last year's Octoverse ranking as well. So this is astonishing because we really didn't see this happening back when we started typescript and well came out with it in 2012. It's been around for about a decade at this point, but, you know, you can look at this chart and you can see that you can really think of this as TypeScript as being a subset of the JavaScript Community, right? And what this chart is really showing is that this is a very popular pattern: using types in your JavaScript, using a typed version of JavaScript, is extremely prevalent, right? You should see. This is the percent, you know, the number of people using types in their JS today and it’s really proven the value proposition here, right? A lot of people use types in this room. It's at least the lower Bound by trip. Is that is so You know, it speaks volumes to see the usage. We've also seen huge efforts from other companies as well. There are also other type-checkers out. There. Flow is one that also adds its own syntax extensions that look very similar to TypeScript; Closure Compiler also did a sort of similar thing where they use a format called. JSDoc, a common format called JSDoc to type-check JavaScript as well. And so in many ways these have sort of convergence, right? Like the fact that you know, these type annotations and types, don't have any sort of emit generally, but they have different approaches and goals, and it's been good that they've been able to sort of experiment with that as well. So, you know, one of the things about the people using typed JavaScript, or rather these typed extensions to JavaScript, is that as soon as you use these extensions, you can't just run the code, right? You have to find a way to strip out the types. And so, you know, we knew that this was an issue because people want to be able to do lightweight projects without a build step. They want to be able to actually just restart node or whatever their sort of program is to run code without having to do some sort of intermediate step. However if you're going to use this format, this is really convenient, but it's not directly runnable. You're going to get an error as soon as you try to run it. We try to solve this problem with TypeScript by leveraging the JSDoc format, right? So this is one way that you could annotate a function to say that, it takes two numbers and returns a number. There's other ways that you could do this to, by mixing TypeScript specific syntax with JSDoc. So here's another way that you can today, you know, write JavaScript code that's understood by a tool like typescript that says, it takes two numbers and produces a number as well. Flow had a another similar approach where they used comments that look a little bit closer to the actual types and tax that touch been flow. both use so So you can kind of hop into this comments syntax every time you have a binding and then say like this thing isn't going to be a number, right? So visually it looks a little bit more like something like typescript or flow, but you know, you have to kind of hop between these things. And so this this all these approaches are Usable, but they tend to be a little bit cumbersome, I would say. There are other approaches to get around the build step as well. Right? So for example, we're seeing this huge blob of build tools that are just meant to be as fast as possible. Right? So fast that it feels transparent to like have them around so you can just like run them immediately and within less than a second, many of these tools can produce output that you can run directly in your browser and node wherever and then some platforms either have hooks like node where you can you can use this sort of preprocessor like ts-node or other platforms? Like Deno just have TypeScript  built-in so they can just run time to put directly correctly. And so These workarounds are okay, but often they have met some amount of configuration there, still issues with, you know, you run them here, but you can run them in other places as well. So that that tends to make things harder. So,
 
-```js
-//:"./index".IAdd
-export const add = (a,b) => a+b;
-```
+DRR: That brings us to what we're proposing today. So, the goal is to make static types more accessible, within JavaScript. So, a couple of the specifics of the goals, we want to make ergonomic type annotations in JavaScript, they should be easy to use. Should be optional. You shouldn't need to use them. We're not trying to change the way that every JavaScript developer has to write code. And the similar sort of duel of that: we don't want to change the semantics of the surrounding JavaScript. if you do choose to use types, so these types should not affect code that exists today and they should not affect code that exist with types either. So they shouldn't, you know, they shouldn't affect semantics but they should still be runnable, right? In other words: You should still be able to run the code that uses types. You shouldn't need some sort of preprocessor step anywhere that runs. JavaScript with types should run as well, but we need a space for type-checkers to actually evolve? Type-checkers are still innovating. They're still adding new constructs and we need room to grow while still having the syntactic space to do so in JavaScript, and on top of all of these things we want to meet community expectations from all JavaScript users here, especially users who have already invested interest in types. So we want to be able to serve those users users who already has and types of per flow. So that, you know, that we don't produce something that's going to be completely different from what they were already used to.
 
-The following sections apply separation of intend and implementation to a 
-superset and explain how this inevitably leads to this proposal.
+DRR: Some non goals are that we're not trying to make anything that has runtime effect. So one idea that people have often brought up is, what if you could hint to the engine that these two things are numbers so you should be able to optimize this function before it needs to get hot in some way a JIT. This is just not something that we're trying to enable, if an engine wants to do that it's free to but we don't really see that as a big enough win that we want to pursue it. We also don't want to work on runtime integrity checks. So in other words something where you can have these sort of guards for your functions where you say like, this thing is expecting these types and that should be enforced at runtime. That's not within the scope of this proposal. Observable runtime types where you can introspect these things that has the same sort of run time effect, and we just don't really see that as a value proposition that we want to deliver on this proposal. So, another non goal is 100% feature parity with existing type systems. Now, while we do want to enable some sort of sufficient amount of the syntax base of these types of systems, there are just going to be some features that we're going to have to drop and we know that. Those features can make their own way through TC39, if others are interested in the future, but that's not going to be something that we're pursuing today.
 
-## Separation of intend and implementation.
+DRR: So, the idea is to just ignore the types. The way that you can think about it is that, if you go back to or go to this example, right here of an `add` function, when you see this `add` function you should think of the `: number` in each of these positions as comments, right? And so, in other words, they should desugar into something that acts effectively as comments, right? And so we want to define a syntax base for these things to add. You know, they were able to act as comments. They would be okay, but we need Syntax for what I would broadly break down into four categories. Annotations for wherever you want to say. The type of a binding is, type declarations to Define new types for static analysis, tools modifiers to be able to communicate some properties of properties and values. And type assertions to hint to a type system something about the expressions within your program.
 
-> TypeScript is used as a starting point, although it is my understanding that 
-any statically typed superset of JavaScript can be used without loss of 
-generalization.
+DRR: so, Like I mentioned with these things being comments, the syntax would have no runtime semantics - it acts as comments. Hence the name of the proposal. We found this to be a really good framework for how to approach pretty much every aspect of the design in this proposal. So whenever you find yourself asking a question about the feature, how it should act, you should be able to answer: "Well, they're just comments, so..." and follow from there. Now because they're just comments a runtime would be able to just skip them over, not do anything with them but tools like TypeScript, Flow and other type-checkers that want to check JavaScript could continue to provide static type. Checking gives you errors and gives you tooling based on these types. So, for tools like typescript today, the process is something like: you have to take a TS file; you compile it to JS and that JS file gets parsed and executed by your engine, your runtime, whatever. What we're proposing is having some of that type syntax directly in JavaScript where it can just be parsed and executed directly by a browser engine. So, what that means is that you could write something like the code on the screen where you've written that X has the type string and you're assigning a number to it on the third line, but an engine would have no issue with this whereas tools, like typescript/flow/closure, or whoever, could provide an error message and say: "hey you're violating some sort of intent that you've communicated to me. Do you want to correct this? Do you want to do something about it?" And so, and so that would be where a lot of the value comes from, in this feature.
 
-Unfortunately the very design of TypeScript, promotes the mix of intend with 
-implementation, e.g.:
+DRR: So why is this worth doing? Well, it really improves the developer experience for people using types in their JavaScript today, but it also allows JavaScript developers to start using types. They haven't given it a shot already because the barrier to entry is just high, right? So removing the need for a build step is just something that has many sort of implicit benefits for a lot of a lot of projects right for many projects out there. You have to think about what your bill step is for building between types of to JavaScript or another or any other syntactic, you know, transformation to JavaScript. You have to think about how your test runner transforms the code as well. You also have to think about how your debugging tools are going to be able to map between the input of your code and the output, right? So, you're running the output, but you need a way to jump to the input to see how that correlates between the input between the build step. And so source maps are another complication that for development time is often troublesome and then there's just other finicky thing where because JavaScript is just the language that they use in every context if you want to use something like, a REPL or an interactive prompt for JavaScript if you try to copy and paste some some typescript or flow typed code into a console, then it's usually going to fail because the type annotations are not parsable. So then you have to find a way to like get that compiled down, copy the output and paste that into the console. And that just is that, that's a nice developer experience to get rid of that stuff. Then from the tooling perspective, we have a space where we could innovate, and provide a lot of value in JavaScript directly. Basically, it's sort of a green light to innovate in this space as well. But, you know, there are some trade-offs here, right? Like for tools, there are some places where we're going to have to, you know, it's going to be harder to add new contracts and syntax. It's. But we see that as worth it for the developer experience, And if we have the right carve out, we could still do a good job, we feel. And then from the language perspective, by kind of bringing this typed and untyped communities together. They're able to just benefit from each other's work in a lot of ways, right? We've strongly been trying to bridge the gap between people who are actively trying to use TypeScript and people who are just benefiting from the tooling of existing editors and things like that, right? So if you've used in certain editors, like Visual Studio Code and whatnot, if you're using JavaScript that experience is actually powered by TypeScript today and a lot of users don't know it. And that's the beauty as they don't need to think about it. They're just kind of benefiting from a lot of the great tooling work that comes from TypeScript and whatnot. And then vice versa. We've tried to make it so easy so that people who are using untyped libraries can easily use those in TypeScript, by creating an entire ecosystem around that. But there is still a gap mentally for a lot of users. And so if types are part of the language, we can sort of bridge that gap more.
 
-* `./add.ts`
+DRR: I think biggest added value for the language though. Is that it also allows JavaScript to grow, right? So, like I mentioned earlier in the presentation, a big part of you know, experienced pain point that we had was we were trying to use JavaScript in more places, and we just couldn't without types, right? If you provide types directly in the language and make it easy to use them, that actually allows JavaSScript to grow in a lot of other contexts as well. And so, whereas you have many mobile developers who are using native languages to build applications, they've actually considered using JavaScript because of things like Flow and TypeScript as well.
 
-    ```ts
-    const add = (a:number,b:number):number => a+b;
-    ```
+DRR: So, that's a lot of slides. Let's talk a little bit about the syntax. So here's the disclaimer. Syntax is up for debate. This is still stage zero so I don't want to spend too much time on it, But just as some examples of what we want and what we want to enable tools to have.
+Here's a really basic example, it looks similar to the other examples that we've written in the slides. Here. You have a function called`equals`, and it's saying that it takes two numbers and it's returning a boolean. Now, what if you have something that's a little bit more complex than that, right? Maybe you're not just taking primitives. Well, you can write something like this as well. You could say, you know, I'm going to take two `Cat`s and return a boolean, and they're going to be compared by their names. From an engine perspective we wouldn't care. What’s written in that: because it's not going to try to resolve that at any point. So, this code should just run with no errors, even if there's nothing called `Cat` defined. Of course, they do have something called `Cat` defined, and this is something that a lot of static analysis tools would want you'd be able to write a class for and reference that and there's no issue there. And the expectation for these tools is that it what that, you know, `Cat` would describe the instance created by doing `new Cat`. Notice that there's a little bit of extra syntax here. We have to find a property declaration in the class. It has a type annotation as well. Sometimes though. You don't have a class in your program or you don't need a class. You're just trying to describe the shape of things. And so there are ways to do that in this proposal. One of them is called a type alias. So you could say `type cat =` then some type after it. Now remember this just desugars into comments, right? These are types as comments, but of course, that opens a question of like, where do the comments end, right? You need a way to know when to stop parsing and when to jump back into regular JavaScript code, regular runnable code. The current thinking is that we wanted to find some amount of well-known top-level syntax. Declarations and annotations, but in certain cases type systems are going to continue adding features. So what we need is a space where engines can just skip over that entirely. To enable that sort of independent evolution, we're thinking of an approach where we're leveraging balanced brackets, right? So basically, as soon as you see a set of parentheses or braces or brackets, an engine will Start going into this mode where it only looks for other sets of parentheses and brackets, and tries to make sure that they're correctly balanced within the scope and just skips over tokens, right? So, basically, as soon as we would want to add a new syntax to a type Checker, all we would have to do is just say, hey, for now, put it in parentheses, and then if we want to add that to the top level syntax, we could discuss that in TC39 here. So this is tentative as an approach. But we feel that this is the right way to open up independent evolution of the existing type-checkers, and future ones as well.
 
-Separation of intend and implementation, e.g.:
+DRR: So, just a couple of questions that have already been asked, and we feel are worth clarifying. One question people have asked is "hey if you're going to add this new syntax, that does nothing for the engine, aren't people just going to ship a lot of excess code that just does nothing?" Well, that's just a comment anyway, right? And so people can ship too many comments today. So are people shipping too many comments? We don't think so, and for the cases where you have a couple of files, a small program, something like that. It probably doesn't matter, is what we're thinking. You know, the overhead there is so low that your comment size is not the bottleneck. There is probably no bottleneck in those cases, but if you're in a situation where you do care about bundle size of the code that you're shipping, then you can use a minifier.. But the cool part about this proposal is you don't need that minifier for every single build step. You can just do it in production. In other words, when you're developing and you're iterating, you don't need to have that sort of minification Step at every point. So the types can just be erased away by the minifier. Another sort of similar question is, whether or not this will reduce performance because of things like parse time because these comments need to be parsed a little bit more than what a typical comment would take. So we consider that, you know, cheap parsing is critical for this proposal, but we have sort of a similar answer here. Right? Like we don't think that it will matter for smaller projects and for bigger ones you can just use a minifier in the production step.
 
-* `./publicApi.ts`
+DRR: And another thing that has come up a couple of times, you know, we're not interested in doing any sort of runtime work here, but what if we did here in TC39 want to add something like that? Well, we could add something like a double colon (`::`). This proposal won't, right? Like, we're not interested in trying to, you know, grab that, you know, syntax space and we don't really want to pursue the types that are at runtime proposal if that ever comes up in the future, but another way to think about this is that you could imagine that the current proposal could, be adapted without introducing breaking changes by using something like a `"use types"` or `"use type checking"` prologue at the top of your file to say like this, this file should have some extra checks.
 
-    ```ts
-    export type IAdd = (a : number,b : number) => number;
-    ```
-* `./add.ts`
+DRR: So just to recap, we think that there's a lot of value across developers, tooling and the overall ecosystem. We think that types in Javascript have grown to a wild level of popularity, it's being used throughout the ecosystem. And so, at this point we feel like it's gotten to the right time. We have a lot of validation that people like types in their JavaScript. But we still need a way to grow and we need to be able to ensure that, you know, adding new features in these type positions would not introduce any runtime breaking changes in any way. And as soon as you start thinking about that problem space, it really leads to the fact that these types need to be interpreted as comments, either be entirely ignored to allow these existing type Checkers, a new type characters to create new innovative features for each of them as well. And so I've been speaking for a while. while. I think I'm ready to open up to questions from the queue.
 
-    ```ts
-    import type {IAdd} from "./publicApi.ts";
+YSV: Okay. So regarding the queue, it's quite long and I have already partially organized. According to topic since it is so long. We do have 90 minutes to discuss this actually more than 90 minutes because the previous topic ended early. I'm going to ask people to stay very much on topic and if your topic is covered by someone else, please remove your item from the queue. I will be grouping topics so that we can cover everything together. So your item may move down, but I'll try to reserve the priority in which things have been listed, and I'm going to be keeping a rather tight leash be kept keeping a on this to make sure that this goes smoothly. So, the first topic is from Waldemar, please go ahead.
 
-    const add : IAdd = (a,b) => a+b;
-    ```
+WH: Okay, this proposal has the largest amount of new syntax, I think, ever in EcmaScript. And I'm unclear as to why. Or let me rephrase that — I do not understand what the problem space is to be explored, or what problem we are trying to address here. In particular, I cannot tell whether the goal of this is to add TypeScript to the language or whether it's to add types as comments to the language in general.
 
-is not enforced and hence many advantages are lost.
+DRR: I think I've clarified that but what I mean, let me take another shot. So basically we are trying enable some amount of existing syntax from type systems as they’ve been added today. We're not trying to add TypeScript Whole Hog, right? We're just trying to add what we consider to be a reasonable subset of existing type systems, but created an open enough space that they can grow. And so I don't know if that answers the question precisely.
 
-### The advantages.
+WH: What's being proposed is not a small amount of syntax. It's maybe half or more of TypeScript. If the goal of this were to add a new way of having types of comments, I would expect maybe two or three grammar productions, not pages and pages of them. The issue I'm having is that this syntax is extremely brittle, highly tied to TypeScript, and it would form an attractive nuisance in that some of the TypesSript syntax will work while some will not, and this will just lead to major confusion and forking of the TypeScript language into syntax which works with ECMAScript and syntax which doesn't. This syntax is also specific to TypeScript, and any changes to TypeScript will likely propagate into changes in ECMAScript. So what I would rather see instead is if people wanted to program in TypeScript, they should be able to write code in TypeScript and not invent new hybrids between TypeScript and ECMAScript, which is compatible with really neither.
 
-<details>
-<summary>expand/collapse</summary>
+DRR: So I think just to tackle this, there's definitely concerns that I share with you. I do not want to make it so that existing TypeScript users are confused and basically end up with something that feels like a weird thing that doesn't work for most of what people write. So, I think that we're definitely in agreement there. I also acknowledge that this is a change that has a lot of scope, right? If you look at the tentative grammar, that is linked to in the top level the proposal Repository. Re you can get a sense of that. And so that is something that we can, we can work through it at later stages as well. I don't want to get too deep into the specifics here and then we'll be something that, you know, maybe we need to discuss it in more detail and have like, updates something kind of discussed a few times at this plenary. Where, what do we do about really big proposals? Right? How do we make it so that people who are not on board, have the time to understand, really have to do it offline all the time to get a good sense of what's being built. But, you know, I think that there's a way to approach that at later stages, but I definitely appreciate the feedback here.
 
-<br>
+WH: The main question has not been answered, which is, what is the goal of this? If in practice the goal is to support people writing TypeScript, then the simplest solution would be to add a flag which enables TypeScript syntax for your script and that way that people could write TypeScript without any hassle or worry about hybrids. It would be a nice clean solution behind some kind of an opt-in. And so then you could have the full TypeScript syntax without confusing people about what TypeScript syntax works and what doesn't.
 
-<details>
-<summary>Maintainable public api.</summary>
+DRR: okay, I do want to move through the queue. Maybe we can come back to that specific point that you had early in a little bit.
 
-Since the types are separated from their implementations, it makes sense to 
-gather all of the public api types in a single file. This makes it easy to 
-maintain the public api since it is not scattered in multiple files.
-</details>
+WH: I want to make it clear that I don’t feel that the questions about the motivation or scope of this proposal have been answered but would like to move through the queue.
 
-<details>
-<summary>Less need for <code>.d.ts</code> generators.</summary>
+YSV: Yeah, I think that will be coming to the goal in a couple of questions. Next up we have JWK also talking about the syntax.
 
-The single file that contains the public api can in fact be a manually 
-created `index.d.ts` file, and hence reduce the need for `.d.ts` file 
-generation. The files that define the implementations of the public api will
-import their corresponding types from `index.d.ts` so that they can conform to 
-it.
-</details>
+JWK: We should avoid some syntax that might have runtime semantics in the future. Those syntaxes can be a proposal on their own. We should move that bunch of syntax out of the range of this proposal. For example, abstract classes, or the `this` parameter on the function parameter lists (a proposal from JHX). And we should also keep things like `protected` class field modifiers, also the optional parameters (`x?: T`) in the parameter list. Also, non-null assertion syntax. Therefore we don't limit the future design space we have.
 
-<details>
-<summary>Less need for documentation generations libraries.</summary>
+DRR: I think this is valid feedback that we can discuss at a later stage, but I do appreciate the thoughts here as well.
 
-`index.d.ts` can act as documentation. The documentation section of the 
-`README.md` of a project can just link to `index.d.ts`. This makes documentation
- generation libraries for the most cases redundant.
-
-Here is an example:
-
-* `./index.d.ts`
-    
-    ```ts
-    /**
-     * @description
-     * My super function.
-    */
-    export declare const add : (a : number,b : number) => number;
-    
-    export type IAdd = typeof add;
-    ```
-* `./add.ts`
-    ```ts
-    import type {IAdd} from "./index";
+RPR: Yes, if something has runtime implications then, by definition, that's outside of scope of proposal. The choice of exactly where to draw the line as DRR said, that would be one of the main things to decide in stage 1.
 
-    export const add : IAdd = (a,b) => a+b;
-    ```
-* `./index.ts`
-    ```ts
-    export {add} from "./add";
-    ```
+YSV: Good. I think that topic is finished. KG continues our topic on syntax.
 
-Notice that both the types and the JSDoc descriptions are contained in 
-`index.d.ts`, and when you import from `index.ts` you actually see the type and 
-the JSDoc description of `index.d.ts`.
-</details>
-    
-<details>
-<summary>Flexibility on making the public api readable.</summary>
+KG:  So, with regards to WH's question about what the point of this proposal is, I am taking as the point of this proposal that people would like to write types in their code and be able to run that in the browser. And specifically, I am taking that as the goal in contrast to making TypeScript syntax specifically work. So if the goal is just to have some syntax where you can write types, there are simpler options, and I would like the focus to be on those, so that we reserved a much smaller amount of syntax space. So for example `:` is already reserved in several positions, just reserve it in more positions and give rules for what it means in those positions. Sorry, rather than reserving the other positions, we could make it a comment in some positions. And then you could write, know, `:interface` as your declaration or whatever. This wouldn't make a typescript work, but it would allow you to write type declarations in your code with very little syntactic overhead. So, I'm fine with this proposal going to Stage 1, I would just like to ensure that we are saying that we are open to exploring syntaxes which are very different from TypeScript specifically, because TypeScript has so much syntax.
 
-You can put the most important types in the top of `index.d.ts`, and the least 
-important in the bottom. You can define types and IDE collapsible regions for 
-the sole purpose of improving public api readability for both the library 
-maintainer but also the library consumer. 
-</details>
-
-<details>
-<summary>Reduced need to bundle declaration files.</summary>
-
-Many times, I find myself trying to bundle a library to an esm `index.js`
-file with its associated `index.d.ts` file. From the previous points it can be 
-seen that there will be a reduced need for `.d.ts` bundlers. Just make sure that
-`index.d.ts` does not depend on the private api.
-</details>
-
-<details>
-<summary>TypeScript reserves the least possible syntax from JavaScript.
-</summary>
-
-You just need these two things:
-
-* type imports
-
-    ```ts
-    import type {IAdd} from "./index";
-    ```
-
-* type annotations for variable declarations
-
-    ```ts
-    export const add : IAdd = (a,b) => a+b;
-    ```
-
-Although this point might initially seem not that much of a big deal, it is 
-actually the gateway to the next section.
-</details>
-
-<details>
-<summary>Loose coupling of JavaScript code with the type system.</summary>
-
-Not only the public api, but also the private api can be contained in a single 
-file. That means that all the types can be contained in two files. This, 
-combined with the fact of minimum syntax reservation makes the migration 
-(automated or manual) from one type system to another more easy.
-</details>
-
-<details>
-<summary>TypeScript maintainers have less work to do.</summary>
-
-A direct result of reserving the least possible syntax. They no longer need to
-enable features that mix implementation and indent:
-
-```ts
-export const add = (a:number,b:number):number => a+b;
-```
-
-</details>
-
-<details>
-<summary>The probability for TypeScript to have syntax collisions with 
-future JavaScript syntax, gets minimized.</summary>
-
-A direct result of reserving the least possible syntax.
-</details>
-
-<details>
-<summary>Code that looks familiar to the JavaScript developers.</summary>
-
-A direct result of reserving the least possible syntax.
-</details>
-
-***    
-
-</details>
-
-### Common misconceptions.
-
-<details>
-<summary>expand/collapse</summary>
-
-<br>
-
-@TODO you will have a file for types for each `.js` file
-    
-<details>
-<summary>You can not see the type while writing the implementation.</summary>
-
-You can just hover over the type that annotates the implementation and the IDE will
-show its definition. Also the IDE will lint error when the implementation
-deviates from its type.
-
-</details>
-    
-<details>
-<summary>Frequent context switching.</summary>
-
-More specifically because the types are in separate files from their implementation, 
-that means you have to frequently switch among many files. This is not valid since, 
-the IDE will show the type of an implementation by hovering on its annotation. If 
-the type references other types, then we have frequent context switching, however 
-this does not occur due to separation of intend and implementation, nor it gets 
-excageratted by it. In fact when you
-separate intend with implementation you can split your private api in two files so 
-that at most two files are needed frequent context switchin is minimized.
-    
-@TODO add example
-</details>
-    
-<details>
-<summary>You have to write everything two times.</summary>
-    
-That is, you have to write the function once for implementation and once more for 
-abstraction. This is not valid. I always find myself writing an empty implementation,
-and then copying that to define its abstraction. For example, the following empty 
-implementation:
-    
-```ts
-export const add = (a,b) => {}
-```
-    
-can be copied and converted to abstraction with minimal effort:
-
-* replace `const` with ` type`
-* replace `{}` with ` number`
-* add `: number` next to the parameters `a` and `b`
-* replace `add` with `IAdd`
-    
-Finally, lets not forget that there are many cases in which we accept writing extra
-code due to maintanability, e.g. strict mode of TypeScript.
-</details>
-
-<details>
-<summary>You will not know where the types are.</summary>
-    
-If you know where the implementation of the type is, then you can use the go to
-type definition feature of your IDE.
-</details>
-
-<details>
-<summary>The code will not be readable.</summary>
-    
-The code will be more readable since it will be closer to JavaScript code due to
-separation of intend and implementation leading to minimal syntax reservation. If
-you want to see the type of something, then you can just hover over it and the IDE
-will shows its type.
-</details>
-
-***
-
-</details>
-
-## The inevitable result of minimal syntax reservation: the no compile method.
-
-If separation of intend and implementation inevitably leads TypeScript, without 
-loss in static type functionality, to do the minimal possible syntax reservation
-from JavaScript, which is:
-
-* type imports:
-    
-    ```ts
-    import type {IAdd} from "index";
-    ```
-
-* typing a variable declaration
-    
-    ```ts
-    export const add : IAdd = (a,b) => a+b;
-    ```
-
-then why are we not using a comment syntax in JavaScript that enables that? For 
-example something that is already supported by:
-
-<details>
-<summary>TypeScript</summary>
- 
- ```js
-/**@type {import("./index").IAdd}*/
-export const add = (a,b) => a+b;
-```
-</details>
-
-<details>
-<summary>Flow</summary>
-
-> Disclaimer: I do not know Flow
-
-```js
-/*:: import type {IAdd} from "index";*/
-export const add /*: IAdd*/ = (a,b) => a+b;
-```
- </details>
-
-Writing type annotations in comments has so many advantages.
-
-### Advantages
-
-<details>
-<summary>expand/collapse</summary>
-
-* no `.ts` to `.js` compilation needed
-* `.ts` files that contain implementations become redundant
-* no need for `tsc` to be a compiler
-* no need to wait the compiler
-* no need to develop faster compilers
-* one less configuration for the build pipeline
-* no need to deal with the fragmented ecosystem of compiling `.ts` to `.js`
-* no need to depend on extra packages for your code to get executed
-* no need to learn new APIs
-* less security issues due to depending on less code
-* one less source map
-* no need to develop source map generators
-* code can be pasted in the console and it will execute
-* no IoC (Inversion of Control), code executes as it has be written (at least 
-during the development stage)
-* syntax from TypeScript will never collide with JavaScript syntax
-* easier adoption of TypeScript in projects that do no use it
-* easier adoption of TypeScript by beginners
-* the code gets even more familiar looking to the JavaScript developer
-* adherence to KISS (Keep It Super Simple)
-* adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
-concerned with transpilation anymore)
-* less work for TypeScript maintainers
-    
-***
-
-</details>
-
-### Common misconceptions.
-
-<details>
-<summary>expand/collapse</summary>
-
-<br>
-
-@TODO theres is loss in static type functionality 
-   
-<details>
-<summary>You can not use type parameters when writing types in comments.</summary>
-    
-Extra syntax reservation inside native comments can enable that:
-
-* `./privateApi.ts`
-
-```js
-export type IAdd = <T>(a : T,b : T) => T
-```
-    
-Even without that it still works:
-    
-</details>
-    
-<details>
-<summary>Types in comments produce verbose code.</summary>
-
-Consider the the following public api:
-
-* `index.d.ts`
-
-    ```ts
-    export declare const add : (a:number,b:number) => number;
-
-    export type IAdd = typeof add;
-    ```
-
-Lets compare verbosity between the no compile method and the compile method:
-
-* `add.ts` (compile method):
-
-    ```ts
-    import type {IAdd} from "./index";
-    export const add : IAdd = (a,b) => a+b;
-    ```
-
-* `add.js` (no compile method as enabled by TypeScript):
-
-    ```js
-    /**@type {import("./index").IAdd}*/
-    export const add = (a,b) => a+b;
-    ```
-
-It is clear that the no compile method is the most concise.
-    
-In the end, the comparison is not fair. The compile method has a fixed syntax
-while I can choose whatever syntax I want to standardize for the no compile 
-method. For example you might have noticed that there are cases where the compile
-method is less verbose, e.g.:
-
-* `add.ts` (compile method):
-
-    ```ts
-    import type {IAdd} from "./index";
-    export const add1 : IAdd = (a,b) => a+b;
-    export const add2 : IAdd = (a,b) => a+b;
-    export const add3 : IAdd = (a,b) => a+b;
-    ```
-* `add.js` (no compile method as enabled by TypeScript):
-
-    ```js
-    /**@type {import("./index").IAdd}*/
-    export const add1 = (a,b) => a+b;
-    /**@type {import("./index").IAdd}*/
-    export const add2 = (a,b) => a+b;
-    /**@type {import("./index").IAdd}*/
-    export const add3 = (a,b) => a+b;
-    ```
-
-However there is nothing stopping me from standardizing the no compile method to
-be less verbose even for such cases, e.g.:
-   
-* `add.js` (no compile method concise alternative):
-    
-    ```js
-    //::"./index".IAdd
-    
-    //:IAdd
-    export const add1 = (a,b) => a+b;
-    //:IAdd
-    export const add2 = (a,b) => a+b;
-    //:IAdd
-    export const add3 = (a,b) => a+b;
-    ```
-
-</details>
-
-<details>
-<summary>Having to compile is better than using comments, because the majority of the
-community has choosen it.</summary>
-    
-JavaScript is the best programming language because it is the most popular? This is a 
-logical fallacy called [argumentum add poppulum](https://en.wikipedia.org/wiki/Argumentum_ad_populum).
-The fact that something is widely adopted by the majority is not a proof that it is 
-the best solution to a problem. The question remains though:
-
-> Why the majority compiles when comments are objectively better?
-
-If there is a demand for something, the defacto standard becomes the solution that hits the
-market first. 
-TypeScript became open source in 2012[i](https://en.wikipedia.org/wiki/TypeScript#History).
-The no compile method for TypeScript (i.e. improting types from `.ts` files in `.js` files via
-JSDoc imports) was possible in 2018\[[ii](https://github.com/microsoft/TypeScript/issues/22160)\]\[[iii](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]\[[iv](https://www.npmjs.com/package/typescript/v/2.9.1)\].
-By that time everyone was compiling `.ts` to `.js`. To make matters even worse the overwhelming
-majority of developers, regardless of seniority level, have the wrong assumption that the no 
-compile method is inferior to the compile method, while in fact, the opposite is true. All
-these have contributed to writing types in comments being a second class cistizen when compared
-to the compile method\[[v](https://github.com/microsoft/TypeScript/issues/22160#issuecomment-413029464)\].
-
-> But JSDoc has been a thing since 1999 [v](https://en.wikipedia.org/wiki/JSDoc)
-    
-JSDoc (without TypeScript support) is a tool for documentation and and not for static typing.
-It is way much more verbose and has less features than TypeScript, regarding static typing.
-</details>
-
-@TODO code in comments in not readable/ugly
-    
-***
-
-</details>
-
-## The final form of the no compile method.
-
-If the no compile method just needs this:
-
-```js
-/**@type {import("./index").IAdd}*/
-export const add = (a,b) => a+b;
-```
-
-to enable static type checking, then why not create a tc39 approved standard, 
-that is type system agnostic, and standardizes the comment contract? This will 
-pressure statically typed super sets of JavaScript to conform, and in the long
- run, be reduced to complements of JavaScript.
-
-## Why comments?
-
-If static typing has no effect on runtime, then it makes no sense to have place
-on the JavaScript parser. But for something to have no place on the parser, it 
-means it has no syntax. But how to enable static typing without syntax? With 
-"reserving syntax" in existing comments.
-
-## An intrinsic inability of the no compile method, or a matter of support from the type system?
-
-<details>
-<summary>Inferred types.</summary>
-
-Consider the following example:
-
-* `./index.d.ts`
-    
-    ```ts
-    export declare const chunk : <T>(array : T[], length : number) => T[][];
-
-    export type IChunk = typeof chunk;
-    ```
-
-* `./chunk.js`
-    
-    ```ts
-    /**@type {import("./index").IChunk}*/
-    export function chunk(array,length) {
-        /**@type {array[]}*/
-        // the previous comment although it works for TypeScript, is a
-        // violation of the proposal since it is not type system agnostic
-        const toReturn = [];
-        /* some code that calculates `toReturn` */
-        return toReturn;
-    }
-    ```
-
-Is something like this:
-
-* `index.d.ts`
-
-    ```ts
-    // rest of the file omitted for brevity
-    export type IChunkReturnType = InferredType<IChunk>[0][][];
-    ```
-
-* `./chunk.js`
-
-    ```js
-    /**@type {import("./index").IChunk}*/
-    export function chunk(array,length) {
-        /**@type {import("./index").IChunkReturnType}*/
-        const toReturn = [];
-        /* some code that calculates `toReturn` */
-        return toReturn;
-    }
-    ```
-
-possible? Maintainers from type systems can help by giving their suggestions.
-
-</details>
-
-<details>
-<summary>Non inferred types.</summary>
-
-Consider using a library that was written in TypeScript:
-
-* `./node_modules/library/index.d.ts`:
-    
-    ```ts
-    /**
-     * @description 
-     *`DLL` stands for Double Linked List.
-    */
-    export declare function DLL<T>() : IDLL<T>;
-
-    type IDLLNode<T> = {
-        value    : T;
-        next     : IDLLNode<T> | null;
-        previous : IDLLNode<T> | null;
-    };
-    type IDLL<T> = {
-        tail   : IDLLNode<T> | null;
-        head   : IDLLNode<T> | null;
-        length : number;
-    };
-    ```
-
-If a JavaScript developer wants to use `DLL` in their project with the no 
-compile method, they will be forced to do hacks:
-
-* `./privateApi.ts`
-
-    ```ts
-    import {DLL} from "./node_modules/library/index";
-
-    //The following works with TypeScript 4.7.0-dev.20220428
-    export type IJSFriendlyDLL = <T>(
-        //parameter only used for type inference
-        DLLNodeType : T
-    ) => ReturnType<typeof DLL<T>>;
-
-    export type IMyDLLNodeValueType = {
-        myNumber : number
-    };
-    ```
-
-* `./jsFriendlyDLL.js`
-
-    ```js
-    import {DLL} from "./node_modules/library/index.js";
-
-    /**@type {import("./privateApi").IJSFriendlyDLL}*/
-    export function jsFriendlyDLL() {
-        /**
-         * Hover over `toReturn` to see that `T` is `any`. Overriding the type 
-         * checker is a bad practice. I will address this point in the end.
-        */
-        const toReturn = DLL();
-        return toReturn;
-    }
-    ```
-
-* `./index.js`
-
-    ```js
-    import {jsFriendlyDLL} from "./jsFriendlyDLL.js";
-
-    /**@type {import("./privateApi").IMyDLLNodeValueType}*/
-    let _myDLLNodeType;
-
-    const myDLL = jsFriendlyDLL(
-        /**
-         * We are using `_myDLLNodeType` before initialization, so TypeScript 
-         * will lint an error. Maybe TypeScript maintainers can come up with a
-         * built-in type function, e.g. `toBeInferred<IMyDLLNodeValueType>` that
-         * will make our intentions understood by the linter, so we avoid using
-         * `//@ts-expect-error`.
-        */
-        //@ts-expect-error
-        _myDLLNodeType
-    );
-    ```
-
-Hover over `myDLL`. TypeScript does not work. Inline the type like this:
-
-* `./jsFriendlyDLL.js`
-
-    ```js
-    import {DLL} from "./node_modules/library/index.js";
-
-    /**@type {<T>(_type : T) => ReturnType<typeof DLL<T>>}*/
-    //It still does not work.
-    export function jsFriendlyDLL() {
-        // ...
-    }
-    ```
-
-and still TypeScript does not work. Make sure you add the parameter even if it 
-is not actually used:
-
-* `./jsFriendlyDLL.js`
-
-    ```js
-    import {DLL} from "./node_modules/library/index.js";
-
-    /**@type {<T>(_type : T) => ReturnType<typeof DLL<T>>}*/
-    export function jsFriendlyDLL(_type) {
-        // ...
-    }
-    ```
-
-and now TypeScript works. However the solution is hacky and goes against the 
-proposal since it is not type system agnostic. It is a matter of support from
-TypeScript to fix that. 
-
-This will not stop `toReturn` from having type `any` though. According to [TypeScript design goals](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals)
-
-> ## Non-goals
-> Exactly mimic the design of existing languages. Instead, use the behavior of JavaScript and the intentions of program authors as a guide for what makes the most sense in the language.
-
-Non inferred type parameters go against the behavior of JavaScript. There is no
-such thing as non inferred type parameter in the language. They should be 
-considered a bad practice and not be used.
-
-</details>
-
-<details>
-<summary>As assertions.</summary>
-
-There is no need for as assertions. They are a bad practice since they override
-the type checker. It is true that the override is safer than `//@ts-ignore`, 
-but that does not change the fact that it is an override. This:
-
-```ts
-const myVariable = myValues as number;
-```
-
-can be replaced with this:
-
-```ts
-if (typeof myValue !== "number") throw Error();
-const myVariable = myValues;
-```
-
-</details>
-
-<details>
-<summary>You will not be able to use <code>enum</code>.</summary>
-
-According to Typescript\[[i](https://www.typescriptlang.org/docs/handbook/enums.html)\]:
-    
->Enums are one of the few features TypeScript has which is not a type-level
->extension of JavaScript.
-    
-@TODO
-</details>
- 
- * TODO Function overloading
- * TODO Adding properties to functions
- * TODO typing classes
- * TODO typing classes with extend
- * TODO dependency injection
-
-## A list of projects that implement the proposal.
-
-This list can be expanded with your project. Just post them in the #1 issue 
-of this repository.
- 
-1. [es-test](TODO) - testing library (work in progress)
-1. [@lillallol/outline-pdf](TODO) - add outline pdf (work in progress)
-1. [@lillallol/dic](TODO) - dependency injection library (work in progress)
-1. [declarative-tree](TODO) - converts trees to string and vice versa, useful for writing declarative tree tests (work in progress)
-1. [fn-to-cli](TODO) - creates cli based on typescript types (work in progress)
-1. [scrap-it](TODO) - scraps dom element to outlined pdf (work in progress)
-1. [m-mutable](TODO) - client side model library (work in progress)
- 
- * TODO discontinue ts-doc-gen-md and explain the reason on its README.md by linking to the proposal
- * TODO discontinue md-in-place and explain the reason
- * TODO discontinue @lillallol/outline-pdf-cjs
- * TODO discontinue @lillallol/outline-pdf-data-structure
-
-## Defining the comment contract.
-
-<details>
-<summary>A comment for type imports that will also define the type for variable 
-declarations.</summary>
-
-Example for statement:
-
-```js
-/**@type {import("./path/to/file").nameOfTheExportedType}*/
-export const add = (a,b) => a+b;
-```
-
-A possible less verbose alternative:
-
-```js
-//:"./path/to/file".nameOfTheExportedType
-export const add = (a,b) => a+b;
-```
-
-1. The path can be absolute or relative.
-
-1. To be a type system agnostic comment, the path has to be without filename
-extension. For example the path: `./src/index.d.ts` has to be written as: 
-`./src/index`.
-    
-Example for expression:
-    
-@TODO
-
-</details>
-
-<details>
-<summary>A comment that will inform the type checker that a mistake is expected.
-</summary>
-
-* Example for statement:
-
-    ```js
-    test(add.name,() => {
-        //type-check-expect-error
-        expect(() => add("1",1)).toThrow();
-    })
-    ```
-
-* Example for expression:
-
-    ```js
-    test(add.name,() => {
-        expect(() => {
-            add( /* type-check-expect-error */ "1" , 1 )
-        }).toThrow();
-    })
-    ```
-
-</details>
-
-## How this proposal compares to other proposals.
-
-The context proposal does not collide with other tc39 proposals, given that they
-do not "reserve syntax" in native comments.
-
-<details>
-<summary>Proposal for type annotations[<a href="https://github.com/tc39/proposal-type-annotations">4</a>].</summary>
-
-The very first two paragraphs of the proposal for type annotations describe its 
-aim:
-
->This proposal aims to enable developers to add type annotations to their JavaScript code, allowing those annotations to be checked by a type checker that is external to JavaScript. At runtime, a JavaScript engine ignores them, treating the types as comments.
-
->The aim of this proposal is to enable developers to run programs written in TypeScript, Flow, and other static typing supersets of JavaScript without any need for transpilation, if they stick within a certain reasonably large subset of the language.
-
-This is already achieved with TypeScript and Flow.
-
-<details>
-<summary>And this is done without the drawbacks of the proposal for type 
-annotations.</summary>
-
-1. no need to reserve JavaScript syntax
-1. no work for tc39
-1. no need for JS parsers to change
-1. no need for JS parsers to become slower
-1. no pressure for breaking changes for type systems
-1. no need to be reduced to a subset of the type system of your choice
-
-</details>
-
-Hence the proposal for type annotations is redundant.
-</details>
-
-## The scope of tc39 includes static typing.
-
-According to ecma-international the scope of tc39 is\[[5](https://www.ecma-international.org/technical-committees/tc39/)\]:
-
->Scope:
->
->Standardization of the general purpose, cross platform, vendor-neutral 
->programming language ECMAScript®. This includes the language syntax, semantics,
->and libraries and complementary technologies that support the language. ...
-
-Static typing is a complementary technology that supports the EcmaScript 
-language. Hence the context proposal belongs to the scope of tc39.
+DRR: I am, I guess there's a sort of balance there with our goals. So like I don't want to bikeshed it here. I hear what you're saying. I'm open to exploring in various ways, but two of the goals that we have our meeting Community expectations. So like what do people expect types of look like in JavaScript? and also being ergonomic and so, you know, some of that is subjective and we can talk about that alone at a later point, but I am open to like thinking about that in ways that, you know, we're trying enable independent evolution as well. Right? So like what is the carve out? Right? That's something we can talk about further.
+
+[call for note takers]
+
+YSV: Reminder. This is going for stage 1. So what we are trying to prove out here is the problem space. So you have a concern that is potentially blocking on the basis of the problem that's being presented here. Please let me know and we'll move that the queue as a conversation. And if it is more discussing, how might approach this and other such topics than We can reorganize the queue in that way. Next up we have - sorry. Was this conversation finished? Kevin?
+
+KG: Yeah, we can move on.
+
+YSV: Okay, next, we have JWK.
+
+JWK: Okay, so I am a big fan of TypeScript, but I don't think this proposal reaches its goal. The goal of this proposal is to enable people to write JavaScript with some types without transpiling their code. But I don't think it can be reached for the following reasons.
+
+1. If typescript added new syntax, and it's not falling within the range of this proposal, they will suddenly fail to run their code, and they need to
+a. Give up the new TypeScript feature
+b. Or they need to compile code, like we do today.
+2. If we have this proposal, some people will write their code base in this manner. If the whole code base has a single typescript syntax that's not covered by this proposal, they are suddenly fail to import those files like enums, namespace. For example, you have 20 files that's written in with this proposal and it works good, if you want to add an enum, suddenly the whole project is not able to run (even worse, dynamic import, so the syntax error is in the runtime) .
+
+DRR: I mean, I think that you can make that argument about any syntax that, you know, might not work in your current browser. If it's too new or if you decide to use jsx, or I get that, there's expectation part of it. And so if we want to add any of those features, we could presumably, you know, Work through them here inTC39. So like if we find that we have sufficient motivation for something like enums, we can take that as another proposal. You can also get some reasonable feedback, right? If you're using something like I TypeScript, you can find out very quickly that hey that syntax is not allowed here, use this other thing instead, actually, right, but can give you suggestions. You can also continue to use TypeScript, right? Like, you can see if you still want, you can use TS files and compile them and do whatever you need to. It's ultimately up to you. But I do think there is something to be said about being able to use types in a very lightweight matter where - you know personally, I use JS doc types in build scripts, and lightweight contexts in cases, where I'm not going to be using JSX things like that, and it's fairly pleasant. But you know, I do find myself wishing that. I had a much easier syntax to use those types. So I see what you're saying, but I think that there is there still a lot of good value in here, and the tooling can be made to hint to you towards the "pit of success", right? Making sure you're doing the right thing.
+
+RPR: So JWK, I think what you've outlined there is that there is always going to be a boundary where, when you hit it, you then need to jump to a compile-to-JS language and involve a transpiler. That boundary already exists today and today it includes any use of ergonomic types syntax. So this proposal is changing where that boundary is, and it's expanding the set of JavaScript programs that can now be written to take advantage of the ergonomic types in that syntax. So I agree, it doesn't eliminate that boundary, but it increases the pie. So I hope that is perceived in a positive way.
+
+YSV: Okay, moving on to our next speaker, on the topic of goals or aim of this proposal.
+
+GKZ: Hi, my name is George. I work on the Flow team at Meta and you know, obviously we're doing type checking for JavaScript. I'm a big proponent of types in JavaScript, and I appreciate the time that took to put together the proposal. I understand that we're going for stage one, so the specifics of the syntax and the grammar and all these other things is not really important, it’s all up for discussion that could change later. It's tentative. But something that I do think is important, something that should be made clear, is the aim of the proposal. What are we trying to do here? And that I think is clearly relevant for going to stage one. And there is a bit of a dissonance between what’s being described and what is actually the aim here. So it's not so much adding types to or, you know, adding this types as comments to JavaScript, but really, when you look at all the different details, yes, it's tentative, But the story it tells is this is specifically adding typescript to JavaScript or a subset of types of to JavaScript. You can see that in the little mini website, which says quote language in this specification papers typescript. As you can see in the grammar, which specifically is all of TypeScript and encodes typescript specific features and codes. None of flow specific features. You can see it in the readme which have we talked about TypeScript wanting to support typescripts. In reference to any flow specific features, it suggests that Flow can simply change its syntax, so that it manages matches typescript. you can see it in, you know, some of the comments of Gil who, you know, the Proposal is under, you know, in his repo. He's the originator of it, I guess something. Like, you know, "I want all types of code that develops right today to become JavaScript. If we don't do that. I'm afraid we lose control of the language to third-party type-checkers." Another quote. "My personal goal is not to improve detection or flow. it is to make types of programs also JavaScript programs." So I think it's really important to clarify here, what is the aim here? Is it simply to make, you know, give the special team to typescript and standardize that as part of JavaScript. And for us, I don't think that is a good aim. I don't think that's the direction. JavaScript should be heading in. It's almost, you could say, anti-competitive. And there's a couple ways we could resolve this. Maybe this is unintentional that we did it get feedback which was you know, no action was taken on that. Maybe it's unintentional and maybe we resolve this in a way to make things sort of not giving special treatment to one type checker on or another, I would say that, you know, to go to Stage 1, we should make it clear that no special treatment will be given to any existing type Checker. We're aiming, aiming, you know, to open up a spot. Some space to any, you know, potential type Checkers. We could say we're only going to take the intersection of features, you know things that overlap or the union of all the features, but the current situation, which is just doing typescript - that seems to the current aim - doesn't really seem like a good one. And another thing is that, well, JavaScript engines that are running code. Should just treat these as comments, ignore them. They don't even need to parse the actual type syntax itself. There are a variety of other tools that parse JS code. That do need to parse types. Now we're talking about eslint, prettier, whatever and you can imagine in a couple of years time from now under the default settings. Even if the intention of the proposal is not to, you know, be open to everything, What's going to happen is under the, you know, their default settings. They see a JS file. If we don't have some kind of annotation in the file saying what type system we are using, for example flow requires a comment with the `@flow` at the top of the file, what's going to happen is they're simply going to default to typescript and they're going to parse this any `.js` file, as TypeScript. So, even we without the intention, this can still happen if we if we don't require some kind of explicit way to denote this. So basically what I'm trying to get is, you know, know, what is really the aim here, and clarify that we're not in a special treatment to any existing type Checker.
+
+RCA: Really, really good question. And I think that the arguments are also really good. Well, the aim, the motivation we have for this proposal. We said that this is three different foundations. Add the developer experience as you know, giving their erronomic types of users experience development experience and workflow improved. Either way, together with the tooling and also the language itself. Well, at this point, I think that going to Stage 1. It's the the step, where everybody interested in types domain can contribute to this proposal and can help us to shape the the best for it. We started with some ideas together also inspired by TypeScript by Flow. The actual state of art, and that also triggered curious and lots of new ways of seeing the grammar and new debates about the syntax. That is, they are really interesting to get this proposal where we want, but of course, we have to pass through the stages to get these shaped these initial part or the initial form of The Proposal is a declaration of intentions to open this space for types and aiming these three main foundations developer experience, the tooling, and also the Improvement of the language at level of community. (rephrasing) To go with the expectations of the community and also unify all this space domain and for the revolution. mostly that not favor one type Checker or other and even If we don't, we want to include and also inspire new ways of seeing this problem space and to help us to evolve.
+
+GKZ: I understand that, but there seems to be a difference between what you're describing there and what is also de facto being with a proposal. As in literally, the website says, this is a language this language and specification favors typescript. It's only the typescript grammar very heavily focused on that. So what are you willing to make a commitment for in the future, that there will be no special treatment of TypeScript or select any other type-checker, there will be no inclusion of typescript specific features without looking at specific features of other ones, or we're only going to look at the intersection of features between them, and looking at ways to address the issue of ensuring that, you know, any files, there's a way to specify which what is the type, You know, what is the type Checker using this file? So I feel like I feel like you can say that now, but then de facto what is in the content of the proposal is something completely different.
+
+DRR: But this is what TC39 is for, right? We can discuss these things and there's a lot of open questions here, and it's still stage zero.
+
+GKZ: I’m asking about the aim of the proposal. Are you willing to say that the aim of the proposal, going into stage One, should not be giving special treatment as typescript and should be open to all type checker. the that just that one? Maybe we want understanding is, is that clear?
+
+DRR: We want to strive to enable a space for all the type Checkers, right? We don't want 40 ways of doing the same thing. Of course, right? I think that's understandable. We want to be able to carve out something though, that each of the type checkers can use to enable their own syntax, right?
+
+GKZ: Yeah
+
+DRR: So I think first of all, like you've talked about maybe the materials that are publicly available. Well, many of those were written by extremely eager, really enthusiastic contributors. That's on me for not maybe trying to think about how that would have come across. So I apologize for that first of all. But yes, I mean, we want to make sure that you have like this space that you need as Flow to do the same things. We want to actually tackle the same sort of questions, right? We've had a pretty good relationship, I would say, in the last couple of years, just talking through syntax and similarities, and how mature. so, I think like, we can, we can continue that and work through those things on the repo here at TC39 at plenary figuring those things out. So we want to have that conversation with you. We want to make sure that like you have your space as well. We don't want to give preferential treatment. We want to make sure that we have the right stuff for the community. So I think that that I don't know if that answers it. I again apologize. I can see how that came across and I'm sorry about that.
+
+GKZ: Okay, my concern is, you know, in the sort of feedback or given in the past, no action was taken to address that, so if that's commitment in the future that no special treatment will be given and you know, this feedback will be addressed and will be neutral to the underlying type checker then that makes a lot more sense. Going forward. That's all.
+
+RPR: I know you've given feedback. I know that that's not been addressed yet. I think that was because that was coming down to the precise syntax. We've taken the approach that we really want to focus on the motivation. The aims, the problem space first. There was certainly no intent that that that your issues raised would be ignored.
+
+GKZ: Well, I mean you have given specific…[trails off] I'll stop now, but you If you didn't want to focus on specific, so you want to fill the proposal with specifics. That also just happened. Be specifically typescript. That's why I'm saying. I understand the. Everything is kind of right now, but given what you have shared it is all exactly typescript-specific in both the wording of your motivations and any technical details you've given. So we can move on from that point. I think I've made myself clear. Thank you.
+
+LCA: [via queue] There is an open issue about type 6 syntax, pragma on the repo. I do think an inbound, pragma is important and I think what we can take away from this discussion of goals is that there are concerns that proposed syntax is favoring typescript too much. And we would like their our committee members, who would like to see that Revisited with the the aim of the proposal being explicitly to enable multiple different kinds of type Checkers. To use this syntax as part of their addressing of the code base.
+
+YSV: Okay, then we are going to move on to the next topic. The next topics are smaller. The first one is from JWK around developers new to JavaScript.
+
+JWK: There are some other cons of this proposal. I have some friends who write other languages like Java or C++, and when they have to deal with JavaScript, they choose TypeScript. When I told them that TypeScript is not going to do any runtime check, they are very surprised and confused. This will become even worse if we add this syntax into JavaScript itself. Another point is, that this make the code harder to read (because the type annotation can be a lie). If the author wants to mislead the reviewers with some wrong type annotations.
+
+RPR: I think we've got a slide on this.
+
+DRR: Daniel. Is that in the appendix or is that? Yeah. “Is this a foot gun, people might misunderstand the feature, right:? So just two things here one, is that like you know, this has certainly not stopped people from using static types. You can write misleading comments as well, if you're using something like jsdoc as well. So if you're if you're I mean if you're writing that format and you're passing in the wrong data, then nothing stops that violation, unless you have some sort of static type checking ahead of time, right? The same thing applies here and and you know, it's been the case that TypeScript and Flow had been doing this for years and people might be surprised initially, but it kind of just all makes sense after we also have experience seeing this in other languages, right? For example, Python and Ruby both have type annotations now and they don't do any sort of runtime type-checking at all. And Again, I'm sure some people are confused when they first see that but you get used to it. And then you realize oh, this is actually a really convenient feature for your design time tooling. So I get the concern but we are experiencing signals that it is actually not a huge blocker to using the language.
+
+JWK: Python has this feature, but I think they have some runtime reflection about the type right?
+
+DRR: Yeah, and without going into too much detail here. There has been an effort to remove that by default and they found that it was too late because they had already added it to the language and libraries for depending on the default Behavior. So that has impacted things like runtime speed and They seem not to have been hugely happy with that outcome.
+
+JWK: I'm not writing python. So I don't know what python people think about this feature.
+
+DRR: Okay, I would say it's as I mean, it's a very similar approach and that's you know, yeah. I don't want to get into it for too long, but okay…
+
+YSK: The next topic we have is from SYG. Please, go ahead.
+
+SYG: Switching gears a little bit from from types to non-types, So, ignoring the stuff that I actually am not clear on if you are proposing right now with importing types of content types, ignoring the stuff that is not just type annotation comments and possibly type declaration comments. The mechanical way to look at what the proposal is doing, is just at unambiguous comment attribution, is my understanding. You have comments today, like C-style comments that maybe some toolchains— I think you showed an example with Flow— of annotating  certain parse nodes at a finer granularity than line level to annotate that with a particular type using existing comments, but my understanding is that you like there is no standardized way to unambiguously attribute a comment to any particular parse node at a finer granularity than 'line'. So mechanically, I think the thing that this proposal ads is unambiguous comments attribution and I kind of agree with you that it opens a big space to explore. Maybe like well beyond types. Imagine that browsers decide to use performance hints Beyond types? Like think, performance guided optimization stuff. This makes that space open. Is that desirable? Have you thought about those consequences? What are your thoughts about those consequences?
+
+DRR: I think that there is some prior art with runtimes experimenting. like SoundScript or whatever where the idea was like, let's try to hit a little bit to the to the runtime system to do so-and-so optimizations ahead of time. That would be cool but it's not something that we think is the primary benefits that something like this would bring it would be more of the design time. Authoring process, the tooling that we can provide based on that. You know, I'm not an engine expert but based on what I know of how optimizations work in existing runtimes. There's just a lot of difficulties when it comes to something like structural type checking, right? And in large Parts these types of stands for JavaScript are structural and it would be difficult in some ways. I would imagine to optimize so if—
+
+SYG: We're not gonna be able to leverage the existing type systems, was I was starting my comment here was not about your thoughts on leveraging existing type systems in the runtime, but more that, I think this opens the gates to a lot more exploration than just type systems. If you have unambiguous comment attribution, you can annotate a lot of stuff, well beyond types. What are your thoughts on kind of like opening up that space?
+
+DRR: Yeah, I mean if it's a carve-out you can use it right and And think for for several tools depending on if they like use a prologue or whatever or they just have some default mode. They might not understand whatever format that an engine would want to see. but you know, you could disable that checking in some way and then and then you would be able to like, sprinkle in whatever it takes and Information would nearly. I'm not against it. It kind of goes against the spirit but not the law, if that makes sense.
+
+RPR: We've said, we're opening the space for tooling to innovate. I hope that's only a positive.
+
+SYG: Yeah. I think I don't extend beyond tooling those also part of the point insofar as they if they remain like a tank. Hints or comments, right in that they did, did. They affect timing that they don't affect observable Behavior.
+
+DRR: I think we were considering engines like tooling or like performance improvements in the engines to be tooling. But yeah, like I think that's within the scope of this proposed or that can be leveraged. We wouldn't mind in other words.
+
+SYG: So then the second part, which is the original question on the queue is, do you think that characterization of your proposal stands on its own? Because I think most of comments, we have heard so far. on the discussion, we have heard so far is focused on the implications of adding type systems or adding weird hybrid type system or hints of the type system into the language, but there is a different framing of just looking at what a minimal version of this proposal might propose, which is just comment attribution.
+
+DRR: I would have to see, I would have to discuss that a little bit more with you to understand that better. Maybe some of the use cases. I don't know if I could commit to saying like yeah, that definitely is within the scope and we want to add it as a goal of this proposal. Maybe we talked about it in more detail later.
+
+SYG: Don't read too much of a value judgment into my question here. I'm not proposing One Direction or the other; I was just wondering about it, okay. I think that helps.
+
+JWK: I want to reply about the JIT hints. In my daily life of writing typescripts, most types are inferred by the compiler. I'm not writing or annotating it. The only position I need to annotate the type is in the function parameter and I always use some compound types like generics, union, or intersection. If the runtime does not do a full resolution on types, those comments are just useless. You cannot use them as JIT hints. There's maybe some simple case, like `function add(x: number, y: numbec)`, and the engine can have a reasonable guess to optimize them, but I think in most cases. It's will not help the runtime to speed up the code.
+
+DRR: I agree. I think we can or okay with this and then agreement on this topic.
+
+DRO: I feel like a lot of the people mentioning the potential use case for performance guided optimization— my gut tells me that as this proposal stands, it's very unlikely that minifiers would leave these types of comments and types in the code given how verbose they are. And so I'm not really sure what benefit there is to performance optimization in that case, given that all of these things would likely get stripped. if that's something that we want from this proposal. I think that needs to be stated very upfront.
+
+DRR: I think I would say it's not within the scope at this point. I mean, maybe I misunderstood, but I don't want to focus on it too much longer this discussion.
+
+YSV: Okay, that concludes Shu's topic. We are moving onto three topics from WH, which correct me if I'm wrong WH, but these appear to be all about parser ambiguity—
+
+WH: Let me speak, please. I just wanted to point these out as examples of why I believe that the goal of having TypeScript-like syntax is unachievable unless you have an opt-in. There are places where you don't know whether what you’re parsing is a type or an expression until later. It makes trying to retrofit TypeScript syntax into the language untenable, unless you have an opt-in syntax mode. I just wanted to record these in the notes. I do not want to get into the weeds about the details at this time.
+
+`async as (x:y) => …` : is this a function named as or a typecast of async?
+`(a):(foo)=>(bar)=>(baz)` : confusion between arrow function and type syntax, which use the `(a? …` : confusion between type syntax and expression syntax
+
+DRR: I appreciate it. I actually took a screenshot and I'm going to post some issues on these specific examples to try to figure out what we can do to discuss the ambiguities based on, you know, avoiding things like overhead.
+
+WH: Yeah. I do not believe all of these are solvable.
+
+YSV: Thank you WH for the summary of those three topics, and for grouping them. I think we can move on to other topics because the syntax right now is very unclear in terms of what we will do, we can move onto other topics which directly address the potential of this moving to stage one at this meeting. Next, we have JWK.
+
+JWK: If people really want to run typescript directly, they can choose tools like Deno or TS-Node, and on the browser side, the browser can add an option in the devtools to enable transpile typescript syntax just in time. If they want to run their typescript code, not in the devtools to make a demo or something, they can have a browser flag in the canary version of Chrome or something. We don't have to care about that in the language.
+
+RPR: Okay, I guess JWK you're suggesting there is an alternative way of dealing with the problem. That is basically adding a preprocessor everywhere that we run and use JavaScript. We could kind of encase it with a preprocessor that lets us achieve this goal. That sounds almost like an argument that this is starting to get so widespread/universal that it's one indicator that maybe this should be solved in the language.
+
+JWK: Yeah, I mean, we don't even try that (add support in the dev tools) yet, if that solves the problem, we can stop there.
+
+DRR: It's been discussed before, but then it is fairly nice to be able to just like not. You'll still need a build stuff when you go to production for even small sort of like project. It's the concern there. So maybe that's okay some people, but we just want to reduce the barrier to entry and make it lightweight.
+
+RPR: I think this is a key thing here about the language, which is that if everywhere is implementing this preprocessor, then wouldn't you want the grammars to be unified? Wouldn't it be really important to keep them together with JavaScript? I think maybe JRL is in the queue and might have something to say about this.
+
+JWK: But is typescripts really have a formal syntax?
+
+RPR: But we're not talking specifically about TypeScript with this - this is a new proposal. Okay? We do have this.
+
+JRL: If we think about a syntax space that both typescript and flow and whatever future syntax could take take advantage of, this allows the entire build ecosystem to move forward with just having types parsing and handling by default. Without having to enable in babel either the typescript or the flow plugins, without having to configure prettier to parse a particular syntax, without having to essentially choose one or the other because they're incompatible at times, and just be able to parse everything all of the time without any setup necessary. Having all the build tools be able to consume this union of type systems, makes it easier for developers at build time, not just at run time that the engine can just ignore the types. The build ecosystem here is massively improved, because you don't need extra configuration or incompatible configurations when consuming different projects.
+
+TCN: Interjecting, and extending that a bit. I also think there's something to be said for having a foundation that, you know, when the next cool types tooling comes around and we all migrate to that, building upon that foundation and not having to constantly migrate types is a benefit that I think drives the ecosystem forward together rather than separate.
+
+YSV: Okay, moving on to the next topic, which is related to this final statement JSC, please go ahead.
+
+JSC: Yeah, I'm fine with Stage 1 for this since stage one is supposed to be just about problems. What I would like to be clear is what sort of evolution, You see what the current the ecosystem within the syntactic constraint, the standard syntactic constraints that this proposal would bring. what sort of innovation or variation between tooling that uses the same syntax quick could occur. Like what do you envision different type of inference algorithms? Do you envision non-type functionality? A lot of innovation does occur just syntactically, so I'd like to hear here or at least in the explainer later. See more about what sort of innovation could occur even with a constant syntax.
+
+DRR: Sure. I’ll give you a really brief example. One is that within type positions, you need occasional expressivity to be able to talk about, you know, an array, and sometimes you'll have something like a read-only array, right? And so, we added a syntax, you have a modifier called read-only that goes in front of the array type, right? And so if you want to add that sort of syntactic, you know, change would you be able to do here is in braces or brackets, parenthesis or whatever, you'd be able to use that extra syntax and that would allow type systems to add that new construct or new modifier or whatever. Because, because often need expressivity to explain. Hey, I know what I'm doing, or hey, here's Actually happening to a type system. So that's, that's why we need room to kind of add more features. We can talk about it in more depth later on, if you're interested.
+
+JSC: Yeah, I would definitely like to see this addressed in the explainer or other document.
+
+DRR: Sure. And yeah, yeah, thank you.
+
+YSV: Next, we have another topic by Shu.
+
+SYG: Yes, so for this, I want to set that the topic. It's a bit clickbaity, my use of "catholicism" there. I mean kind of all-encompassing JS and in the JS ecosystem as a whole and what it includes. So for this I want to zoom out and not talk about the technical stuff and focus on something that DRR said about in the presentation about, 1. the enormous uptake of typescript and popularity of typescript in the ecosystem. And the comments said, the typescript is, you know, a superset of JavaScript and the ecosystem. The typescript community is thought of as a subset of the JavaScript ecosystem, and I think the popularity of TypeScript is a question that TC39 should reckon with. And part of what I see this proposal doing, aside from all the technical bits, is that there is this vast market opportunity, for basically forking JavaScript so that it could solve some particular problem better for some subset of developers. Typescript certainly hit the mother lode with tightly coupled tooling, usable type system tooling, the editor, all that stuff, and has enjoyed great market success because of it. And this proposal I see as a way to kind of say, well, we have reached a critical mass and it's time to maybe bring that back a little bit to re-merge it with TC39, as I think one of the slides said: "reinforcing TC39 as the venue of collaboration." And I think part of what we want to do here with whether agreeing to solve this problem or not, it is important to for us to discuss and to make a conscious decision. Because I think we if we say, we don't want to solve the problem of a tool that for good intentions, effectively forked JavaScript and did a bunch of things and is now super popular, and we don't want to take the work of doing something to bring that back into the fold. I think that's effectively saying, well, maybe we want to allow a bunch of forked JavaScript in the future and that also doesn't seem great. So, I'm cautiously optimistic that if we had that, the main effect, the main positive effect of this proposal in the very long term, is to kind of shore-up the health of JavaScript by owning up to saying that TypeScript is super popular and is a part of the JavaScript community. And let's do something to merge the two. If you know, it is, in fact, technically feasible, since that is up in the air. All right. I think that's the only thing I wanted to say.
+
+PFC: [from queue] I find this point to be very perceptive.
+
+YSV: Tierney has a short question. And then we will move to people expressing support or lack thereof before we wrap this up. We have about 10 minutes after please go ahead.
+
+TCN: Yeah, there was I believe once I did, I mentioned “use types”. I'm curious if that's intended to be part of this proposal or if that's a, you know, forward-looking. This is something we could do to actually have to basically enforce checking, or would be a separate proposal.
+
+DRR: That would be a separate one. If the committee found in an interesting avenue, but it's not really one we foresee. Let's say we were based you just calling out really that going down that route would be a breaking change. So it's a yeah, there's no proposal for `"use types"`.
+
+YSV: Okay, we have a series of support or lack thereof. Starting with LCA, please. go ahead.
+
+LCA: Yeah, so I see that as the main point of this proposal is to simplify the Inner Loop or development Loop and this is something that with Deno we've seen many people really really value. transparent type stripping that we do. And essentially, this proposal would add that to the language. Right? And I think this is not just like a Time problem. We're like it, instead of taking. I don't know, a second for the typescript compiler to type strip something. I made it into a folder and then for your run, time to pick it up. I think it's also like a complexity problem with a for the project itself. If you have a small project, you don't want to have it build step. You don't want to have very large amounts of tooling. You don't want, think? Maybe you don't even want an output folder. Distributable. So you just want your source code and you want that source, code to run, but still get all the benefits from like the editor integration and And yeah, whatever else. The type comments provide. yeah, I'm very much in favor of looking into this further. and to, to quickly comment on the reply there. This is not yet. Not specifically TypeScript syntax, any type of syntax. Or any other syntax, that one would want to put into these comments.
+
+MF: If this isn't typescript syntax, I don't know what build loop we're talking about here. When you say you're simplifying this inner loop, what are people writing in these comments if not TypeScript?
+
+LCA: One could write flow comments in these attacks or flow types in these comments. One could write just arbitrary comics in this context if the Syntax for to allow that. I think the point is that people don't want to have to run the code through some sort of stripping step before actually executing it. Or at least not be able to see this stripping step because that's a pain point that adds complexity to the project.
+
+??: And Daniel, I think it's Performance Management.
+
+YSV: I think you communicated that well. Yeah, and I think just in the interest of time, I would like to move through the comments speaking in support of or lack thereof quickly. So next we have Ashley, please go ahead and please it concise.
+
+ACE: Yep. just +1 to lots of the positive things have been said about tooling, but, you know, I have noticed on other proposals. As much as some delegates say that typescript shouldn't control, ecmascript decisions that we shouldn't take that into like a backwards compatibility thing. You know, personally have seen proposals steer away from syntax because typescript uses it. You're making it clearer what space like the tooling will consume, like flow, typescript hegel, and what proposals can then use for runtime semantics. I feel like that would really help a lot of conversations having that kind of much more like officially bounded as I understand how difficult finding that boundary is. I think there's a lot of value if we can find it.
+
+YSV: Thank you. Ashley. Next, we have JWK.
+
+JWK: As I explained before, I don't think it's a good idea to add this to the language.
+
+RPR: Just specifically, which do you think is the strongest reason?
+
+JWK: It cannot really reach the goal, even that make the bar higher.
+
+RPR: So even if we expand what JavaScript can do, and encompass more use cases, you think it needs to go further to be worthwhile?
+
+JWK: No, because you cannot be really expand too much. Otherwise, JavaScript becomes TypeScript.
+
+YSV: Okay, next we have PHE.I
+
+PHE: Plus one for Stage 1. typescript is remarkably popular with embedded developers worth committee. Time to consider it further.
+
+YSV: And we have George again
+
+GKZ: Just to make this really clear before we go for stage one, just on the record. I just want to ask simple. Yes. Or no question, which is, is there going forward with in this proposal is their commitment to neutrality and not getting special treatment to typescript? Yes, or no?
+
+DRR: Yes, but I need to be very clear that everything here has to go through some sort of discussion. Right? And so, there is going to be some balance of, where are we seeing, you know, certain places where it doesn't make sense for certain things to happen in one place versus another. So we are entirely committed to neutrality. We’re entirely committed to like discussing this with you and working through the problems would be as well, but it's going to come down to what makes the most sense for the proposal to proceed as well. So, like just think we need to set expectations there.
+
+GKZ: Yeah, thank you. Yeah, I just want to make that clear and for the record as we move forward. And again, I mean, just to be clear. Flow is not like some niche thing every day over 1 billion people in the world are running JavaScript. That was type-checked by Flow might concentrated in one spot versus spread out amongst a lot of smaller things, but if not, in some like Niche Niche thing here. Well, yeah, I appreciate that commitment. And glad to have that on the record. Thank you
+
+YSV: Okay, we have two comments related to the discussion of superset or subsets. I am going to cut the discussion of this proposal there because we are out of time. There's three minutes and we still need to summarize. Okay, great folks Folks took their topics off hacks since we are on time. I'm going to I'm going to ask that. You take this topic up with a Champions outside of this call right now. Champions. We have a request from the chat that summarize, the problem statement that you are seeking to achieve with this proposal. This is outside of the syntax that you've proposed, but the actual concrete problem that you want to solve. Can you do that for us? And then we'll move to, if you want to ask for stage advancement.
+
+RPR: So just going back to WH’s question. I guess he was asking the same thing for the motivation. So we can say here is: that the problem we're trying to solve is that there are folks out there who want to write type annotations in their code and not need to run any other build process before running it on a real engine. And this is something where today, we can see it in wild that that is a big psychological step and a big (I think) practical step that many people choose not to take, so we want to make sure that JavaScript is accessible and ergonomic for those folk to achieve that goal.
+
+YSV: I think that we may not have a concrete problem statement there because we are talking about comments as types here. Maybe - can you tighten it a little bit?
+
+RPR: In what sense?
+
+YSV: What problem are we solving?
+
+RPR: The problem space is that is the folks want to write type annotations on their JavaScript and not have a build step.
+
+WH: They can do this today by having types in comments.
+
+RPR: It's not ergonomic, and we see that in the wild that people only a few people are tipped over into using the full comment syntax. It's the Simplicity the developer experience. And yeah, the first class syntax is highly desired.
+
+YSV: I will, I will also raise that my complaint was called out as that the problem stated by RPR is worth solving. It's been mentioned in the chat, “does TC39 care about long-term long-term unforking of a vastly popular JS “fork” is a pretty important problem for the ecosystem. There have been several `+1`s on that.
+
+YSV: Do the Champions wish to ask for Stage 1 on the concrete problem statement. And also, the more General problem statement about paying attention to popular Forks, do the Champions want to request advancement for stage 1.
+
+DRR: Can we have stage 1?
+
+YSV: Do we have anyone explicitly blocking stage? One on this proposal, that is blocking because of the problem statement that they presented.
+
+WH: I am uncomfortable with the problem statement they presented.
+
+JWK: I am skeptical on this but am not going to block it hard.
+
+DRR:  Is there something that we can? Clarify in some way WH, Maybe any specific detail.
+
+WH: The things that make me uncomfortable are that this appears to be very much tied to TypeScript, but only parts of TypeScript. I see putting parts of TypeScript to ECMAScript but only some parts as being actively harmful to the ecosystem because it will fork TypeScript. I see the argument for convenience of being able to just write TypeScript and run it in your browser. and I think that would be better solved by having an opt-in to TypeScript syntax. And that way, you could use all of TypeScript rather than just some parts of it with other parts not working or doing unexpected things.
+
+DRR: I do hear your concerns. I think there are certain things that might be instructive. There one. is that, you know, when we support types in comments, write that JSDoc format that I showed the full expressivity of TypeScript is not there and yet, people do find it to be a useful tool. And they often understand why certain things won't work in those contexts. And we feel like we can bridge that gap, but so I believe that is something that, that it, you know, is not as big of a blocker, as one might think. If you look at what is being omitted much of it can still be achieved in supplementary declaration files, which are like header files you can use, you know, sufficient syntax that gets you by for many projects. So, I don't know if that sways your opinion. Anyway, if that if that's convincing, that's something that we can discuss at a further stage. Maybe that's when we would, you would discuss whether or not that, that's a blocker.
+
+WH: Okay, what is included in the proposal, then? First of all, it doesn't work for syntactic reasons that I don't want to get into. It's also way too much syntax. If what we want is to allow people to have colon types, when we should have a few grammar productions, like colon followed by an identifier or colon followed by parentheses. The proposal is way too much, and too TypeScript-specific.
+
+SYG: Can I interject here for a moment? I still feel like there's some confusion on the exact grammar being presented here. There's that grammar.md file, which is huge and was scary. And I see has been actually now removed to a link to something else that is still different. And then there's the very simpler suggestion of colon and then brackets and some identifiers. Can I get some clarification from the Champions on what the next step for, like the next concrete. grammar thing that you are investigating this
+
+DRR: So I don't want to get into it into the tentative grammar here, to be honest, but I do want to ask whether or not Stage One is an acceptable venue to better discuss these nuances and concerns because if it is grammar or how much is satisfied of existing type systems by some proposal this, then I feel like that is actually a concern and the broader sort of problem statement is you know, is going to Encompass that discussion.
+
+YSV: So, we are past time five minutes, and I think the core question is precisely the one that DRR just brought up, are the concerns that have been brought up in the course of this discussion for the last 90 minutes ones that block stage one? Or can they be iterated upon with in stage? Stage one being our designation for. We are allowing this problem to be explored within the context of Tc39. So if I could jump in, I did that.
+
+CDA: We’re being asked to advance to stage one based on agreement on the problem statement. Can somebody succinctly state what that is clearly?
+
+YSV: I did write it for you in the chat actually, if you can check it. It's in the delegates chat.
+
+CDA: Oh okay.
+
+JWK: We should try to add those transpilers in the devtools and node, as I said before, before we try to add the syntax directly into the language and to see if that works well. If that supports the community, we should stop there.
+
+WH: I don't see a problem statement in the chat.
+
+RPR: YSV put it in the chat, which is, it’s about providing an ergonomic way to declare types that can run in an engine, and whilst doing that, It's also un-forking the language and reinforcing TC39 as the venue to make grammar decisions and to resolve the boundary between where types are and where JS values are.
+
+WH: The only way you can do them both is with an opt-in.
+
+DRR: Maybe that's something we can discuss in stage 1? I mean, I do think that is something where we would be able to get more involved discussion within the committee on that. that. Yeah.
+
+RPR: If this requires An opt-in for this mode then and that's on the table. So we can discuss them.
+
+WH: I see defining a syntax for types without semantics to be actively harmful.
+
+YSV: So folks, because we are 10 minutes over, should we schedule more time to discuss this later?
+
+DRR: Maybe we can reconvene another day.
+
+YSV:  I thing that is going to be wise. Is everyone. All right with that outcome? For now, we will reconvene and discuss this later. I don't hear any opposition. So, thank you everyone, for the discussion. We are done for today, and we will be starting again tomorrow at the same time and I will speak with the chairs about finding time for short, extra time box for this discussion for this topic. Thanks everyone for the Champions. I recommend reviewing the chat. There are folks who would like more clarification on the problem statement and we are done.
