@@ -321,3 +321,160 @@ YSV: So folks, because we are 10 minutes over, should we schedule more time to d
 DRR: Maybe we can reconvene another day.
 
 YSV:  I thing that is going to be wise. Is everyone. All right with that outcome? For now, we will reconvene and discuss this later. I don't hear any opposition. So, thank you everyone, for the discussion. We are done for today, and we will be starting again tomorrow at the same time and I will speak with the chairs about finding time for short, extra time box for this discussion for this topic. Thanks everyone for the Champions. I recommend reviewing the chat. There are folks who would like more clarification on the problem statement and we are done.
+
+## Types as comments (continuation)
+
+Presenter: Daniel Rosenwasser (DRR)
+
+- [proposal](https://github.com/tc39/proposal-type-annotations)
+- [slides](https://1drv.ms/b/s!AltPy8G9ZDJdq3JSrN6Dh1XYVwpW)
+
+DRR: Thank you very much for making more time for this discussion. We heard some of the feedback from the first discussion plenary. So first off if you happen to see a grammar dot MD or some sort of grammar file. Sorry, we didn't mean to mislead you if you felt like that was the concrete syntax that we are proposing. That was more of an iteration point, those sorts of details can be discussed more in a later stage. So, sorry if that was a misleading point on top of that, some other feedback that we heard at the first presentation was, you know, a desired for type Very much in line type system neutrality. I think that's this. with what we had in mind for this proposal. So the sort of line of thinking for what we're trying to open up is something like pluggable types, if you're familiar with that concept enough space where you could bring, whatever type Checker and apply that to, you know, this space that we're trying to carve out. So existing type Checkers, future ones, what have you.  Another piece of feedback that we got was a question of, “Hey, is this trying to describe something for an existing syntax. And is it? Some of that exists in syntax to represent all of that existing syntax?” It definitely takes inspiration from existing type system syntaxes, but we're not trying to get all of it. We do believe that there is value in just getting some of it at this point and it should be a decent chunk of that as well. Right? So that, we're not leaving existing users behind, but we also believe that there is room for the existing type systems to grow and sort of adapt and find ways to bridge the gap, so it's not just something where we're creating new variant that doesn't really satisfy existing users. But again, this is something that we can discuss at a later stage and we would appreciate the chance to do that, too.
+
+DRR: But I think the biggest thing that we got feedback on was that we needed a more concrete problem statement here at plenary. So the problem statement that we've put together is that there is a strong demand for ergonomic type annotation syntax that has led to forks of JavaScript with custom syntax. This has introduced developer friction and means, widely used JavaScript forks have trouble coordinating with TC39 and often must risk syntax conflicts. Now, I want to come back to this slide in a minute or two. So can observe it, but we'll come back to it.
+
+DRR: I want to give some background on some of the thinking here. So. in a sense, you know, if we go back to why type checkers have needed to do this work or create these forks. They've all needed some expressive space. Something that's gone beyond what the language currently provides, you know, as stands in EcmaScript. And so each of them have added a set of extra syntax and you can do that these variants of JavaScript syntax are just like forks. Now, these forks are not necessarily a bad thing. This is something where we've discussed forks in JavaScript, you know, years ago actually, when we came to TC39 back in 2014, and there was no explicit, you know, direction Where anyone said that this was a bad thing. In fact, these Forks have been a really good test bed of whether or not there's value in static types in JavaScript without actually, adding anything like that to JavaScript until this point and they succeeded in proving that out a significant portion of JavaScript users now, use types and in fact, within committee here, good number of delegates come from organizations where a lot type JavaScript is used. So, the current status quo like, how things are today, is that these type JavaScript variants can continue to grow kind of independently, right? They innovate in the type-space and within TC39, we kind of collaborate, you know, we're providing feedback or creating jobs for specific proposals, and we're sometimes bringing, you know, thoughts back from the type systems, but you know, it's maybe only in bits and pieces, right? And that, you know, the current status quo, has a lot of benefits in that we have independent evolution. So, you know, we can just do things that work best for the type systems. But these forks still do add friction, some of which we've already discussed the other day. So, for one they're not directly executable. For another, that configuration overhead of just I think setup is pretty intimidating, which is a stark contrast to what a lot of JavaScript users are used to write, a lot of people view it as a very approachable language. And so getting to that next step of you know, getting typed JavaScript can be tough and we have anecdotal evidence of people saying, well, I'm just going to use the embedded comment syntax instead of direct, you know, types syntax on top of JavaScript because I don't want to deal with configuration or build step or whatever, But then you know, like configuration. a lot of the time we're kind of doing guesswork in how we add features to the language when it comes to type variants. We have to figure out, you know, what is going to be the best way of adding a feature that's not going to kind of conflict with the future proposal. So what were interested in is whether or not we can integrate the wins of these typed variants, right? We want to provide a syntax carve out to support pluggable type Checkers and we believe that exists in type-checkers can Bridge the gaps of what we're proposing and what we would be able to provide.
+
+DRR: So the proposal here would be to formalize an ergonomics syntax space for comments to integrate the needs of type-checking forks of ecmascript. We want to Workshop that a little bit. That's something we can do maybe more in stage 1, but we believe that the problem statement is sufficiently motivating to move into stage one. And so we'd like to open the floor to the discussion to understand whether or not we're meeting the committee's expectations here, if there's anything that needs to be clarified, things like that. So I'll open the floor to questions.
+
+MM:  So first of all, let me say that when you presented types as comments in plenary, earlier, I had a conflict and I missed the whole discussion. So my apologies for that. So this might be a little bit out of context, what I understood about the presentation was that the grammar that was presented was large, and I don't know if you believe that you can satisfy the problem statement with a tiny grammatical edition, but I would certainly very skeptical of any large grammatical addition to the language. I think stage one is fine. I have no problem signing on to let this go to stage one with this problem statement. Thanks for a clear problem statement. And that's it.
+
+DRR: Thank you. I think that we definitely understand that feedback and at least having the opportunity to discuss this within stage 1 would be something that we and I think many typed JavaScript users would appreciate at the very least that would provide us a good venue to understand how to best serve users or understand the problem space. So that's I think the minimum of what we're hoping for but so yeah, yeah, well, I think can proceed in the queue.
+
+WH: Yes, the issue I’m having is that the problem statement seems to be finely crafted to advance just one solution, which is to integrate TypeScript syntax into ecmascript, while excluding other viable approaches to solving the problem. The problem area is specifying type annotations in JavaScript. I would not want to restrict it to type annotation syntax which has no semantics. I would not want to exclude things which are much simpler than what TypeScript supports. But the problem statement as written seems designed to exclude those options. And that is not something we should be doing in stage 1.
+
+DRR: so maybe we can, we can Workshop through, we can discuss some of those points in specific. So I think the first one that I want to talk about specifically, is that you mentioned syntax without semantics. So I don't want to be too pedantic. I think there's an understanding that the semantics that we're hoping for with this syntax is one where it does not affect the execution of the surrounding context, right? So when you encounter that syntax, you simply do nothing. And is that the specific point that you're taking issue with?
+
+WH: So you've already adopted a solution of types-with-no-semantics. That's what I'm hearing. So you've already decided what the solution should be.
+
+DRR: I mean, if so if we broaden the problem statement so that we can discuss the other possibilities, there. Is that something that would reasonable. Like like would that would that allow us to discuss that more in stage one, right if there
+
+WH: Yeah, for Stage 1, we should not limit the discussion to a solution that was presented.
+
+DRR: I think we're willing to discuss that. Nothing is off the table in that capacity.
+
+WH: Well, I'm not getting much assurance that other options are on the table.
+
+DRR: I mean, this is sort of - within TC39, discussing what approaches have merit seems to be the thing where we want to get out of this, right? So if we want to discuss whether or not this syntax should have any sort of executable semantics. That's fine for stage 1. I have my current point of view. I'm willing to discuss it with the committee and hopefully we can come to an understanding of why I believe that. But if you do not, I mean would you want to have that discussion in further detail?
+
+WH: Yes.
+
+DRR: I think that that's perfectly fine. So maybe we're in agreement on that.
+
+WH: Yes, the other worry is that this is just a backhanded way of — rather than adding _a_ type annotation syntax, that's this is over-constrained on adding _the_ TypeScript type annotation syntax into ECMAScript. Just echoing MM's point, there is much simpler syntax which we could use for type annotations. The ideal situation would be the type annotation syntax having the same syntax as value expressions. It could encode a lot of types with that. You could handle almost all of the common use cases with just that. You wouldn't get some of the more esoteric TypeScript extensions, but this would be a very simple minimal JavaScript way of doing things. So I want to know if that's something that the presenters would be willing to consider as in-scope.
+
+YSV: I'm going to interrupt here just to make sure that we keep the discussion going in a productive way. And there have been a few comments in the chat where it is common for proposals to present a potential solution and we are getting in a little bit deep into psychoanalysis by saying that, what the intention of the author is or is not if we can pull that back. And just focus on what can be done here. in this case, I think that this is more appropriate because otherwise we're applying a certain level of scrutiny to this specific proposal. That isn't applied to others.
+
+DRR: I really appreciate that because I feel like I'm having a hard time describing that I just I just want to be able to discuss the proposal in further detail with the committee, We have ideas here and we want to develop them in further detail whether that syntax or semantics,
+
+WH: I'm asking about the problem space. In the past the committee has made it clear that the problem space is not just what the one proposal describes, unless it's something very trivial. So frankly, some of the discussion I see in the chat is getting personal and I do not appreciate it. Some people have been attacking me on chat throughout this meeting, and this is getting to be a Code of Conduct issue.
+
+DRR: I don't know what's going on in the chat.
+
+WH: I don't see that right now.
+
+YSV: Yeah, I think I'll take it here. So I believe you are referring to the comment that spoke about you by name, it does. The issue though...
+
+WH: And a few days ago.
+
+YSV: Okay. I'll keep the focus on what's been happening today. It was referring to your questioning of DRR’s intentions with this proposal. So let's keep that back as well. And that's this is the wrong way of putting it and somebody's intentions. I'm just asking, what's what's compromises. They would be willing. The consider your Austin.
+
+RPR: What are we open to?
+
+WH: Yeah, I just want to know what type annotation solutions are we open to? Questioning somebody's intentions is frankly hostile. And that's not something that people should be doing.
+
+RPR: Aright, so we know you are not questioning our intentions. You are asking questions.  I think what we've heard very clearly is that you would like the space to be open to include type annotation syntax that also has semantics. That's very clear.
+
+WH: Yeah, and I would like this space to be open to very simple syntaxes. So, I'm absolutely open to hear how others feel about that.
+
+RPR: I think we would always be open to the simplest solution that solves the problem.
+
+WH: Okay. So what is the problem area: is the problem area just "annotating types" or is the problem area "annotating types in a way that matches the TypeScript syntax".
+
+RPR: So let's not say TypeScript specifically. We can say that a significant number or percentage of the JavaScript population would think of themselves as JavaScript programmers even though they are using these forks of JavaScript in order to get the benefit of static types. And so we know all the problems of language forks. I think everyone here - in particular in this committee can appreciate that. We don't want the majority of people departing JavaScript and primarily using one of these. It would be great if we could reconcile the ecosystem. I would reference SYG’s wonderful comments on the universality of JS from Tuesday's Types-as-Comments session as evidence there. So that's the starting problem statement that we've got, and if to satisfy your curiosity you're wanting to open up to more, to also assess whether we should have run time semantics that seems fine.
+
+WH: Okay
+
+YSV: Does that address your concern?
+
+WH: Okay. So are we open to simpler syntaxes? I hear that you've said yes, we're open to runtime semantics. Am I correct that we're also open to exploring very simple syntaxes that do not try to match what other existing forks do?
+
+DRR: I think that we're going to take those things into account, but yeah, I'm not against trying to understand what the use cases are and whether or not there are benefits and merits for one approach versus the other. I'm happy to have that discussion. I just think that it's something we can entirely do at stage one and I would not like, if we were to have that discussion, we would never say, "sorry, this is just out of scope, go away". I think that would be unreasonable, and that's something where we need to come together. When you talk about a more minimal syntax as well, I think that that is something that we need to figure out in stage 1 too right? How much is useful versus how much is going to be - how much of it is minimal enough to be useful, right? So that's something we'd have to talk about in more detail going forward.
+
+WH: Because the reason I'm asking is because the problem is I can't tell from the problem statement whether a minimal syntax that's only 70% instead of 80% compatible with TypeScript, would be within scope or not. Could I have your assurance that we will consider any kind of syntax and not just ones which match the forks? That would ameliorate some of my concerns.
+
+DRR: The answer I have to that is we don't entirely know either. Part of the discussion there would be "what is the most interesting and useful stuff that we want to incorporate here?" What can be dropped, what can be inspired by, what is good here? And so we don't entirely know. We've done sort of a first-pass attempt but not gotten enough feedback from folks here to understand that.
+
+WH: Yeah. I'm not asking what the solution is. I'm asking what the stage one scope is.
+
+YSV: We have several folks on the Queue, and we've been on a similar topic for a while. Can we have a quick conclusion to this? And then we move through the six items that are currently on the queue? So, Daniel from your side, that would be just confirming Waldemar's concern that you'll address it or not?
+
+DRR: Everything WH mentioned is in scope.
+
+CDA: There's been some discussion about this proposal internally at IBM. We do share some of the concerns that WH is bringing up. There are varying opinions on the current content of the proposal, but we do all agree that it is worth exploring the problem area further, and that is specifically around expressing type information. We do think that's worthwhile, exploring that space. Again, some reservations about the proposal and the coupling to TypeScript. But if advancement to stage one is more about exploring the problem area, rather than signing off on the proposal as currently written, then we support it.
+
+MF: okay, it seems like we have a more overarching goal of narrowing the gap between JavaScript and TypeScript or other syntax forks. And it seems like it is unlikely that the committee will end up opening some huge syntax space basically as we saw in the original proposal earlier where we just allow basically everything that is allowed by TS or some other fork. It's more likely that we see a narrow space, though an infinite one, added for these kinds of forks to make use of. Now my question to the TS team is, if such a narrow space was added, would TypeScript be willing to actually move toward using that syntax space that gets reserved, or is really the only option for JavaScript to become TypeScript?
+
+DRR: I think that we are open to continue to bridge - like doing whatever we can to bridge the gap here, as long as it seems reasonable and good for users. Sowe already tried our best to understand types in JS if we need to figure out some adaptation, I've mentioned this. There's ways to bridge the gap there, and so we're willing. Yeah, that's the short story.
+
+MF: Okay, that's good enough for me.
+
+JHX: Thank you. My understanding is that the big goal should be narrowing the gap between JS and TS. My observation is that the ecosystem is already JS and TS - they're there. They are our whole thing. They're very close and most people write JavaScript is the most developed the, I know, they even they just write JavaScript not absolutely, but they still use many things from TypeScript, like the types, the d.ts files and many other things. So there are two things I think is important. The first one is for the toolchain developers today. There are many issues about the toolchain that they may have some prominent issues that JavaScript and the types will be. There are some subtle differences here and there, some, there are some issues which they need to think about. So, I think this is a big problem. And the other problem is for the average programmers. Recently I was asked a question about something about optional chaining. And I found that many programmers just think that optional chaining is a feature of TypeScript because TypeScript has the null assertion. It looks very close. That causes many confusion in the community: which part is TypeScript which part is JavaScript. So I would be in support of the big goal that we should try to solve these gaps. So even if we do not add types as comments, I would like for the committee to reserve some syntax space for such usage, which can help to solve the problems I mentioned.
+
+RPR: Thank you for the fall-back suggestion.
+
+Francisco Tolmasky: So I guess I'm coming from perhaps the like opposite end of the big discussion that just took place, in that like it feels like this proposal relies a lot on the spirit of the proposal. And by that, I mean like, as far as I can tell, And I'm happy if this doesn't expand to any sort of semantics.  It doesn't seem like proposal would actually enforce anything to do with types at all. Including like, this could be used to annotate anything. And, you know, we don't call them Financial operators. We call them arithmetic operators, right? Even if originally for the historical context of why plus and minus were added to the first programming language might have been because people wanted to do stuff with dollars and cents, But like it's certainly the case that when you read about these syntax elements, they're not described in terms of money handling, right? And similarly, you know, normal comments aren't described as like, you know, documentation generation tools, right? They're syntax elements that can be used for just about anything. It's very wide open - people have used it for other stuff, right? Like oh you move stuff left and right with the plus operator too, even if the original intent was something else. And so I think that at least some of the tension from this is that this proposal exists in this kind of liminal space: on the one hand, we talk about it as a thing that's super neutral, right? Like so neutral that likely even admit that like, yeah, I guess you don't even have to use it for types. On the other hand, I think some of the expectations of what will get out of it seemed very tight, right? Like if the idea is that like, oh every single editor will be able to expect at least these comments to be around. There's kind of this implicit understanding that like they're they're going to syntax highlight it correctly, but they can't because like the only correct syntax highlighting of a neutral comment would be just straight up normal comment color, right. Anything further would mean that, you know, the editor plugin is assuming that this is probably TypeScript type at this position, even though it's technically this neutral thing, right? So, I feel that perhaps both to prepare ourselves for that, I think people will use it for wacky reasons. It might be completely outside our expectations. And also to limit the kind of fear of:  is this TypeScript or isn't it? If we were to instead have the problem statement be something closer to like, we understand that, you know, a part historically of the JavaScript Community has been to add language on top of the language and we'd like a place for any of that to live so that hopefully we can avoid this in the future for any any sort of thing. Whether it's some sort of new kind of decorator or whether it's types, or whether it's, you know, something that you could even use it for documentation, right? Then I think, you know, we would avoid these questions of like, well should it have types semantics? And if not is in a confusing that you can add types, but they don't, you know, throw an error and it's a try to locate it. I think it does a better job of putting that squarely as a, you know, kind of like an implementation detail of what you're doing on top of it in the same way that like, we don't really discuss the issues with JSDoc inside of comments, you know, when we discuss the syntactic elements of Comments.
+
+RPR: Yeah, I guess that is somewhere where we might land. Certainly we've had some of those discussions over the last couple of days. I think it came up on Tuesday, whether this problem does reduce to “just comments”. It sounds like based on some of the feedback we've had today we need to consider also going a bit beyond that, but definitely I think in stage 1, I would hope to resolve that and it may land just as you say.
+
+WMS: [from queue] +1
+
+EAO: One part of the stated problem statement here that I think is new compared to what was presented the day before is the last part there, which states that this has introduced developer friction and means widely use forks have trouble coordinating with TC39 and must risk syntax conflicts. As we're going to take a new person to TC39, but I find this surprising and I thought I'd ask, although like other avenues of coordination that you're currently going with and then presuming that, you are, are they failing somehow that you're looking now to to open this new spec aspect of this to work with? And furthermore, if we go forward with this are you going to expand on this version of the problem statement in the The GitHub repo, which I don't think he really talks about this really like at all?
+
+DRR: I don't want to spend too much time on this sort of meta question today. I would really like to see if we can bring this to stage one and discuss, and then have a better discussion in the future if that ends up being necessary. I do acknowledge that may be a topic that is discussed in the future, though. So I appreciate you bringing it up.
+
+EAO: So would you be updating the text the GitHub repo to reflect this, which is currently not there at all? As a specific goal. Because right now, the goals that the GitHub repos presenting about this are rather different.
+
+DRR: I don't think that we're aiming to work on processes.
+
+RPR: Definitely I think in light of bringing this to plenary. And what we've heard about the framing of the problem, the way that people in here would like to hear our goals expressed. I think we've learned and will go back and update the repo certainly. And EAO this particular issue of learning these troubles and what processes can help, I'm definitely interested in speaking with you offline about that, and if it's worth getting that into the proposal, then by all means.
+
+JHX: [from queue] Even without this proposal, most proposals already be affected by TS syntax (such as first-class protocol)
+
+DRR: Okay, it looks like we don't have any items on the queue. So, with that, can we ask for stage one, please? Are there any objections to stage one? With the problem statement shown and with the additions made during this discussion?
+
+MM: I support stage 1, I will be very skeptical as this goes forward. But yes, I think this is a good stage one investigation.
+
+YSV: Do we have any explicit statements of support for this proposal to go to Stage 1?
+
+WH: I support stage one with the clarified/expanded scope.
+
+JHD: I also support stage 1 with the clarified problem statement, but I would encourage the champions to be very, very clear about what this stage 1 acceptance _does not_ imply. Because a lot of people are going to take inferences from it.
+
+Can somebody just clearly, what is the expanded scope or problem statement? Is that the one that was flashed up in the slides or has there been
+
+RPR: The one on the slides and we will also consider runtime effects and simpler syntaxes.
+
+KG: And we'll consider changes that also require changes to TypeScript. That it's not just JS is necessarily going to try to move in the direction of the forks, but rather that we might try to find some common ground that both places can move towards and meet there.
+
+WH: Yeah, the clarification that was important to me was that much simpler syntaxes are also in scope and any compatibility with any fork is not a prerequisite.
+
+YSV: Is that clear for everyone?
+
+DRR: I think so.
+
+LCA: +1
+
+MWS: +1
+
+JHX: +1
+
+BN: Apollo supports stage 1.
+
+CDA: IBM supports stage 1.
+
+YSV: And the queue is empty, last call for any objections. [silence] Congratulations. Folks, you have stage 1.
+
+### Conclusion/Resolution
+
+- Stage 1
