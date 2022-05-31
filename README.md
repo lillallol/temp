@@ -1,3 +1,27 @@
+# TODO
+
+* There are feature request to enable type checking `.js` based on their 
+corresponding `.d.ts` files [link](https://github.com/microsoft/TypeScript/issues/48911#issuecomment-1115905062
+. That feature is needed only when exporting dead declarations from `index.d.ts`.
+
+* make sure the links in this proposal are numbered correctly
+
+* this : `let toReturn = []` does not error because TS treats as an explicit 
+any. Find the issue for no explicit any in JS.
+* this `const cache = new Map();` does not lint error
+
+* there this issue with contextual typing in declarative tree  with `tag<string[] | string>`
+https://www.typescriptlang.org/docs/handbook/type-inference.html#contextual-typing
+
+* finish npm package complement-lint
+    * also mention it in the proposal
+
+* mention know issues with typescript in the list of projects that implement the
+proposal, together with the regexp patterns mentioned above
+
+* define what is a complement
+* define what is a super set
+
 # Reducing super sets to complements.
 
 **Champion(s)**: 
@@ -13,13 +37,14 @@
 ## Problem statement
 
 There is widespread adoption of statically typed JavaScript super sets, despite 
-being inferior to complements\[[1](#separation-of-intend-and-implementation)\]\[[2](#concluding-to-complement)\].
+being inferior to complements\[[1](#separation-of-intend-and-implementation)\]\[[2](#concluding-to-the-complement-method)\].
 
 ## Proposal
 
 Standardize a type system agnostic, battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\],
  minimal syntax reservation, concise comment contract\[[4](#defining-the-comment-contract)\],
-that is enough to reduce the super sets to complements.
+that is enough to reduce the super sets to complements. Let the rest be dealt 
+by third party tools.
 
 ## The intuition behind the proposal
 
@@ -205,8 +230,7 @@ A direct result of reserving the least possible syntax.
 <br>
 
 <details>
-<summary>Frequent context switching because you can not see the type while 
-defining the implementation.</summary>
+<summary>Frequent context switching.</summary>
 
 More specifically because the types are in separate files from their 
 implementation, that means you have to frequently switch between the 
@@ -216,33 +240,13 @@ will show the type of an implementation by hovering on its annotation.
 </details>
 
 <details>
-<summary>You have to write everything two times.</summary>
-    
-That is, you have to write the function once for implementation and once more 
-for abstraction. This is not valid. I always find myself writing an empty 
-implementation, and then copying that to define its abstraction. For example, 
-the following empty implementation:
-    
-```ts
-export const add = (a,b) => {}
-```
-    
-can be copied and converted to abstraction with minimal effort:
-
-* replace `const` with ` type`
-* replace `{}` with ` number`
-* add `: number` next to the parameters `a` and `b`
-* replace `add` with `IAdd`
-    
-Finally, lets not forget that there are many cases in which we accept writing 
-extra code due to maintainability, e.g. strict mode of TypeScript.
-</details>
-
-<details>
 <summary>You will not know where the types are.</summary>
-    
-If you know where the implementation of the type is, then you can use the go to
-type definition feature of your IDE.
+
+More specifically because the files for types can grow large, that will make it 
+hard for yu to find the types. This is not valid since if you know where the 
+implementation of the type is, then you can use the go to type definition 
+feature of your IDE to find it.
+
 </details>
 
 ***
@@ -308,6 +312,8 @@ export const add = (a,b) => a+b;
 <details>
 <summary>expand/collapse</summary>
 
+@TODO think about mentioning something about configurless typescript
+
 * no `.ts` to `.js` compilation needed
 * `.ts` files that contain implementations become redundant
 * no need for `tsc` to be a compiler
@@ -336,7 +342,7 @@ concerned with transpilation anymore)
 * can be type system agnostic
 * can be adopted by different type systems without breaking changes
 * has no effect on the runtime
-* no need to change the browser JavaScript parsers
+* no need to change JavaScript parsers
 * enforces separation of intend and implementation
 
 ***
@@ -349,6 +355,17 @@ concerned with transpilation anymore)
 <summary>expand/collapse</summary>
 
 <br>
+
+<!-- #region super sets are more ergonomic than complements -->
+
+<details>
+<summary>Super sets offer more ergonomic than complements.</summary>
+
+</details>
+
+<!-- #endregion -->
+
+@TODO complement method is writing types in comments
 
 <!-- #region as assertions -->
 
@@ -432,8 +449,8 @@ versions of TypeScript. Given that TypeScript is mostly used as a super set, it
 makes sense for features that mainly benefit the complement method to not have 
 been requested, e.g. type parameters extraction\[[6](https://github.com/microsoft/TypeScript/issues/49112)\].
 So whenever we are faced in a situation that challenges the complement method,
-we should question whether this an intrinsic inability of the complement method 
-or a matter of support from the type system.
+we should question whether this is an intrinsic inability of the complement 
+method or a matter of support from the type system.
 
 </details>
 
@@ -485,8 +502,8 @@ Lets compare verbosity between the complement method and the super set method:
     export const add = (a,b) => a+b;
     ```
 
-It is clear that the complement method is the most concise without actually 
-trying\[[12](https://github.com/microsoft/TypeScript/issues/22160#issuecomment-413029464)\].
+It is clear that the complement method is the most concise, without actually 
+trying to make it be\[[12](https://github.com/microsoft/TypeScript/issues/22160#issuecomment-413029464)\].
     
 In the end, the comparison is not fair. The super set method has a fixed syntax
 while I can choose whatever syntax I want to standardize for the complement
@@ -527,10 +544,14 @@ be less verbose even for such cases, e.g.:
     //:IAdd
     export const add3 = (a,b) => a+b;
     ```
+    
+
 
 </details>
 
 <!-- #endregion -->
+
+@TODO it will produce code that is not readable
 
 <!-- #region Super sets are better because the community has chosen them -->
 
@@ -545,13 +566,31 @@ The question remains though:
 
 > Why the majority prefers super sets and not the complement method?
 
-Because super sets hit the "market" first and they were backed by big 
+Because nobody has appropriately exposed them to the complement method.
+
+Because super sets "hit the market" first and they were backed by big 
 corporations. TypeScript as a super set became open source in 2012\[[9](https://en.wikipedia.org/wiki/TypeScript#History)\].
 The complement method for TypeScript was made possible in 2018\[[10](https://github.com/microsoft/TypeScript/issues/22160)\]\[[11](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]\[[12](https://www.npmjs.com/package/typescript/v/2.9.1)\],
 as a side effect. By that time, super sets were the norm. To make matters even 
 worse the overwhelming majority of developers, regardless of seniority level, 
 **if** they are aware of what I describe as complement method, have the wrong 
-assumption that it is inferior to the super sets. 
+assumption that it is inferior to the super sets.
+
+> But JSDoc "hit the market" first at 1999\[[13](https://en.wikipedia.org/wiki/JSDoc)\].
+
+JSDoc is\[[14](https://github.com/jsdoc/jsdoc#jsdoc)\]:
+
+> An API documentation generator for JavaScript.
+
+It is not a type checking tool, and if you are willing to use it as such you 
+will find it missing features, support, and being unnecessarily verbose. 
+
+For example you can not do
+to be easy for defining types.
+
+@TODO closure compiler https://en.wikipedia.org/wiki/Google_Closure_Tools
+
+
 
 </details>
 
@@ -560,6 +599,9 @@ assumption that it is inferior to the super sets.
 ***
 
 </details>
+
+@TODO mention that minimal syntax reservation is the only pragmatic way to 
+enable static typing and if needed pave the way for strong typing.
 
 ## Proposal reception.
 
@@ -571,18 +613,43 @@ is what the majority of the community has chosen, i.e. TypeScript. However:
 
   > Align with current and future ECMAScript proposals.
 
-* Acceptance of this proposal will prevent future proposal creators to\[[14](https://github.com/tc39/notes/blob/main/meetings/2022-03/mar-29.md#types-as-comments-for-stage-1)\]:
+* Acceptance of this proposal will make some future proposal creators to 
+understand that they do not have to\[[14](https://github.com/tc39/notes/blob/main/meetings/2022-03/mar-29.md#types-as-comments-for-stage-1)\]:
 
   > steer away from syntax because typescript uses it.
 
   so inevitably proposals that have nothing to do with static typing, but 
   introduce breaking changes to super sets, will be adopted.
 
-* Acceptance of this proposal will popularize complements and expose the 
-drawbacks of super sets.
+* Acceptance of this proposal will popularize the complement method and expose 
+the drawbacks of super sets.
 
 In the long run super sets will have no other choice than be reduced to 
 complements of JavaScript.
+
+## How this proposal compare to other proposals.
+
+The context proposal does not collide with other tc39 proposals, given that they
+do not "reserve syntax" in native comments.
+
+## Types without runtime semantics are not worth standardization, hence the context proposal is not worth it.
+
+The less new syntax is proposed the easier for the proposal to be adopted. Hence
+
+
+## The scope of tc39 includes static typing.
+
+According to ecma-international the scope of tc39 is\[[16](https://www.ecma-international.org/technical-committees/tc39/)\]:
+
+>Scope:
+>
+>Standardization of the general purpose, cross platform, vendor-neutral 
+>programming language ECMAScript®. This includes the language syntax, semantics,
+>and libraries and complementary technologies that support the language. ...
+
+Static typing is a complementary technology that supports the EcmaScript 
+language. Hence the context proposal belongs to the scope of tc39.
+
 
 ## A list of projects that implement the proposal.
 
@@ -590,6 +657,7 @@ This list can be expanded with your project. Just post them in the #1 issue
 of this repository.
  
 1. [es-test](TODO) - testing library (work in progress)
+1. [complement-lint](TODO) - a linter that ensures you are using TypeScript as a complement (work in progress)
 1. [@lillallol/outline-pdf](TODO) - add outline pdf (work in progress)
 1. [@lillallol/dic](TODO) - dependency injection library (work in progress)
 1. [declarative-tree](TODO) - converts trees to string and vice versa, useful for writing declarative tree tests (work in progress)
@@ -665,20 +733,3 @@ Example for:
 
 </details>
 
-## How this proposal compare to other proposals.
-
-The context proposal does not collide with other tc39 proposals, given that they
-do not "reserve syntax" in native comments.
-
-## The scope of tc39 includes static typing.
-
-According to ecma-international the scope of tc39 is\[[16](https://www.ecma-international.org/technical-committees/tc39/)\]:
-
->Scope:
->
->Standardization of the general purpose, cross platform, vendor-neutral 
->programming language ECMAScript®. This includes the language syntax, semantics,
->and libraries and complementary technologies that support the language. ...
-
-Static typing is a complementary technology that supports the EcmaScript 
-language. Hence the context proposal belongs to the scope of tc39.
