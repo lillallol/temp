@@ -14,6 +14,9 @@ proposal
     * there this issue with contextual typing in declarative tree  with `tag<string[] | string>`
     https://www.typescriptlang.org/docs/handbook/type-inference.html#contextual-typing
     * function bug compared to arrow when implementation has less parameters
+    * the type inference for `observable({prop : true})` works differently for `.ts` and `.js`, at the latter the type is `{prop : true}`, while at the former it is `{prop : boolean}`.
+    * https://github.com/microsoft/TypeScript/issues/49039 Irregular behavior of generic non arrow function that is typed via JSDoc import. (both wrong type parameter restriction and also the optional parameter)
+    * https://github.com/microsoft/TypeScript/issues/49115 JSDoc tag and import autocompletion for concretions
 
 # Reducing super sets to complements.
 
@@ -377,7 +380,7 @@ const myVariable = myValues;
 ```
 
 leading to safer static type checking. So in the end the ability to use type 
-assertions is causing loss in static typing, not the inability to use them.
+assertions is causing loss in static typing.
 </details>
 
 <!-- #endregion -->
