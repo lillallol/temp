@@ -1,6 +1,17 @@
 # TODO
 
-* make sure the links in this proposal are numbered correctly
+* in [this](https://www.youtube.com/watch?v=NDu0Aubw7hQ&t=81s) it is mentioned 
+that:
+
+  > ... and so the most interesting projects that have gone this way is Deno and
+  > SvelteKit, which have moved from a typescript code base to a JSDoc type code
+  > base, specifically for this reason, for build speeds
+
+    * SvelteKit : https://github.com/sveltejs/kit/tree/master/packages/kit
+        this is not strict complement method
+    * Deno : https://github.com/denoland/deno
+
+should I mentioned them in the proposal?  
 
 * mention know issues with typescript in the list of projects that implement the
 proposal
@@ -17,6 +28,8 @@ proposal
     * the type inference for `observable({prop : true})` works differently for `.ts` and `.js`, at the latter the type is `{prop : true}`, while at the former it is `{prop : boolean}`.
     * https://github.com/microsoft/TypeScript/issues/49039 Irregular behavior of generic non arrow function that is typed via JSDoc import. (both wrong type parameter restriction and also the optional parameter)
     * https://github.com/microsoft/TypeScript/issues/49115 JSDoc tag and import autocompletion for concretions
+
+* make sure the links in this proposal are numbered correctly
 
 # Reducing super sets to complements.
 
@@ -38,11 +51,11 @@ being inferior to complements\[[1](#separation-of-intend-and-implementation)\]\[
 ## Proposal.
 
 Standardize a type system agnostic, battle tested\[[3](#a-list-of-projects-that-implement-the-proposal)\],
- minimal syntax reservation, concise comment contract\[[4](#defining-the-comment-contract)\],
-that is enough to reduce the super sets to complements. Let the rest of the type
-system to be dealt by third party tools.
+minimal syntax reservation, concise comment contract\[[4](#defining-the-comment-contract)\],
+that is enough to eventually reduce the super sets to complements. Let the rest 
+of the type system to be dealt by third party tools.
 
-## Advantages and the intuition behind the proposal.
+## The intuition behind the proposal.
 
 ### Separation of intend and implementation.
 
@@ -185,19 +198,15 @@ actually the gateway to the next section.
 
 Not only the public api, but also the private api can be contained in a single 
 file, or at least a few files. This, combined with the fact of minimum syntax 
-reservation makes the migration (automated or manual) from one type system to 
-another more easy.
+reservation, makes the migration (automated or manual) from one type system to 
+another, easier.
 </details>
 
 <details>
 <summary>TypeScript maintainers have less work to do.</summary>
 
 A direct result of reserving the least possible syntax. They no longer need to
-enable features that mix implementation and indent:
-
-```ts
-export const add = (a:number,b:number):number => a+b;
-```
+enable mix of implementation and indent.
 
 </details>
 
@@ -206,12 +215,14 @@ export const add = (a:number,b:number):number => a+b;
 future JavaScript syntax, gets minimized.</summary>
 
 A direct result of reserving the least possible syntax.
+
 </details>
 
 <details>
 <summary>Code that looks familiar to the JavaScript developers.</summary>
 
 A direct result of reserving the least possible syntax.
+
 </details>
 
 ***    
@@ -246,13 +257,15 @@ feature of your IDE to find it.
 
 </details>
 
+<!-- @TODO this will lead to clutter of the common space -->
+
 ***
 
 </details>
 
 ### Concluding to the complement method.
 
-If separation of intend and implementation inevitably leads TypeScript, without 
+If separation of intend and implementation, inevitably leads TypeScript, without 
 loss in static typing, to do the minimal possible syntax reservation from 
 JavaScript, which is:
 
@@ -262,7 +275,7 @@ JavaScript, which is:
     import type {IAdd} from "index";
     ```
 
-* typing a variable declaration
+* type annotating a variable declaration
     
     ```ts
     export const add : IAdd = (a,b) => a+b;
@@ -309,20 +322,20 @@ export const add = (a,b) => a+b;
 <details>
 <summary>expand/collapse</summary>
 
-@TODO think about mentioning something about configurless typescript
-
 * no `.ts` to `.js` compilation needed
 * `.ts` files that contain implementations become redundant
 * no need for `tsc` to be a compiler
 * no need to wait the compiler
+* no need to worry whether the compiler will be fast as your project scales
 * no need to develop faster compilers
 * one less configuration for the build pipeline
 * no need to deal with the fragmented ecosystem of compiling `.ts` to `.js`
 * no need to depend on extra packages for your code to get executed
 * no need to learn new APIs
+* less configuration needed for `tsconfig.json`
 * less security issues due to depending on less code
 * one less source map
-* no need to develop source map generators
+* no need for TypeScript to have a source map generator
 * formatters have a simpler job to do
 * code can be pasted in the console and it will execute
 * no IoC (Inversion of Control), code executes as it has be written (at least 
@@ -334,13 +347,15 @@ during the development stage)
 * adherence to KISS (Keep It Super Simple)
 * adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
 concerned with transpilation anymore)
-* less work for TypeScript maintainers
-* can be easily standardized by tc39 due to minimal syntax
-* can be type system agnostic
-* can be adopted by different type systems without breaking changes //@TODO
-* has no effect on the runtime //@TODO
-* no need to change JavaScript parsers
+* can be trivially standardized by tc39 due to minimal syntax
+* it is type system agnostic
+* can be adopted by different type systems without breaking changes
+* standardization will have no effect on the runtime
+* standardization will create no need to change existing JavaScript parsers
+* standardization will not collide with other tc39 proposals
 * enforces separation of intend and implementation
+* enables simultaneously type checking source code with more than one type
+system
 
 ***
 
@@ -353,20 +368,16 @@ concerned with transpilation anymore)
 
 <br>
 
-@TODO complement method is writing types in comments
-
 <!-- #region There is loss in static typing since you will not be able to use type assertions. -->
-
-@TODO what is the reason that as assertions got introduced in typescript.
-https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions
 
 <details>
 <summary>There is loss in static typing since you will not be able to use type 
 assertions.</summary>
 
-There is no need for type assertions. They are a bad practice since they 
-override the type checker. It is true that the override is safer than 
-`//@ts-ignore`, but that does not change the fact that it is an override. This:
+Type assertions\[[13](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)\])
+are a bad practice since they override the type checker.  It is true that the 
+override is safer than `//@ts-ignore`, but that does not change the fact that it
+is an override. This:
 
 ```ts
 const myVariable = myValues as number;
@@ -379,8 +390,8 @@ if (typeof myValue !== "number") throw Error();
 const myVariable = myValues;
 ```
 
-leading to safer static type checking. So in the end the ability to use type 
-assertions is causing loss in static typing.
+leading to safer static type checking. It it the ability to use type assertions
+that leads to loss in static typing, not the inability to use them.
 </details>
 
 <!-- #endregion -->
@@ -414,15 +425,15 @@ public api:
     };
     ```
 
-Here is how can someone pass a type parameter to `DLLFactory` using the 
-complement method:
+Here is how to pass a type parameter to `DLLFactory` using the complement 
+method:
 
 * `./privateApi.ts`
 
     ```ts
     import {DLLFactory} from "./index";
     
-    // works in typescript 4.7
+    // works with typescript 4.7
     export type IMyDllFactory = typeof DLLFactory<number>;
     ```
 
@@ -461,6 +472,7 @@ This is not an intrinsic inability of the complement method, since\[[7](https://
 >extension of JavaScript.
 
 So it is both a matter of support from the type system but also EcmaScript.
+
 </details>
 
 <!-- #endregion -->
@@ -472,17 +484,17 @@ So it is both a matter of support from the type system but also EcmaScript.
 experience.</summary>
 
 Objectively speaking, knowing the type of a concretion makes it easier to read
-code.
+the code. How can someone know the type of a concretions when writing code in 
+JavaScript, i.e. the complement method? Hovering over any implementation, will 
+make the IDE to show its type. Do super sets need that help from the IDE? Yes 
+they do, because of type aliases.
 
-How can someone know the type of a concretions when writing code in JavaScript, 
-i.e. the complement method? Hovering over any implementation, will make the IDE 
-to show its type. Do super sets need that help from the IDE? Yes they do, 
-because of type aliases.
-
-Some people are used to reading JavaScript code, while others are used to 
-reading TypeScript code. This is subjective. I have personally found both 
-TypeScript as a superset and as a complement hard to read, but then got used to 
-it.
+Given that help from the IDE, it becomes subjective which code base is more 
+readable. From my personal experience the more I get exposed to a certain 
+code style, the more readable I find it. So if you think that the complement 
+method is not readable, I suggest you, to ask yourself the same question after 
+some months you have been exposed to it. Eventually you will get used to it and 
+readability will not be an issue.
 
 Regarding verbosity, strictly speaking, a super set can always be made less
 verbose when compared to a complement, since a complement is forced to use
@@ -490,7 +502,8 @@ the already existing comment syntax, while a super set reserves syntax outside
 of existing comment syntax. However, from my experience with the complement and 
 super set methods of TypeScript, there is no practical impact in the developer 
 experience. In fact when comparing them, it is not actually clear which method 
-is less verbose.
+is less verbose, because in some cases, the complement method is less verbose
+while in other cases the super set method is less verbose.
 
 </details>
 
@@ -503,51 +516,64 @@ is less verbose.
 
 This is a logical fallacy called argumentum add populum\[[8](https://en.wikipedia.org/wiki/Argumentum_ad_populum)\].
 The fact that something is widely adopted by the majority is not a proof that it
-is the best solution to the problem. 
+is the best solution to the problem.
 
-In addition if we are really interested which method is preferred by the 
-community, then we have to ask those people that have tried both the complement 
-and the super set method, to such an extend, that the probability for them to 
-have misconceptions about them is minimized. Any statistical inference based on 
-something different from that is garbage in, garbage out\[[9](https://en.wikipedia.org/wiki/Garbage_in,_garbage_out)\].
+Even if we forget about that, if we are really interested which method is 
+preferred by the community, then we have to ask those people that have tried 
+both the complement and the super set method, to such an extend, that the 
+probability for them to have misconceptions about them is minimized. Any 
+statistical inference based on something different from that is garbage in, 
+garbage out\[[9](https://en.wikipedia.org/wiki/Garbage_in,_garbage_out)\].
 
 The question remains though:
 
 > Why the majority is using super sets and not the complement method?
 
-Because nobody has appropriately exposed them to the complement method and super 
-sets "hit the market" first. TypeScript as a super set became open source in
-2012\[[9](https://en.wikipedia.org/wiki/TypeScript#History)\]. The complement 
-method for TypeScript was made possible in 2018\[[10](https://github.com/microsoft/TypeScript/issues/22160)\]\[[11](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]\[[12](https://www.npmjs.com/package/typescript/v/2.9.1)\]. 
-By that time, super sets were the norm. To make matters even worse the 
-overwhelming majority of developers, regardless of seniority level, **if** they 
-are aware of what I describe as complement method, have the wrong assumption 
-that it is inferior to the super sets.
+To attempt an answer to such a question we have to look at the whole topic from 
+a historical perspective:
 
-> But JSDoc "hit the market" first at 1999\[[13](https://en.wikipedia.org/wiki/JSDoc)\].
+* 1999 JSDoc\[[13](https://en.wikipedia.org/wiki/JSDoc)\]
+* 2009 Closure Compiler\[[14](https://en.wikipedia.org/wiki/Google_Closure_Tools)\]
+* 2012 TypeScript\[[15](https://en.wikipedia.org/wiki/TypeScript#History)\]
+* 2014 Flow\[[16](https://github.com/facebook/flow/tree/49820636495b6e36752079117b9e7c34e5c4fc7b)\]
+* 2018 TypeScript supports `/**@type {import("./some/path").IMyType}*/`\[[11](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)\]
+* 2022 TypeScript supports `type IMyFn = typeof fn<IMyType>`\[[12](https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/#instantiation-expressions)\]
+* 2022 TypeScript feature request for extracting type parameters\[[13](https://github.com/microsoft/TypeScript/issues/49112)\].
+
+From the timeline we can see that JSDoc-like static typing (JSDoc, Closure 
+Compiler) hit the market before super sets (TypeScript, Flow). Usually whoever 
+hits the market first is the one who becomes the de facto standard. However this
+is not what happened here. We have to understand what caused that. It is my 
+understanding that the following factors contributed to that:
+
+* JSDoc-like syntax was made to be documentation friendly, rather than static 
+typing friendly.
+* JSDoc-like static type checkers, lack considerably in support for static 
+typing features, when compared to the super sets\[[17](https://github.com/google/closure-compiler/issues/890)\]\[[18](https://github.com/google/closure-compiler/issues/490)\].
+
+Now we have to ask why TypeScript became way much more popular than Flow. I 
+think that is solely due to TypeScript hitting the market first.
+
+Now we have to ask why the overwhelming majority is using TypeScript as a super
+set and not as a complement. As far as I understand it is because of the 
+following reasons:
+
+* From the timeline we can see that TypeScript as a superset hit the market 
+first.
+* Looking at the TypeScript handbook, the complement method does not exist, 
+hence nobody knows about it.
+* From the timeline we can see that features that make the complement method
+less hacky have been recently adopted, however there is still one missing.
+
+> Why TypeScript creators chose super set instead of complement?
+
+That is a question that has to be answered by the creators of TypeScript.
+
+<!-- The complement method for TypeScript was made possible in 2018\[[10](https://github.com/microsoft/TypeScript/issues/22160)\]
 
 JSDoc is\[[14](https://github.com/jsdoc/jsdoc#jsdoc)\]:
 
-> An API documentation generator for JavaScript.
-
-Hence JSDoc is not a type checking tool and has nothing to do with the no 
-compile method.
-
-> But what about the google closure compiler?
-
-Again, it has nothing to do with the complement method, and it hit the market 
-three years later (check the first version published in npm) compared to TypeScript.
-
-@TODO closure compiler https://en.wikipedia.org/wiki/Google_Closure_Tools
-
-</details>
-
-<!-- #endregion -->
-
-<!-- #region Super sets are more ergonomic than complements -->
-
-<details>
-<summary>Super sets are more ergonomic than complements.</summary>
+> An API documentation generator for JavaScript. -->
 
 </details>
 
@@ -581,7 +607,7 @@ is what the majority of the community has chosen, i.e. TypeScript. However:
 
   Inevitably proposals that have nothing to do with static typing, but introduce
   breaking changes to super sets, will be adopted. This will cause people to 
-  flock to the complement method.
+  move to the complement method.
 
 * Acceptance of this proposal will popularize the complement method and expose 
 the drawbacks of super sets.
@@ -593,11 +619,16 @@ complements of JavaScript.
 
 <!-- #endregion -->
 
-<!-- #region Types without runtime semantics are not worth standardization, hence the context proposal is not worth it. -->
+<!-- #region I see defining a syntax for types without semantics to be actively harmful. -->
 
 <details>
-<summary>Types without runtime semantics are not worth standardization, hence 
-the context proposal is not worth it.</summary>
+<summary>I see defining a syntax for types without semantics to be actively
+harmful.</summary>
+
+Is it more harmful than having an ecosystem that mostly uses super sets?
+
+The disadvantages of super sets have been discussed in the previous sections.
+Regarding native super sets @TODO
 
 It is my understanding that minimal syntax reservation is the only pragmatic way
 to introduce types in JavaScript.
@@ -671,13 +702,14 @@ Example for:
     })
     ```
 
-    There is a common misconception that this needs an extra pair of parenthesis\[[15](https://github.com/microsoft/TypeScript/issues/18212#issuecomment-328733868)\]. 
+    There is a common misconception that there is an intrinsic need for an extra
+    pair of parenthesis\[[15](https://github.com/microsoft/TypeScript/issues/18212#issuecomment-328733868)\]. 
 
 1. The path is relative.
 
-1. To be a type system agnostic comment, the path has to be without filename
-extension. For example the path: `./src/index.d.ts` has to be written as: 
-`./src/index`.
+1. The path has to be without filename extension. For example the path: 
+`./src/index.d.ts` has to be written as: `./src/index`. This is done so the
+ comment is type system agnostic.
 
 </details>
 
