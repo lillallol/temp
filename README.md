@@ -16,8 +16,9 @@
 
 ## Problem statement.
 
-There is widespread adoption of statically typed JavaScript super sets, despite
-there being better solutions\[[1](#separation-of-intend-and-implementation)\]\[[2](#concluding-to-the-complement-method)\],
+There is widespread adoption of TypeScript as a JavaScript super set, despite 
+being a suboptimal solution to the problem of enabling static type checking in 
+JavaScript\[[1](#separation-of-intend-and-implementation)\]\[[2](#concluding-to-the-complement-method)\],
 and this unnecessarily complicates the ecosystem.
 
 ## Proposal.
