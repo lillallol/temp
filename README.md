@@ -12,11 +12,11 @@
 
 ## The gist
 
-Statically typed super sets of EcmaScript are inferior to complements\[[link]()\]\[[link]()\]. The 
-ecosystem is dominated by super sets because it has never been presented
+Statically typed super sets of EcmaScript are inferior to complements\[[link](#advantages)\]\[[link](#advantages-1)\].
+The ecosystem is dominated by super sets because it has never been presented
 equally with a complement. Therefore, tc39 must pave the way for reducing super 
 sets to complements. For this to be done, add in the EcmaScript specification, 
-that nothing more than the following comments \[[link](Defining-the-comments-to-be-used-by-complements.)\]:
+that nothing more than the following comments \[[link](#defining-the-comments-to-be-used-by-complements)\]:
 
 ```js
 /**@type {import("./path/to/types/file.js").IMyType}*/
