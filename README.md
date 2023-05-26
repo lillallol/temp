@@ -1,5 +1,7 @@
 # Reducing super sets to complements.
 
+> The essence of design is leaving things out.
+
 **Champion(s)**: 
 
 * TBD (To Be Determined)
@@ -12,21 +14,47 @@
 
 ## The gist
 
-Statically typed super sets of EcmaScript are inferior to complements\[[link](#advantages)\]\[[link](#advantages-1)\].
-The ecosystem is dominated by super sets because it has never been presented
-equally with a complement. Therefore, tc39 must pave the way for reducing super 
-sets to complements. For this to be done, add in the EcmaScript specification, 
-that nothing more than the following comments \[[link](#defining-the-comments-to-be-used-by-complements)\]:
+**Static complement of EcmaScript**: Static types live outside of `.js` files, 
+and are used in them via comments.
 
-```js
-/**@type {import("./path/to/types/file.js").IMyType}*/
-//@ts-expect-error
-//@ts-nocheck
-```
+> For example, TypeScript can be used as a complement, if all types are written
+> in `.ts` files, and values in `.js` files are type annotated via 
+> `/**@type {import("./path/to/file.js").IExportedTypeName}*/`.
 
-are to be used in `.js` files, by complements. Let the rest of the type system 
-(only abstractions, not concretions) be defined by third party type checkers 
-outside of `.js` files, that will play no role in execution of EcmaScript.(defining a type system is out of scope for this proposal).
+**Problem statement**: Statically typed super sets of EcmaScript are inferior to
+complements. That is because, by definition, super sets can not reap the 
+benefits that complements do, by:
+
+* enforcing separation of intend and implementation\[[link](#advantages)\]
+* not reserving syntax\[[link](#advantages-1)\]
+
+This, coupled with the fact that the ecosystem is dominated by super sets,
+because it has never been presented equally with a complement, leads to an
+unhealthy ecosystem. Therefore, tc39 should pave the way for ending the 
+domination of super sets.
+
+**Proposal**: Add in the EcmaScript specification that the following, type 
+system agnostic, battle tested\[[link](#list-of-projects-implementing-the-proposal)\]
+comments\[[link](#defining-the-comments-to-be-used-by-complements)\]:
+
+* `//:"./path/to/file.js".IExportedTypeName` type import-annotate a statement
+
+    The module specifier has to be type system agnostic, i.e. changing third party
+static type checkers, does not require refactoring the module specifier. This 
+can be achieved by enforcing the module specifier to end with `.js`. It is up to
+the type checker how to resolve this path to its corresponding type file.
+* `/*:"./path/to/file.js".IExportedTypeName*/` type-import-annotate an
+expression
+* `//:type-checker-expect-error` expect type error in statement
+* `/*:type-checker-expect-error*/` expect type error in expression
+* `//:type-checker-ignore-file` do not type check the context file
+
+are to be used by third party complements. Do not define a type system, let 
+each third party define its own. Like this, the problems statement of type 
+annotations proposal\[[link](https://github.com/tc39/proposal-type-annotations)\],
+is solved effortlessly, without any of the drawbacks\[[link](#super-set-vs-complement-proposal)\],
+of the proposed solution.
+rendering it not of any benefit for the EcmaScript community.
 
 ## The intuition behind the proposal.
 
@@ -420,8 +448,7 @@ that leads to loss in static typing, not the inability to use them.
 <details>
 <summary>You will not be able to use <code>as const</code>.</summary>
 
-Since TypeScript `5.0`, instead of using const type assertion you can do 
-something like:
+Instead of using const type assertion you can do the following:
 
 * `./privateApi`
 
@@ -479,7 +506,6 @@ method:
     ```ts
     import {DLLFactory} from "./index";
     
-    // works with typescript 4.7
     export type IMyDllFactory = typeof DLLFactory<number>;
     ```
 
@@ -528,14 +554,7 @@ TypeScript as a complement:
   /**@type {import("./privateApi.js").IChunk}*/
   export const chunk = (array,length) => {
       const toReturn = [];
-      for (let i = 0; i < array.length ; i += length) {
-          toReturn.push(
-              array.slice(
-                  i,
-                  i + length
-              )
-          )
-      }
+      // code omitted for brevity
       return toReturn;
   }
   ```
@@ -572,14 +591,7 @@ For the time being, here are some hacks to get full static type checking:
   ```ts
   /**@type {import("./privateApi.js").IChunk}*/
   export const chunk = (array,length,toReturn) => {
-      for (let i = 0; i < array.length ; i += length) {
-          toReturn.push(
-              array.slice(
-                  i,
-                  i + length
-              )
-          )
-      }
+      // code omitted for brevity
       return toReturn;
   }
   ```
@@ -613,14 +625,7 @@ If you do not want to change the public api, here is another hack:
   ```ts
   /**@type {import("./privateApi.js")._IChunk}*/
   const _chunk = (array,length,toReturn) => {
-      for (let i = 0; i < array.length ; i += length) {
-          toReturn.push(
-              array.slice(
-                  i,
-                  i + length
-              )
-          )
-      }
+      // code omitted for brevity
       return toReturn;
   }
   
@@ -889,7 +894,7 @@ the proposed solution.
 
 <!-- #endregion -->
 
-## A list of projects that implement the proposal.
+## List of projects implementing the proposal.
 
 1. [complement-lint](https://github.com/lillallol/complement-lint) - a linter 
 that ensures you are using TypeScript as a complement
@@ -948,8 +953,7 @@ This section is tentative.
 The module specifier has to be type system agnostic, i.e. changing third party
 static type checkers, does not require refactoring the module specifier. This 
 can be achieved by enforcing the module specifier to end with `.js`. It is up to
-the type checker how to resolve this path to its corresponding type file. For
-example, with TypeScript, `.js` does is that , they will just replace the ending `.js` with their own extension.
+the type checker how to resolve this path to its corresponding type file.
 </details>
 
 <details>
