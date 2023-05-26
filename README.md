@@ -1,3 +1,6 @@
+TODO     There is a common misconception that there is an intrinsic need for an extra
+    second pair of parenthesis\[[link](https://github.com/microsoft/TypeScript/issues/18212#issuecomment-328733868)\]. 
+
 # Reducing super sets to complements.
 
 > The essence of design is leaving things out.\[[link](https://www.youtube.com/watch?v=krB0enBeSiE&t=2572s)\]
@@ -28,7 +31,7 @@
 ## The gist
 
 **Static complement of EcmaScript**: Static types live outside of `.js` files, 
-and are used in them via comments. For example, TypeScript can be used as a 
+and used in `.js` via comments. For example, TypeScript can be used as a 
 complement, if all types are written in `.ts` files, and values in `.js` files 
 are type annotated via `/**@type {import("./path/to/file.js").IExportedTypeName}*/`\[[link](#list-of-projects-implementing-the-proposal)\].
 
@@ -36,7 +39,7 @@ are type annotated via `/**@type {import("./path/to/file.js").IExportedTypeName}
 complements. That is because, by definition, super sets can not reap the 
 benefits of complements, which are:
 
-* enforcing separation of types and their implementation\[[link](#advantages)\]
+* enforcing separation of types from their implementation\[[link](#advantages)\]
 * not reserving syntax\[[link](#advantages-1)\]
 
 This, coupled with the fact that the ecosystem is dominated by super sets,
@@ -58,9 +61,6 @@ example, TypeScript would first search for the same path replacing `.js` with
 `.d.ts` and if this path does not exist it would try for `.ts`.
 * `/*:"./path/to/file.js".IExportedTypeName*/` type-import-annotate an
 expression
-
-    There is a common misconception that there is an intrinsic need for an extra
-    second pair of parenthesis\[[link](https://github.com/microsoft/TypeScript/issues/18212#issuecomment-328733868)\]. 
 * `//:type-checker-expect-error` expect type error in statement
 * `/*:type-checker-expect-error*/` expect type error in expression
 * `//:type-checker-ignore-file` do not type check the context file
@@ -83,10 +83,10 @@ I was left wondering why it is not the default. Still to this day I have not
 received a convincing answer, so here I am trying to convince everyone to do the
 same, until proven wrong.
 
-### Separation of intent and implementation.
+### Separation of types from their implementation.
 
 Unfortunately the very design of TypeScript as a super set, promotes the mix of 
-intent with implementation, e.g.:
+types with their implementation, e.g.:
 
 * `./add.ts`
 
@@ -94,7 +94,7 @@ intent with implementation, e.g.:
     const add = (a:number,b:number):number => a+b;
     ```
 
-Separation of intent and implementation, e.g.:
+Separation of types from their implementation, e.g.:
 
 * `./publicApi.ts`
 
@@ -301,7 +301,7 @@ possible example:
 * `index.d.ts` is used to define the public API
 * `privateApi.ts` is used to define the private API
 * `types.ts` is used to define types shared in `privateApi.ts` or needed in its
-implementation
+implementation TODO
 * `testApi.ts` is used to define types that are used only in test files
 * `dicApi.ts` is used to define the types of the dependency graph of the DIC
 
@@ -322,9 +322,9 @@ make the private API depend on the public API.
 
 ### Concluding to complements.
 
-If separation of intent and implementation, inevitably leads TypeScript, without 
-loss in static typing, to do the minimal possible syntax reservation from 
-EcmaScript, which is:
+If separation of separation of types from their implementation, inevitably leads
+TypeScript, without loss in static typing, to do the minimal possible syntax 
+reservation from EcmaScript, which is:
 
 * type imports:
     
@@ -410,7 +410,7 @@ concerned with transpilation anymore)
 * standardization will create no need to change existing EcmaScript parsers
 * standardization will not collide with other tc39 proposals
 * standardization will be trivial
-* enforces separation of intent and implementation
+* enforces separation of types from their implementation
 * enables simultaneous type checking source code with more than one type
 system
 
@@ -697,11 +697,10 @@ readability will not be an issue.
 Regarding verbosity, strictly speaking, a super set can always be made less
 verbose when compared to a complement, since a complement is forced to use
 the already existing comment syntax, while a super set reserves syntax outside 
-of existing comment syntax. However, from my experience with the complement and 
-super set methods of TypeScript, there is no practical impact in the developer 
+of existing comment syntax. However, from my experience with Typescript as a 
+complement and super, there is no practical impact in the developer 
 experience. In fact when comparing them, it is not actually clear which method 
-is less verbose, because in some cases, the complement is less verbose while in
-other cases the super set is less verbose.
+is less verbose.
 
 </details>
 
@@ -790,16 +789,11 @@ proposed super set will have types that have runtime semantics.
 
 These drawbacks do not exist with a proposal about complements.
 
-## Addressing possible proposal criticism.
+## Why this proposal will reduce super sets to complements.
 
-<!-- #region Nobody is going to adhere to complements. -->
-
-<details>
-<summary>Nobody is going to adhere to complements.</summary>
-
-People might claim that, regardless what tc39 manages to standardize regarding 
-static typing, nobody is going to adhere to it unless it is what the majority of
-the community has chosen, i.e. TypeScript. However:
+People might claim that, regardless the context proposal becoming standard, 
+nobody is going to adhere to it unless it is what the majority of the community 
+has chosen, i.e. TypeScript as a super set. However:
 
 * It is TypeScript's design goal to\[[link](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals)\]:
 
@@ -810,110 +804,20 @@ the community has chosen, i.e. TypeScript. However:
   > steer away from syntax because typescript uses it\[[link](https://github.com/tc39/notes/blob/main/meetings/2022-03/mar-29.md#types-as-comments-for-stage-1)\].
 
   Inevitably proposals that have nothing to do with static typing, but introduce
-  breaking changes to super sets, will be adopted. This will cause people to 
-  move to complements.
+  breaking changes to super sets, will be adopted.
 
-* Acceptance/discussion of this proposal, will aid in popularizing complements 
-and expose the drawbacks of super sets.
+* This proposal, is aiding in the popularization of complements, exposing the 
+drawbacks of super sets. This will lead people to try complements, and this
+will result in demand for super sets to support the syntax of the context 
+proposal.
 
-* People can still use TypeScript with this proposal.
+* Projects of great significance for the EcmaScript community, are switching 
+from TypeScript as a super set, to a looser form of complement: 
+    * SvelteKit\[[link](https://github.com/sveltejs/svelte/pull/8569)\]
+    * Deno\[[link](https://github.com/denoland/deno/pull/6793)\]
 
-* People that have created influential projects start to gradually conclude to 
-a looser form of complements \[[link](https://github.com/sveltejs/svelte/pull/8569)\].
-
-In the long run super sets will have no other choice than be reduced to 
-complements of EcmaScript.
-</details>
-
-<!-- #endregion -->
-
-<!-- #region The scope of tc39 does not include static typing. -->
-
-<details>
-<summary>The scope of tc39 does not include static typing.</summary>
-
-According to ecma-international the scope of tc39 is\[[link](https://www.ecma-international.org/technical-committees/tc39/)\]:
-
->Scope:
->
->Standardization of the general purpose, cross platform, vendor-neutral 
->programming language ECMAScript®. This includes the language syntax, semantics,
->and libraries and complementary technologies that support the language.
-
-Static typing is a complementary technology that supports the EcmaScript 
-language. Hence the context proposal belongs to the scope of tc39.
-
-</details>
-
-<!-- #endregion -->
-
-<!-- #region I see defining a syntax for types without semantics to be actively harmful. -->
-
-<details>
-<summary>I see defining a syntax for types without semantics to be actively
-harmful.</summary>
-
-This statement is a direct quote from the tc39 meeting notes about the types as 
-comments proposal\[[link](https://github.com/tc39/notes/blob/main/meetings/2022-03/mar-29.md#types-as-comments-for-stage-1)\].
-This argument applies to my proposal, so I have to address it.
-
-Standardizing a semantically typed EcmaScript super set will be a very 
-controversial topic that will likely never reach adoption, and for the case it 
-does, it will be after many years (possibly decades). What are we going to do up 
-until then? Continue using non standard super sets despite all their drawbacks
-when compared to complements?
-
-Also it is highly likely that such a semantically typed EcmaScript super set
-will be slower than untyped EcmaScript. This means that even then, there will 
-still be people that use untyped EcmaScript.
-
-In addition, the only practical path for standardizing semantically typed 
-EcmaScript is to start with the standardization of the bare minimum, which is:
-
-* type annotations for variable declarations
-* type imports
-* type alias declarations
-
-Notice that:
-
-* syntax for generics functions
-* typing function parameters in concretion function
-* typing function return type in concretion function
-* typing classes via `implements`
-* syntax associated with types at runtime
-
-are not actually required.
-
-That bare minimum is actually enforcing separation of intend and implementation.
-This makes me understand that, an ecosystem that has embraced complements, i.e. 
-embraced separation of intend and implementation, will have a smooth transition 
-from complements to semantically typed EcmaScript.
-</details>
-
-<!-- #endregion -->
-
-<!-- #region So you've already decided what the solution should be. -->
-
-<details>
-<summary>So you've already decided what the solution should be.</summary>
-
-This statement is a direct quote from the tc39 meeting notes about the types as 
-comments proposal\[[link](https://github.com/tc39/notes/blob/main/meetings/2022-03/mar-29.md#types-as-comments-for-stage-1)\].
-It has to do with the fact that proposals at stage 1 are supposed to be about 
-problem exploration, and not about coming up already with a solution. This 
-argument applies to my proposal, so I have to address it.
-
-The problem statement is that super sets are a suboptimal solution to the 
-problem of adding static type checking in EcmaScript. How can someone prove that
-a solution to a problem is suboptimal? This is only done by showing that there 
-is a better solution.
-
-If there is a better solution than the one I have proposed then it should be 
-the proposed solution.
-
-</details>
-
-<!-- #endregion -->
+Eventually super sets will have no other choice than be reduced to, or at least 
+support, complements of EcmaScript.
 
 ## List of projects implementing the proposal.
 
@@ -928,8 +832,8 @@ that ensures you are using TypeScript as a complement
 implement the proposal.
 * Read and understand the context proposal.
 * Currently, TypeScript will not static type check `.js` files that have a 
-corresponding `.d.ts` file. However there are feature requests for that
-\[[link](https://github.com/microsoft/TypeScript/issues/48911#issuecomment-1115905062)\].
+corresponding `.d.ts` file. However there are feature requests for that \[[link](https://github.com/microsoft/TypeScript/issues/48911#issuecomment-1115905062)\],
+or you can use complement-lint\[[link](https://github.com/lillallol/complement-lint)\].
 * There is no `noExplicitAny` option in the `tsconfig.json`. Even if you 
 have `noImplicitAny` enabled, things like, `const myArray = []`,
 `const myMap = new Map()`, will be treated by TypeScript as being explicitly
