@@ -1,9 +1,10 @@
-TODO     There is a common misconception that there is an intrinsic need for an extra
-    second pair of parenthesis\[[link](https://github.com/microsoft/TypeScript/issues/18212#issuecomment-328733868)\]. 
-
 # Reducing super sets to complements.
 
-> The essence of design is leaving things out.\[[link](https://www.youtube.com/watch?v=krB0enBeSiE&t=2572s)\]
+> When people come to you saying, can you pleas make it sloppy or add this cute 
+> feature, the answer should be no... The essence of design is leaving things 
+> out.
+>
+> _Brendan Eich creator of JavaScript_\[[link](https://www.youtube.com/embed/krB0enBeSiE?start=2572)\]
 
 > That generally, if you push on simplicity anywhere, you can get it everywhere 
 > eventually. So simplicity is the thing you should be driving, not complexity, 
@@ -16,7 +17,9 @@ TODO     There is a common misconception that there is an intrinsic need for an 
 > becoming irrelevant. And that’s a tough thing. And if you’re a consultant, 
 > it’s even harder, because you’ve established a standing in the community that 
 > you have clients because this stuff and this stuff is no longer the thing. And
-> so, a lot of them took this really, really hard.\[[link](https://corecursive.com/json-vs-xml-douglas-crockford/)\]
+> so, a lot of them took this really, really hard.
+>
+> _Douglas Crockford creator of JSON_\[[link](https://corecursive.com/json-vs-xml-douglas-crockford/)\]
 
 **Champion(s)**: 
 
@@ -713,7 +716,7 @@ If you do not want to change the public api, here is another hack:
   export type _IChunk = <T>(
       array     : T[],
       length    : number,
-      
+      toReturn ?: T[][],
   ) => T[][];
   ```
 
@@ -869,10 +872,6 @@ These drawbacks do not exist with a proposal about complements.
 
 ## Why this proposal will reduce super sets to complements.
 
-People might claim that, regardless the context proposal becoming standard, 
-nobody is going to adhere to it unless it is what the majority of the community 
-has chosen, i.e. TypeScript as a super set. However:
-
 * It is TypeScript's design goal to\[[link](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals)\]:
 
   > Align with current and future ECMAScript proposals.
@@ -885,17 +884,12 @@ has chosen, i.e. TypeScript as a super set. However:
   breaking changes to super sets, will be adopted.
 
 * This proposal, is aiding in the popularization of complements, exposing the 
-drawbacks of super sets. This will lead people to try complements, and this
-will result in demand for super sets to support the syntax of the context 
-proposal.
+drawbacks of super sets.
 
 * Projects of great significance for the EcmaScript community, are switching 
 from TypeScript as a super set, to a looser form of complement: 
     * SvelteKit\[[link](https://github.com/sveltejs/svelte/pull/8569)\]
     * Deno\[[link](https://github.com/denoland/deno/pull/6793)\]
-
-Eventually super sets will have no other choice than be reduced to, or at least 
-support, complements of EcmaScript.
 
 ## List of projects implementing the proposal.
 
