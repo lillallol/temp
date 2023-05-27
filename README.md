@@ -31,9 +31,12 @@ TODO     There is a common misconception that there is an intrinsic need for an 
 ## The gist
 
 **Static complement of EcmaScript**: Static types live outside of `.js` files, 
-and used in `.js` via comments. For example, TypeScript can be used as a 
-complement, if all types are written in `.ts` files, and values in `.js` files 
-are type annotated via `/**@type {import("./path/to/file.js").IExportedTypeName}*/`\[[link](#list-of-projects-implementing-the-proposal)\].
+and are applied to values in `.js` via comments that type import and annotate.
+
+> For example, TypeScript is used as a complement, if all types are written 
+> in `.ts` files, and values in `.js` files are type annotated via 
+> `/**@type {import("./path/to/file.js").IExportedTypeName}*/`. Complex projects 
+> have actually been built like this\[[link](#list-of-projects-implementing-the-proposal)\].
 
 **Problem statement**: Statically typed super sets of EcmaScript are inferior to
 complements. That is because, by definition, super sets can not reap the 
@@ -43,22 +46,20 @@ benefits of complements, which are:
 * not reserving syntax\[[link](#advantages-1)\]
 
 This, coupled with the fact that the ecosystem is dominated by super sets,
-because it has never been presented equally with a complement, leads to an
-unhealthy ecosystem. Therefore, tc39 should pave the way for, eventually, ending
-the domination of super sets.
+because it has never been presented equally with a complement, leads to an 
+unhealthy ecosystem. Therefore, tc39 should pave the way for ending the 
+domination of super sets.
 
-**Proposal**: Add in the EcmaScript specification that the following, type 
-system agnostic, battle tested\[[link](#list-of-projects-implementing-the-proposal)\]
-comments:
+**Proposal**: Add in the EcmaScript specification that the following comments:
 
 * `//:"./path/to/file.js".IExportedTypeName` type-import-annotate a statement
 
-    The module specifier has to be type system agnostic, i.e. changing third party
+    The module specifier has to be type system independent, i.e. changing third party
 static type checkers, does not require refactoring the module specifier. This 
 can be achieved by enforcing the module specifier to end with `.js`. It is up to
-the type checker how to resolve this path to its corresponding type file. For 
-example, TypeScript would first search for the same path replacing `.js` with 
-`.d.ts` and if this path does not exist it would try for `.ts`.
+the type checker how to resolve this path to its corresponding type file.
+    > For example, TypeScript would first search for the same path replacing 
+    > `.js` with `.d.ts` and if this path does not exist it would try for `.ts`.
 * `/*:"./path/to/file.js".IExportedTypeName*/` type-import-annotate an
 expression
 * `//:type-checker-expect-error` expect type error in statement
@@ -69,6 +70,8 @@ are to be used by third party complements. Do not define a type system, let
 each third party define its own. Like this, all the problems that the type 
 annotations proposal\[[link](https://github.com/tc39/proposal-type-annotations)\]
 is trying to solve, are effortlessly solved, without any of its drawbacks\[[link](#super-set-vs-complement-proposal)\].
+In the long run this will end the domination of super sets \[[link](#why-this-proposal-will-reduce-super-sets-to-complements)\]
+leading to a healthier ecosystem.
 
 ## The intuition behind the proposal.
 
@@ -76,9 +79,9 @@ It all started when I was trying to create documentation for the public API of
 my TypeScript projects. I understood that this can be done without the need of 
 documentation generation libraries, by simply separating the types from the
 implementation of the public API, in a single manually created `index.d.ts` 
-file. One day, being fed up with all the drawbacks of compiling `.ts` to `.js`,
-I had the idea of separating also the types from the implementation of the 
-private API. Like this the concept of TypeScript as a complement was born, and 
+file. Then, one day, being fed up with all the drawbacks of compiling `.ts` to 
+`.js`, I realized that I would not need to compile, given that I do the same for
+the private API. Like this the concept of TypeScript as a complement was born.
 I was left wondering why it is not the default. Still to this day I have not 
 received a convincing answer, so here I am trying to convince everyone to do the
 same, until proven wrong.
@@ -113,13 +116,23 @@ is not enforced.
 
 #### Advantages.
 
-##### Maintainable public API.
+<!--#region Maintainable public API. -->
+
+<details>
+<summary>Maintainable public API.</summary>
 
 Since the types are separated from their implementations, it makes sense to 
 gather all of the public API types in a single file. This makes it easy to 
 maintain the public API since it is not scattered in multiple files.
 
-##### Less need for `.d.ts` generators.
+</details>
+
+<!--#endregion -->
+
+<!--#region Less need for `.d.ts` generators. -->
+
+<details>
+<summary>Less need for <code>.d.ts</code> generators.</summary>
 
 The single file that contains the public API can in fact be a manually 
 created `index.d.ts` file, and hence reduce the need for `.d.ts` files 
@@ -127,7 +140,14 @@ generation. The files that define the implementations of the public API will
 derive their corresponding types from `index.d.ts` so that they can conform to 
 it.
 
-##### Less need for documentation generations libraries.
+</details>
+
+<!--#endregion -->
+
+<!--#region Less need for documentation generations libraries. -->
+
+<details>
+<summary>Less need for documentation generations libraries.</summary>
 
 `index.d.ts` can act as documentation. The documentation section of the 
 `README.md` of a project can just link to `index.d.ts`. This makes documentation
@@ -165,7 +185,14 @@ Notice that both the types and the JSDoc descriptions are contained in
 both the type and the JSDoc description of `index.d.ts` in the IDE documentation
 popup window, when you hover over the imported variable.
 
-##### Flexibility on making the public API readable.
+</details>
+
+<!--#endregion -->
+
+<!--#region Flexibility on making the public API readable. -->
+
+<details>
+<summary>Flexibility on making the public API readable.</summary>
 
 You can put the most important types in the top of `index.d.ts`, and the least 
 important in the bottom. You can manually edit the format, define types and IDE
@@ -175,7 +202,14 @@ opens in your IDE, with the font, syntax highlighting, theme and keyboard
 shortcuts your are familiar with. It is not trivial to do these with 
 documentation generation libraries (e.g. typedoc\[[link](https://typedoc.org/)\]).
 
-##### Reduced need to bundle declaration files.
+</details>
+
+<!--#endregion -->
+
+<!--#region Reduced need to bundle declaration files. -->
+
+<details>
+<summary>Reduced need to bundle declaration files.</summary>
 
 Many times, I find myself trying to bundle a library to an esm `index.js` file 
 with its associated `index.d.ts` file. From the previous points it can be seen 
@@ -183,7 +217,14 @@ that there will be a reduced need for `.d.ts` bundlers. Just make sure that
 `index.d.ts` is indeed acting like a public API, i.e. it does not depend on the
 private API and hence imports nothing from it.
 
-##### TypeScript reserves the least possible syntax from EcmaScript.
+</details>
+
+<!--#endregion -->
+
+<!--#region TypeScript reserves the least possible syntax from EcmaScript. -->
+
+<details>
+<summary>TypeScript reserves the least possible syntax from EcmaScript.</summary>
 
 You just need these two things:
 
@@ -202,33 +243,76 @@ You just need these two things:
 Although this point might initially seem not that much of a big deal, it is 
 actually the gateway to the next section.
 
-##### Loose coupling of EcmaScript code with the type system.
+</details>
+
+<!--#endregion -->
+
+<!--#region Loose coupling of EcmaScript code with the type system. -->
+
+<details>
+<summary>Loose coupling of EcmaScript code with the type system.</summary>
 
 Not only the public API, but also the private API can be contained in a single 
 file, or at least a few files. This, combined with the fact of minimum syntax 
 reservation, makes the migration (automated or manual) from one type system to 
 another, easier.
 
-##### TypeScript maintainers have less work to do.
+</details>
+
+<!--#endregion -->
+
+<!--#region TypeScript maintainers have less work to do. -->
+
+<details>
+<summary>TypeScript maintainers have less work to do.</summary>
 
 A direct result of reserving the least possible syntax. They no longer need to
 enable mix of implementation and indent.
 
-##### The probability for TypeScript to have syntax collisions with future EcmaScript syntax, gets minimized.
+</details>
+
+<!--#endregion -->
+
+<!--#region The probability for TypeScript to have syntax collisions with future EcmaScript syntax, gets minimized. -->
+
+<details>
+<summary>The probability for TypeScript to have syntax collisions with future 
+EcmaScript syntax, gets minimized.</summary>
 
 A direct result of reserving the least possible syntax.
 
-##### Code that looks familiar to the EcmaScript developers.
+</details>
+
+<!--#endregion -->
+
+<!--#region Code that looks familiar to the EcmaScript developers. -->
+
+<details>
+<summary>Code that looks familiar to the EcmaScript developers.</summary>
 
 A direct result of reserving the least possible syntax.
 
-##### Formatters, syntax highlighters, etc, have a simpler job to do.
+</details>
+
+<!--#endregion -->
+
+<!--#region Formatters, syntax highlighters, etc, have a simpler job to do. -->
+
+<details>
+<summary>Formatters, syntax highlighters, etc, have a simpler job to do.</summary>
 
 A direct result of reserving the least possible syntax.
+
+</details>
+
+<!--#endregion -->
 
 #### Addressing possible criticism.
 
-##### Frequent context switching.
+<!--#region Frequent context switching. -->
+
+<details>
+<summary>Frequent context switching.</summary>
 
 More specifically, when you write the implementation of a type you will have to 
 frequently switch between the implementation file and the abstraction file, 
@@ -236,14 +320,28 @@ because you want to see the type. This is not valid since the IDE will show you
 the type of an implementation by hovering on its annotation. Also the IDE will
 highlight the parts of the implementation that do not conform to the type.
 
-##### You will not know where the types are.
+</details>
+
+<!--#endregion -->
+
+<!--#region You will not know where the types are. -->
+
+<details>
+<summary>You will not know where the types are.</summary>
 
 More specifically because the files for types can grow large, that will make it 
 hard to find the types. This is not valid since if you know where the 
 implementation of the type is, then you can use the go to type definition 
 feature of your IDE to find it.
 
-##### This will lead to clutter of the common space.
+</details>
+
+<!--#endregion -->
+
+<!--#region This will lead to clutter of the common space. -->
+
+<details>
+<summary>This will lead to clutter of the common space.</summary>
 
 Multiple `.ts` files can be used to segregate the common space. Here is what I 
 do in my projects:
@@ -254,10 +352,22 @@ do in my projects:
 * `testApi.ts` is used to define types that are used only in test files
 * `dicApi.ts` is used to define the types of the dependency graph of the DIC
 
-##### There will be no reduced need for bundling declaration files since `index.d.ts` will depend on types from other files.
+</details>
+
+<!--#endregion -->
+
+<!--#region There will be no reduced need for bundling declaration files since `index.d.ts` will depend on types from other files. -->
+
+<details>
+<summary>There will be no reduced need for bundling declaration files since 
+<code>index.d.ts</code> will depend on types from other files.</summary>
 
 If the public API depends on the private API, then reverse the dependency, and
 make the private API depend on the public API.
+
+</details>
+
+<!--#endregion -->
 
 ### Concluding to complements.
 
@@ -340,8 +450,8 @@ during the development stage)
 * adherence to KISS (Keep It Super Simple)
 * adherence to SRP (Single Responsibility Principle) (e.g. TypeScript is not 
 concerned with transpilation anymore)
-* it is type system agnostic
-* can be easily adopted by different static type checkers
+* it is type system independent
+* can be easily adopted by static type checkers
 * standardization will have no effect on the runtime
 * standardization will create no need to change existing EcmaScript parsers
 * standardization will not collide with other tc39 proposals
@@ -352,7 +462,10 @@ system
 
 #### Addressing possible criticism.
 
-##### You will not be able to use `as` and `!.`
+<!--#region You will not be able to use `as` and `!.` -->
+
+<details>
+<summary>You will not be able to use <code>as</code> and <code>!.</code>.</summary>
 
 Using `as`\[[link](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)\]
 and `!.`\[[link](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-)\]
@@ -387,7 +500,14 @@ performance increases due to avoiding run time checks, then they have to prove
 it with benchmarks on real world projects. Until then, `as` and `!` is a bad
 pattern that reduces static type safety.
 
-##### You will not be able to use `as const`.
+</details>
+
+<!--#endregion -->
+
+<!--#region You will not be able to use `as const`. -->
+
+<details>
+<summary>You will not be able to use <code>as const</code>.</summary>
 
 Instead of using const type assertion you can do the following:
 
@@ -406,7 +526,15 @@ Instead of using const type assertion you can do the following:
     const myData = asConstArray([1,2]);
     ```
 
-##### You will not be able to provide type parameters to generic function calls.
+</details>
+
+<!--#endregion -->
+
+<!--#region You will not be able to provide type parameters to generic function calls. -->
+
+<details>
+<summary>You will not be able to provide type parameters to generic function 
+calls.</summary>
 
 Consider using a library with the following public API:
 
@@ -454,7 +582,15 @@ method:
     const myDLLFactory = DLLFactory;
     ```
 
-##### You will not be able to use type parameters inside the definition of generic functions.
+</details>
+
+<!--#endregion -->
+
+<!--#region You will not be able to use type parameters inside the definition of generic functions. -->
+
+<details>
+<summary>You will not be able to use type parameters inside the definition of 
+generic functions.</summary>
 
 Here is the implementation of the `chunk` function of the lodash library, using
 TypeScript as a complement:
@@ -558,7 +694,14 @@ If you do not want to change the public api, here is another hack:
   export const chunk = (array,length) => _chunk(array,length)
   ```
 
-##### You will not be able to use `enum`.
+</details>
+
+<!--#endregion -->
+
+<!--#region You will not be able to use `enum`. -->
+
+<details>
+<summary>You will not be able to use <code>enum</code>.</summary>
 
 This is not an intrinsic inability of complements, since\[[link](https://www.typescriptlang.org/docs/handbook/enums.html)\]:
 
@@ -567,7 +710,15 @@ This is not an intrinsic inability of complements, since\[[link](https://www.typ
 
 So it is both a matter of support from the type system but also EcmaScript.
 
-##### It will produce unreadable and verbose code, that will reduce developer experience.
+</details>
+
+<!--#endregion -->
+
+<!--#region It will produce unreadable and verbose code, that will reduce developer experience. -->
+
+<details>
+<summary>It will produce unreadable and verbose code, that will reduce developer
+experience.</summary>
 
 Objectively speaking, knowing the type of a concretion makes it easier to read
 the code. How can someone know the type of a concretions when using complements?
@@ -589,7 +740,14 @@ complement and super, there is no practical impact in the developer
 experience. In fact when comparing them, it is not actually clear which method 
 is less verbose.
 
-##### Super sets are better because the community has chosen them.
+</details>
+
+<!--#endregion -->
+
+<!--#region Super sets are better because the community has chosen them. -->
+
+<details>
+<summary>Super sets are better because the community has chosen them.</summary>
 
 This is a logical fallacy called argumentum ad populum\[[link](https://en.wikipedia.org/wiki/Argumentum_ad_populum)\].
 The fact, that something has be chosen by the majority, does not prove it is the
@@ -637,6 +795,10 @@ at the TypeScript handbook will convince you).
 > Why the TypeScript creators decide to go for super set instead of complement?
 
 I do not know. The TypeScript creators have to answer that.
+
+</details>
+
+<!--#endregion -->
 
 ## Super set vs complement proposal.
 
