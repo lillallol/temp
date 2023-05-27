@@ -125,6 +125,8 @@ Since the types are separated from their implementations, it makes sense to
 gather all of the public API types in a single file. This makes it easy to 
 maintain the public API since it is not scattered in multiple files.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -139,6 +141,8 @@ created `index.d.ts` file, and hence reduce the need for `.d.ts` files
 generation. The files that define the implementations of the public API will
 derive their corresponding types from `index.d.ts` so that they can conform to 
 it.
+
+***
 
 </details>
 
@@ -185,6 +189,8 @@ Notice that both the types and the JSDoc descriptions are contained in
 both the type and the JSDoc description of `index.d.ts` in the IDE documentation
 popup window, when you hover over the imported variable.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -202,6 +208,8 @@ opens in your IDE, with the font, syntax highlighting, theme and keyboard
 shortcuts your are familiar with. It is not trivial to do these with 
 documentation generation libraries (e.g. typedoc\[[link](https://typedoc.org/)\]).
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -216,6 +224,8 @@ with its associated `index.d.ts` file. From the previous points it can be seen
 that there will be a reduced need for `.d.ts` bundlers. Just make sure that 
 `index.d.ts` is indeed acting like a public API, i.e. it does not depend on the
 private API and hence imports nothing from it.
+
+***
 
 </details>
 
@@ -243,6 +253,8 @@ You just need these two things:
 Although this point might initially seem not that much of a big deal, it is 
 actually the gateway to the next section.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -257,6 +269,8 @@ file, or at least a few files. This, combined with the fact of minimum syntax
 reservation, makes the migration (automated or manual) from one type system to 
 another, easier.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -268,6 +282,8 @@ another, easier.
 
 A direct result of reserving the least possible syntax. They no longer need to
 enable mix of implementation and indent.
+
+***
 
 </details>
 
@@ -281,6 +297,8 @@ EcmaScript syntax, gets minimized.</summary>
 
 A direct result of reserving the least possible syntax.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -292,6 +310,8 @@ A direct result of reserving the least possible syntax.
 
 A direct result of reserving the least possible syntax.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -302,6 +322,8 @@ A direct result of reserving the least possible syntax.
 <summary>Formatters, syntax highlighters, etc, have a simpler job to do.</summary>
 
 A direct result of reserving the least possible syntax.
+
+***
 
 </details>
 
@@ -320,6 +342,8 @@ because you want to see the type. This is not valid since the IDE will show you
 the type of an implementation by hovering on its annotation. Also the IDE will
 highlight the parts of the implementation that do not conform to the type.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -333,6 +357,8 @@ More specifically because the files for types can grow large, that will make it
 hard to find the types. This is not valid since if you know where the 
 implementation of the type is, then you can use the go to type definition 
 feature of your IDE to find it.
+
+***
 
 </details>
 
@@ -352,6 +378,8 @@ do in my projects:
 * `testApi.ts` is used to define types that are used only in test files
 * `dicApi.ts` is used to define the types of the dependency graph of the DIC
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -364,6 +392,8 @@ do in my projects:
 
 If the public API depends on the private API, then reverse the dependency, and
 make the private API depend on the public API.
+
+***
 
 </details>
 
@@ -500,6 +530,8 @@ performance increases due to avoiding run time checks, then they have to prove
 it with benchmarks on real world projects. Until then, `as` and `!` is a bad
 pattern that reduces static type safety.
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -525,6 +557,8 @@ Instead of using const type assertion you can do the following:
     
     const myData = asConstArray([1,2]);
     ```
+
+***
 
 </details>
 
@@ -581,6 +615,8 @@ method:
      */
     const myDLLFactory = DLLFactory;
     ```
+
+***
 
 </details>
 
@@ -694,6 +730,8 @@ If you do not want to change the public api, here is another hack:
   export const chunk = (array,length) => _chunk(array,length)
   ```
 
+***
+
 </details>
 
 <!--#endregion -->
@@ -709,6 +747,8 @@ This is not an intrinsic inability of complements, since\[[link](https://www.typ
 >extension of EcmaScript.
 
 So it is both a matter of support from the type system but also EcmaScript.
+
+***
 
 </details>
 
@@ -739,6 +779,8 @@ of existing comment syntax. However, from my experience with Typescript as a
 complement and super, there is no practical impact in the developer 
 experience. In fact when comparing them, it is not actually clear which method 
 is less verbose.
+
+***
 
 </details>
 
@@ -795,6 +837,8 @@ at the TypeScript handbook will convince you).
 > Why the TypeScript creators decide to go for super set instead of complement?
 
 I do not know. The TypeScript creators have to answer that.
+
+***
 
 </details>
 
@@ -878,5 +922,7 @@ is not the case for arrow functions. There is an issue open for that \[[link](ht
 to concretion in `.js` versus `.ts` \[[link](https://github.com/microsoft/TypeScript/issues/30009#issuecomment-469385244)\].
 * There is currently no support for extracting type parameters from generic
 functions. There is a feature request for that \[[link](https://github.com/microsoft/TypeScript/issues/49112)\].
+
+***
 
 </details>
