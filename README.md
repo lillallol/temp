@@ -113,31 +113,21 @@ is not enforced.
 
 #### Advantages.
 
-<details>
-<summary>expand/collapse</summary>
-
-<br>
-
-<details>
-<summary>Maintainable public API.</summary>
+##### Maintainable public API.
 
 Since the types are separated from their implementations, it makes sense to 
 gather all of the public API types in a single file. This makes it easy to 
 maintain the public API since it is not scattered in multiple files.
-</details>
 
-<details>
-<summary>Less need for <code>.d.ts</code> generators.</summary>
+##### Less need for `.d.ts` generators.
 
 The single file that contains the public API can in fact be a manually 
 created `index.d.ts` file, and hence reduce the need for `.d.ts` files 
 generation. The files that define the implementations of the public API will
 derive their corresponding types from `index.d.ts` so that they can conform to 
 it.
-</details>
 
-<details>
-<summary>Less need for documentation generations libraries.</summary>
+##### Less need for documentation generations libraries.
 
 `index.d.ts` can act as documentation. The documentation section of the 
 `README.md` of a project can just link to `index.d.ts`. This makes documentation
@@ -174,10 +164,8 @@ Notice that both the types and the JSDoc descriptions are contained in
 `index.d.ts`, that means that imports from `index` show (or can be made to show) 
 both the type and the JSDoc description of `index.d.ts` in the IDE documentation
 popup window, when you hover over the imported variable.
-</details>
 
-<details>
-<summary>Flexibility on making the public API readable.</summary>
+##### Flexibility on making the public API readable.
 
 You can put the most important types in the top of `index.d.ts`, and the least 
 important in the bottom. You can manually edit the format, define types and IDE
@@ -186,21 +174,16 @@ both the library maintainer but also the library consumer. Finally `index.d.ts`
 opens in your IDE, with the font, syntax highlighting, theme and keyboard 
 shortcuts your are familiar with. It is not trivial to do these with 
 documentation generation libraries (e.g. typedoc\[[link](https://typedoc.org/)\]).
-</details>
 
-<details>
-<summary>Reduced need to bundle declaration files.</summary>
+##### Reduced need to bundle declaration files.
 
 Many times, I find myself trying to bundle a library to an esm `index.js` file 
 with its associated `index.d.ts` file. From the previous points it can be seen 
 that there will be a reduced need for `.d.ts` bundlers. Just make sure that 
 `index.d.ts` is indeed acting like a public API, i.e. it does not depend on the
 private API and hence imports nothing from it.
-</details>
 
-<details>
-<summary>TypeScript reserves the least possible syntax from EcmaScript.
-</summary>
+##### TypeScript reserves the least possible syntax from EcmaScript.
 
 You just need these two things:
 
@@ -218,61 +201,34 @@ You just need these two things:
 
 Although this point might initially seem not that much of a big deal, it is 
 actually the gateway to the next section.
-</details>
 
-<details>
-<summary>Loose coupling of EcmaScript code with the type system.</summary>
+##### Loose coupling of EcmaScript code with the type system.
 
 Not only the public API, but also the private API can be contained in a single 
 file, or at least a few files. This, combined with the fact of minimum syntax 
 reservation, makes the migration (automated or manual) from one type system to 
 another, easier.
-</details>
 
-<details>
-<summary>TypeScript maintainers have less work to do.</summary>
+##### TypeScript maintainers have less work to do.
 
 A direct result of reserving the least possible syntax. They no longer need to
 enable mix of implementation and indent.
 
-</details>
-
-<details>
-<summary>The probability for TypeScript to have syntax collisions with 
-future EcmaScript syntax, gets minimized.</summary>
+##### The probability for TypeScript to have syntax collisions with future EcmaScript syntax, gets minimized.
 
 A direct result of reserving the least possible syntax.
 
-</details>
-
-<details>
-<summary>Code that looks familiar to the EcmaScript developers.</summary>
+##### Code that looks familiar to the EcmaScript developers.
 
 A direct result of reserving the least possible syntax.
 
-</details>
-
-<details>
-<summary>Formatters, syntax highlighters, etc, have a simpler job to do.
-</summary>
+##### Formatters, syntax highlighters, etc, have a simpler job to do.
 
 A direct result of reserving the least possible syntax.
-
-</details>
-
-***
-
-</details>
 
 #### Addressing possible criticism.
 
-<details>
-<summary>expand/collapse</summary>
-
-<br>
-
-<details>
-<summary>Frequent context switching.</summary>
+##### Frequent context switching.
 
 More specifically, when you write the implementation of a type you will have to 
 frequently switch between the implementation file and the abstraction file, 
@@ -280,45 +236,28 @@ because you want to see the type. This is not valid since the IDE will show you
 the type of an implementation by hovering on its annotation. Also the IDE will
 highlight the parts of the implementation that do not conform to the type.
 
-</details>
-
-<details>
-<summary>You will not know where the types are.</summary>
+##### You will not know where the types are.
 
 More specifically because the files for types can grow large, that will make it 
 hard to find the types. This is not valid since if you know where the 
 implementation of the type is, then you can use the go to type definition 
 feature of your IDE to find it.
 
-</details>
+##### This will lead to clutter of the common space.
 
-<details> 
-<summary>This will lead to clutter of the common space.</summary>
-
-Multiple `.ts` files can be used to segregate the common space. Here is a 
-possible example:
+Multiple `.ts` files can be used to segregate the common space. Here is what I 
+do in my projects:
 
 * `index.d.ts` is used to define the public API
 * `privateApi.ts` is used to define the private API
-* `types.ts` is used to define types shared in `privateApi.ts` or needed in its
-implementation TODO
+* `types.ts` is used to define types for the internals of the private API
 * `testApi.ts` is used to define types that are used only in test files
 * `dicApi.ts` is used to define the types of the dependency graph of the DIC
 
-</details>
-
-<details>
-<summary>There will be no reduced need for bundling declaration files since 
-<code>index.d.ts</code> will depend on types from other files.</summary>
+##### There will be no reduced need for bundling declaration files since `index.d.ts` will depend on types from other files.
 
 If the public API depends on the private API, then reverse the dependency, and
 make the private API depend on the public API.
-
-</details>
-
-***
-
-</details>
 
 ### Concluding to complements.
 
@@ -376,9 +315,6 @@ export const add = (a,b) => a+b;
 
 #### Advantages
 
-<details>
-<summary>expand/collapse</summary>
-
 * no `.ts` to `.js` compilation needed
 * `.ts` files that contain implementations become redundant
 * no need for `tsc` to be a compiler
@@ -414,21 +350,9 @@ concerned with transpilation anymore)
 * enables simultaneous type checking source code with more than one type
 system
 
-***
-
-</details>
-
 #### Addressing possible criticism.
 
-<details>
-<summary>expand/collapse</summary>
-
-<br>
-
-<!-- #region You will not be able to use `as` and `!.`. -->
-
-<details>
-<summary>You will not be able to use <code>as</code> and <code>!.</code>.</summary>
+##### You will not be able to use `as` and `!.`
 
 Using `as`\[[link](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)\]
 and `!.`\[[link](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-)\]
@@ -462,14 +386,8 @@ Finally if people have the theory that `as` and `!` will lead to significant
 performance increases due to avoiding run time checks, then they have to prove 
 it with benchmarks on real world projects. Until then, `as` and `!` is a bad
 pattern that reduces static type safety.
-</details>
 
-<!-- #endregion -->
-
-<!-- #region You will not be able to use `as const` -->
-
-<details>
-<summary>You will not be able to use <code>as const</code>.</summary>
+##### You will not be able to use `as const`.
 
 Instead of using const type assertion you can do the following:
 
@@ -488,15 +406,7 @@ Instead of using const type assertion you can do the following:
     const myData = asConstArray([1,2]);
     ```
 
-</details>
-
-<!-- #endregion -->
-
-<!-- #region You will not be able to provide type parameters to generic function calls. -->
-
-<details>
-<summary>You will not be able to provide type parameters to generic function 
-calls.</summary>
+##### You will not be able to provide type parameters to generic function calls.
 
 Consider using a library with the following public API:
 
@@ -544,15 +454,7 @@ method:
     const myDLLFactory = DLLFactory;
     ```
 
-</details>
-
-<!-- #endregion -->
-
-<!-- #region You will not be able to use type parameters inside the definition of generic functions. -->
-
-<details>
-<summary>You will not be able to use type parameters inside the definition of 
-generic functions.</summary>
+##### You will not be able to use type parameters inside the definition of generic functions.
 
 Here is the implementation of the `chunk` function of the lodash library, using
 TypeScript as a complement:
@@ -656,14 +558,7 @@ If you do not want to change the public api, here is another hack:
   export const chunk = (array,length) => _chunk(array,length)
   ```
 
-</details>
-
-<!-- #endregion -->
-
-<!-- #region You will not be able to use enum. -->
-
-<details>
-<summary>You will not be able to use <code>enum</code>.</summary>
+##### You will not be able to use `enum`.
 
 This is not an intrinsic inability of complements, since\[[link](https://www.typescriptlang.org/docs/handbook/enums.html)\]:
 
@@ -672,15 +567,7 @@ This is not an intrinsic inability of complements, since\[[link](https://www.typ
 
 So it is both a matter of support from the type system but also EcmaScript.
 
-</details>
-
-<!-- #endregion -->
-
-<!-- #region It will produce unreadable and verbose code, that will reduce developer experience. -->
-
-<details>
-<summary>It will produce unreadable and verbose code, that will reduce developer
-experience.</summary>
+##### It will produce unreadable and verbose code, that will reduce developer experience.
 
 Objectively speaking, knowing the type of a concretion makes it easier to read
 the code. How can someone know the type of a concretions when using complements?
@@ -702,14 +589,7 @@ complement and super, there is no practical impact in the developer
 experience. In fact when comparing them, it is not actually clear which method 
 is less verbose.
 
-</details>
-
-<!-- #endregion -->
-
-<!-- #region Super sets are better because the community has chosen them -->
-
-<details>
-<summary>Super sets are better because the community has chosen them.</summary>
+##### Super sets are better because the community has chosen them.
 
 This is a logical fallacy called argumentum ad populum\[[link](https://en.wikipedia.org/wiki/Argumentum_ad_populum)\].
 The fact, that something has be chosen by the majority, does not prove it is the
@@ -757,14 +637,6 @@ at the TypeScript handbook will convince you).
 > Why the TypeScript creators decide to go for super set instead of complement?
 
 I do not know. The TypeScript creators have to answer that.
-
-</details>
-
-<!-- #endregion -->
-
-***
-
-</details>
 
 ## Super set vs complement proposal.
 
