@@ -1,11 +1,32 @@
 # Reducing super sets to complements.
 
-> When people come to you saying, can you pleas make it sloppy or add this cute 
-> feature, the answer should be no... The essence of design is leaving things 
+> When people come to you saying, can you please make it sloppy or add this cute 
+> feature, the answer should be no. ...The essence of design is leaving things 
 > out.
 >
 > _Brendan Eich creator of JavaScript_\[[link](https://www.youtube.com/embed/krB0enBeSiE?start=2572)\]
 
+> There were some people who said, “Oh, we just committed to XML, sorry, we 
+> can’t do anything that isn’t XML.” And there are some people who were a little
+> bit more open who said, “Well, we can only do things if it’s a standard.",and 
+> I said, “Well, it is a standard. It’s a proper subset of the ECMAScript 
+> standard.”, they said, “That’s not a standard.”, so I decided I will make this 
+> thing a standard.
+>
+> ...
+>
+> I wrote a one-page website that described JSON, because you don’t need much 
+> more than one page because it’s really not very complicated.
+>
+> ...
+>
+> And so, when I started showing how JSON works, he was really threatened by 
+> that. And on his website, which was well-read at the time, he complained that,
+> “this isn’t even XML. We should find who did this and string them up now”, 
+> which was a really ugly thing to say.
+>
+> ...
+>
 > That generally, if you push on simplicity anywhere, you can get it everywhere 
 > eventually. So simplicity is the thing you should be driving, not complexity, 
 > but they didn’t know that. And I think if you have bought into that, you have 
@@ -16,8 +37,8 @@
 > invested a lot of time and energy into learning this thing, which turns out is
 > becoming irrelevant. And that’s a tough thing. And if you’re a consultant, 
 > it’s even harder, because you’ve established a standing in the community that 
-> you have clients because this stuff and this stuff is no longer the thing. And
-> so, a lot of them took this really, really hard.
+> you have clients because this stuff, and this stuff is no longer the thing. 
+> And so, a lot of them took this really, really hard.
 >
 > _Douglas Crockford creator of JSON_\[[link](https://corecursive.com/json-vs-xml-douglas-crockford/)\]
 
@@ -73,7 +94,7 @@ are to be used by third party complements. Do not define a type system, let
 each third party define its own. Like this, all the problems that the type 
 annotations proposal\[[link](https://github.com/tc39/proposal-type-annotations)\]
 is trying to solve, are effortlessly solved, without any of its drawbacks\[[link](#super-set-vs-complement-proposal)\].
-In the long run this will end the domination of super sets \[[link](#why-this-proposal-will-reduce-super-sets-to-complements)\]
+In the long run this will end the domination of super sets\[[link](#why-this-proposal-will-reduce-super-sets-to-complements)\]
 leading to a healthier ecosystem.
 
 ## The intuition behind the proposal.
@@ -894,8 +915,9 @@ from TypeScript as a super set, to a looser form of complement:
 ## List of projects implementing the proposal.
 
 1. [complement-lint](https://github.com/lillallol/complement-lint) - a linter 
-that ensures you are using TypeScript as a complement
-1. [es-test](https://github.com/lillallol/es-test) - testing library
+that uses the TypeScript compiler API to ensure that you are using TypeScript as
+a complement
+1. [es-test](https://github.com/lillallol/es-test) - EcmaScript testing library
  
 <details>
 <summary>Things to know before using TypeScript as a complement.</summary>
