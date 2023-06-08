@@ -54,13 +54,21 @@
 
 ## The gist
 
-**Static complement of EcmaScript**: Static types live outside of `.js` files, 
-and are applied to values in `.js` via comments that type import and annotate.
+**DEFINITION: Static complement of EcmaScript**: Static types are defined 
+outside of `.js` files, and are applied to values in `.js`, via comments that 
+type import and annotate. Like this, static type syntax will never collide with 
+`.js` syntax, hence the name complement\[[link](https://en.wikipedia.org/wiki/Complement_(set_theory)#Definition)\],
+in contrast to super set\[[link](https://en.wikipedia.org/wiki/Subset#Definition)]\.
 
 > For example, TypeScript is used as a complement, if all types are written 
 > in `.ts` files, and values in `.js` files are type annotated via 
 > `/**@type {import("./path/to/file.js").IExportedTypeName}*/`. Complex projects 
-> have actually been built like this\[[link](#list-of-projects-implementing-the-proposal)\].
+> have actually been built like this\[[link](#list-of-projects-implementing-the-proposal)\],
+> while others have migrated from TypeScript as a superset to a more loose 
+> definition of complement, where types, instead of strictly being defined in 
+> `.ts` files, can also be defined in comments in `.js` via JSDoc tags:
+>   * SvelteKit\[[link](https://github.com/sveltejs/svelte/pull/8569#issuecomment-1554627608)\]
+>   * Deno\[[link](https://github.com/denoland/deno/pull/6793)\]
 
 **Problem statement**: Statically typed super sets of EcmaScript are inferior to
 complements. That is because, by definition, super sets can not reap the 
@@ -69,30 +77,30 @@ benefits of complements, which are:
 * enforcing separation of types from their implementation\[[link](#advantages)\]
 * not reserving syntax\[[link](#advantages-1)\]
 
-This, coupled with the fact that the ecosystem is dominated by super sets,
-because it has never been presented equally with a complement, leads to an 
-unhealthy ecosystem. Therefore, tc39 should pave the way for ending the 
-domination of super sets.
+This, coupled with the fact that the ecosystem is dominated by super sets
+(because it has never been presented equally with a complement), leads to an 
+unhealthy ecosystem. Therefore, tc39 should standardize constructs, that will 
+pressure super sets to be converted to complements.
 
-**Proposal**: Add in the EcmaScript specification that the following comments:
+**Proposal**: Add in the EcmaScript specification that the following comments,
+are to be used by third party complements:
 
 * `//:"./path/to/file.js".IExportedTypeName` type-import-annotate a statement
 
-    The module specifier has to be type system independent, i.e. changing third party
-static type checkers, does not require refactoring the module specifier. This 
-can be achieved by enforcing the module specifier to end with `.js`. It is up to
-the type checker how to resolve this path to its corresponding type file.
-    > For example, TypeScript would first search for the same path replacing 
-    > `.js` with `.d.ts` and if this path does not exist it would try for `.ts`.
+    The module specifier has to be type system independent, i.e. changing third 
+party static type checkers, does not require refactoring the module specifier. 
+This can be achieved by enforcing the module specifier to end with `.js`. It is 
+up to the type checker how to resolve this path to its corresponding type file.
+    > For example, TypeScript, searches for the same path replacing `.js` with 
+    > `.d.ts` and if this path does not exist it would try for `.ts`.
 * `/*:"./path/to/file.js".IExportedTypeName*/` type-import-annotate an
 expression
 * `//:type-checker-expect-error` expect type error in statement
 * `/*:type-checker-expect-error*/` expect type error in expression
 * `//:type-checker-ignore-file` do not type check the context file
 
-are to be used by third party complements. Do not define a type system, let 
-each third party define its own. Like this, all the problems that the type 
-annotations proposal\[[link](https://github.com/tc39/proposal-type-annotations)\]
+Do not define a type system, let each third party define its own. Like this, all 
+the problems that the type annotations proposal\[[link](https://github.com/tc39/proposal-type-annotations)\]
 is trying to solve, are effortlessly solved, without any of its drawbacks\[[link](#super-set-vs-complement-proposal)\].
 In the long run this will end the domination of super sets\[[link](#why-this-proposal-will-reduce-super-sets-to-complements)\]
 leading to a healthier ecosystem.
@@ -425,9 +433,9 @@ make the private API depend on the public API.
 
 ### Concluding to complements.
 
-If separation of separation of types from their implementation, inevitably leads
-TypeScript, without loss in static typing, to do the minimal possible syntax 
-reservation from EcmaScript, which is:
+If separation of types from their implementation, inevitably leads TypeScript, 
+without loss in static typing, to do the minimal possible syntax reservation 
+from EcmaScript, which is:
 
 * type imports:
     
@@ -882,9 +890,9 @@ Here are the drawbacks of standardizing super sets into tc39:
     * browsers
     
   will also have to be updated.
-* The updated EcmaScript parsers will be slower than the older parsers.
-* They will take many years to be standardized because they reserve too much
-syntax.
+* The updated EcmaScript parsers will likely be slower than the older parsers.
+* It will take many years to be standardized because too much syntax needs to be
+reserved.
 
 Take into account that all these drawbacks apply, regardless of whether the 
 proposed super set will have types that have runtime semantics.
@@ -914,31 +922,23 @@ from TypeScript as a super set, to a looser form of complement:
 
 ## List of projects implementing the proposal.
 
-1. [complement-lint](https://github.com/lillallol/complement-lint) - a linter 
-that uses the TypeScript compiler API to ensure that you are using TypeScript as
-a complement
-1. [es-test](https://github.com/lillallol/es-test) - EcmaScript testing library
+* [complement-lint](https://github.com/lillallol/complement-lint) - a linter 
+that uses the TypeScript compiler API to aid in using TypeScript as a complement
+* [es-test](https://github.com/lillallol/es-test) - EcmaScript testing library
  
-<details>
-<summary>Things to know before using TypeScript as a complement.</summary>
+### Things to know before using TypeScript as a complement.
 
-* Make sure that you take a look at the list of the projects that already 
-implement the proposal.
-* Read and understand the context proposal.
 * Currently, TypeScript will not static type check `.js` files that have a 
-corresponding `.d.ts` file. However there are feature requests for that \[[link](https://github.com/microsoft/TypeScript/issues/48911#issuecomment-1115905062)\],
-or you can use complement-lint\[[link](https://github.com/lillallol/complement-lint)\].
+corresponding `.d.ts` file. However there are feature requests for that\[[link](https://github.com/microsoft/TypeScript/issues/48911#issuecomment-1115905062)\].
 * There is no `noExplicitAny` option in the `tsconfig.json`. Even if you 
 have `noImplicitAny` enabled, things like, `const myArray = []`,
 `const myMap = new Map()`, will be treated by TypeScript as being explicitly
 typed with `any`.
+* Consider using complement-lint\[[link](https://github.com/lillallol/complement-lint)\] 
+to catch **some** of the previous mistakes.
 * You will find that for some edge cases, functions are not properly typed. That
 is not the case for arrow functions. There is an issue open for that \[[link](https://github.com/microsoft/TypeScript/issues/49039)\].
 * There are some minor differences on how TypeScript applies static typing 
 to concretion in `.js` versus `.ts` \[[link](https://github.com/microsoft/TypeScript/issues/30009#issuecomment-469385244)\].
 * There is currently no support for extracting type parameters from generic
 functions. There is a feature request for that \[[link](https://github.com/microsoft/TypeScript/issues/49112)\].
-
-***
-
-</details>
